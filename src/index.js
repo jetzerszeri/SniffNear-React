@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Home } from './views/Home';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AddPet } from './views/AddPet';
 
 
 const router = createBrowserRouter([
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   //   path: 'post',
   //   element: <Post />
   // }
+  {
+    path: '/add-pet',
+    element: <AddPet />
+  },
 ])
 
 
