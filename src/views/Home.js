@@ -1,11 +1,19 @@
 import React from 'react'
 import { Navbar } from '../components/Navbar'
+import { WelcomeCard } from '../components/home/WelcomeCard'
+import { MyPetsCards } from '../components/home/MyPetsCards'
+import { ServicesCards } from '../components/home/ServicesCards'
 
 export const Home = () => {
   return (
     <>
       <Navbar />
-     <h1>Home</h1>
+      <main className='homeMain'>
+        <WelcomeCard />
+        <MyPetsCards />
+        <ServicesCards />
+
+      </main>
     </>
   )
 }
