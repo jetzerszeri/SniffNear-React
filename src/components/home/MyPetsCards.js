@@ -1,4 +1,6 @@
-export const MyPetsCards = () => {
+import { PetCard } from "./PetCard"
+
+export const MyPetsCards = ({pets}) => {
   return (
     <section className="myPetsCard">
         <h2>Tus Mascotas</h2>
@@ -10,6 +12,9 @@ export const MyPetsCards = () => {
                 <p>Agregá</p>
             </div>
             <ul>
+                {pets.map((pet) => {
+                    return <PetCard pet={pet} key={pet._id}/>
+                })}
             </ul>
         </div>
     </section>
