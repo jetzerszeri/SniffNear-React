@@ -75,7 +75,7 @@ const RegisterForm = () => {
             onChange={handleChange}
         />
         <label htmlFor="aceptar">
-            Acepto los <a href="">Términos y Condiciones</a>
+            Acepto los <a href="/">Términos y Condiciones</a>
         </label>
         </div>
 

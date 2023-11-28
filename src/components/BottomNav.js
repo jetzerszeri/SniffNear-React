@@ -20,12 +20,12 @@ export const BottomNav = () => {
               
             </li>
             <li>
-                <a href="#">
+                <a href="/">
                     <i className="bi bi-shield-exclamation"></i>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/">
                     <i className="bi bi-person"></i>
                 </a>
             </li>
