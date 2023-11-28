@@ -5,7 +5,7 @@ export const MyPetsCards = () => {
         <div>
             <div >
                 <span className="addPetBtn">
-                    <i className="bi bi-plus"></i>
+                    <a href="/add-pet"><i className="bi bi-plus"></i></a>
                 </span>
                 <p>Agregá</p>
             </div>
