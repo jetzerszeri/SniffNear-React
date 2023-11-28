@@ -3,16 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { Home } from './views/Home';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Register } from './views/Register';
-
+import { Login } from './views/Login';
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />
   },
-  // {
-  //   path: '/login',
-  //   element: <Login />
-  // },
+  {
+    path: '/login',
+    element: <Login />
+  },
   {
     path: '/register',
     element: <Register />
