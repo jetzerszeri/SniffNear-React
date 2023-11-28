@@ -1,0 +1,1601 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Rubik', sans-serif;
+}
+
+:root {
+    --color-green: #006667;
+    --color-green-background: #B2D1D1;
+    --color-oragne: #FF8367;
+    --color-oragne-background: #FFDAD1;
+    --color-darkblue: #363A59;
+    --color-darkblue-background: #C3C4CD;
+    --color-yellow: #FFD600;
+    --color-yellow2: #FFBC00;
+    --color-yellow-background: #fff3b2ac;
+    --color-neutral-0: #FAFAFA;
+    --color-neutral-10: #F5F5F5;
+    --color-neutral-20: #DEDEDE;
+    --color-neutral-40: #AEAEAE;
+    --color-neutral-50: #9A9A9A;
+    --color-neutral-90: #1D1A20;
+}
+
+body{
+    min-height: 100vh;
+    background-color: var(--color-neutral-10);
+}
+
+
+.bottomNavBar{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: var(--color-neutral-0);
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.bottomNavBar ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    list-style: none;
+}
+
+.bottomNavBar ul li{
+    /* position: relative; */
+    height: 60px;
+    width: 20%;
+    text-align: center;
+    line-height: 60px;
+    font-size: 1.6em;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+.bottomNavBar ul li:nth-of-type(3){
+    font-size: 2.5em;
+    background-color: var(--color-neutral-90);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    line-height: 60px;
+    transform: translateY(-30%) ;
+}
+.bottomNavBar ul li:nth-of-type(3):hover{
+    transform: translateY(-30%) scale(1.1);
+}
+
+.bottomNavBar ul li:nth-of-type(3) a{
+    color: var(--color-neutral-0);
+}
+
+.bottomNavBar ul li a{
+    transition: all 0.2s ease;
+    color: var(--color-neutral-40);
+    position: relative;
+}
+
+.bottomNavBar ul li:hover{
+    transform: translateY(-5px) scale(1.1);
+}
+
+.bottomNavBar ul li.active a{
+    color: var(--color-green);
+    transform: translateY(-5px);
+}
+
+.bottomNavBar ul li:nth-of-type(3).active{
+    background-color: var(--color-green);
+}
+
+.bottomNavBar ul li:nth-of-type(3).active a{
+    color: var(--color-neutral-0);
+    margin-bottom: 3px;
+}
+
+
+.bottomNavBar ul li:not(:nth-child(3)) a::before, .sidebar nav ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-green);
+    border-radius: 4px;
+    scale: 0 1;
+    transform-origin: right;
+    transition: scale 0.25s;
+}
+
+.bottomNavBar ul li:not(:nth-child(3)).active a::before, .sidebar nav ul li:hover::before{
+scale: 1;
+transform-origin: left;
+}
+
+ul{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+/* Sidebar */
+.sidebar svg{
+    fill: var(--color-neutral-90);
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    /* box-shadow: 0px 0px 10px rgba(0,0,0,0.1); */
+    z-index: 100;
+    /* transition: all 1s ease; */
+    transition: background-color 1s ease;
+    transform: translateX(-100%);
+}
+
+.sidebar.show {
+    /* transform: translateX(0); */
+    background-color: #1d1a208a;
+}
+
+.sidebar nav{
+    position: relative;
+    width: 75%;
+    min-width: 250px;
+    max-width: 600px;
+    height: 100%;
+    background-color: var(--color-neutral-0);
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+    padding: 30px;
+    transform: translateX(-100%);
+    transition: all 1s ease;
+}
+
+.sidebar nav.show{
+    transform: translateX(0);
+}
+.sidebarLogo{
+    margin-bottom: 30px;
+}
+
+/* iconos del sidebar */
+.sidebar nav ul svg, .sidebar nav ul a {
+    fill: var(--color-neutral-50);
+    color: var(--color-neutral-50);
+}
+.sidebar nav ul{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.sidebar nav ul li{
+    position: relative;
+    font-size: 1em;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.sidebar nav ul a{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.sidebar nav ul li:hover{
+    margin-left: 10px;
+}
+
+.sidebar li:hover a, .sidebar li:hover svg, .sidebar li.active a, .sidebar li.active svg{
+    fill: var(--color-green);
+    color: var(--color-green);
+}
+
+.sidebar .closebtn{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: large;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sidebar .closebtn:hover{
+    transform: scale(1.2);
+    color: var(--color-oragne);
+}
+
+/* top nav bar */
+.topNavBar{
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    padding: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    background-color: var(--color-neutral-10);
+}
+
+.logoContainerTopBar{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-right: 24px;
+}
+
+
+
+.topNavBar i{
+    font-size: 1.5em;
+    color: var(--color-neutral-50);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.topNavBar i:hover{
+    color: var(--color-green);
+}
+
+/* texto o titulo que se muestra en el top nav bar */
+.topNavBar h1{
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
+}
+
+
+
+
+/* Home */
+main{
+    padding: 20px 20px 80px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+main h1, main h2, h3{
+    font-size: 1.2em;
+    font-weight: 500;
+    color: var(--color-neutral-90);
+    margin: 8px 0 14px 0;
+}
+
+h3{
+    font-weight: 400;
+}
+/* secciones del main (puse una clase al main del home por si estos estilos no se aplican a las secciones de las demás páginas) */
+main section{
+    background-color: var(--color-neutral-0);
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.02);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+
+.welcomeCard, .petNameCard{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.welcomeCard img, .petNameCard img{
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    overflow: hidden;
+    object-fit: cover; 
+}
+
+.welcomeCard h1, .petNameCard h2{
+    margin-bottom: 2px;
+}
+
+.welcomeCard p{
+    font-size: 0.8em;
+    color: var(--color-neutral-50);
+}
+
+
+/* Cards en la sección "Tus mascotas" del home*/
+/* div contenedor del boton de agregar y del listado de mascotas */
+.myPetsCard p{
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+.myPetsCard > div:nth-of-type(1){
+    display: flex;
+    gap: 12px;
+    overflow-x: scroll;
+    padding-bottom: 12px;
+}
+
+/* para ocultar el indicador del scroll horizontal */
+.myPetsCard > div:nth-of-type(1)::-webkit-scrollbar {
+    display: none; /* Ocultar para Chrome, Safari y Opera */
+}
+
+.myPetsCard > div:nth-of-type(1) {
+    -ms-overflow-style: none;  /* Ocultar para IE y Edge */
+    scrollbar-width: none; /* Ocultar para Firefox */
+}
+
+
+ .addPetBtn{
+    width: 60px;
+    height: 60px;
+    display: block;
+    background-color: #FFF3B2;
+    border: 1px solid #FFD600;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFD600;
+    font-size: 3em;
+    font-weight: bolder;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.myPetsCard > div:nth-of-type(1) > div:hover .addPetBtn, .addPetBtn:hover{
+    background-color: #FFD600;
+    color: var(--color-neutral-0);
+}
+
+.myPetsCard > div:nth-of-type(1) > div, .myPetsCard ul li{
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.myPetsCard ul{
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+
+/* div contenedor de la imagen del pet */
+.myPetsCard ul li > div{
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.myPetsCard ul li > div img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.2s ease;
+}
+
+.myPetsCard ul li:hover > div img{
+    transform: scale(1.1);
+}
+
+.myPetsCard ul li:hover > div{
+    border: 1px solid var(--color-green);
+}
+
+
+/* ul contenedor de los servicios en el home  */
+.servicesCard ul{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.servicesCard ul li {
+    flex: 1;
+    min-width: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.servicesCard ul li:hover{
+    background-color: var(--color-neutral-10) !important;
+    border: 1px solid var(--color-green);
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.1)
+}
+
+.servicesCard ul li:nth-of-type(1){
+    background-color: var(--color-darkblue-background);
+}
+
+.servicesCard ul li:nth-of-type(1) svg{
+    fill: var(--color-darkblue);
+}
+
+.servicesCard ul li:nth-of-type(2){
+    background-color: var(--color-oragne-background);
+}
+
+.servicesCard ul li:nth-of-type(2) svg{
+    fill: var(--color-oragne);
+}
+
+.servicesCard ul li:nth-of-type(3){
+    background-color: var(--color-green-background);
+}
+
+.servicesCard ul li:nth-of-type(3) svg{
+    fill: var(--color-green);
+}
+
+.servicesCard ul li:nth-of-type(4){
+    background-color: var(--color-yellow-background);
+}
+
+.servicesCard ul li:nth-of-type(4) svg{
+    fill: var(--color-yellow2);
+}
+
+
+/* seccion de card del calendario en el home */
+.calendarCard ul{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.calendarCard ul li{
+    flex: 1;
+    min-width: 90px;
+    /* max-width: 250px; */
+    height: 100px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 10px;
+}
+
+.calendarCard ul li:nth-of-type(1){
+    background-color: var(--color-green-background);
+    color: var(--color-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    border-color: var(--color-green);
+}
+
+.calendarCard ul li:nth-of-type(2){
+    background-color: var(--color-oragne-background);
+    border-color: var(--color-oragne);
+}
+
+.calendarCard ul li:nth-of-type(2) p{
+    color: var(--color-oragne);
+    font-weight: 600;
+}
+
+.calendarCard ul li p:nth-of-type(1){
+    font-size: 1.3em;
+}
+
+.calendarCard ul li h3{
+    font-size: 1em;
+    font-weight: 500;
+}
+
+
+
+
+/* inicio de estilos de pet profile */
+
+.mainPetProfile section{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.mainPetProfile h1{
+    text-align: center;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* icono de editar el perfil del pet */
+.mainPetProfile i{
+    font-size: 1.2em;
+    color: var(--color-neutral-50);
+    cursor: pointer;
+    transition: color 0.2s ease;
+    margin-left: auto;
+}
+
+.mainPetProfile i:hover{
+    color: var(--color-green);
+    transform: scale(1.1);
+}
+
+
+.petNameCard{
+    margin-bottom: 20px;
+}
+
+
+.mainPetProfile ul{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.mainPetProfile ul li{
+    flex: 1;
+    min-width: 135px;
+    display: flex;
+    /* height: 100px; */
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    padding: 12px;
+}
+
+.mainPetProfile ul li span:nth-of-type(1){
+    display: block;
+    font-size: 0.8em;
+    font-weight: 300;
+    text-transform: capitalize;
+}
+
+.mainPetProfile ul li span:nth-of-type(2){
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.femalePetInfo li{
+    background-color: var(--color-oragne-background);
+}
+
+.malePetInfo li{
+    background-color: var(--color-green-background);
+}
+
+.errorMsgPetProfile{
+    text-align: center;
+    color: red;
+    margin: 80px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* fin de los estilos de la vista de detalles de mascotas */
+
+
+
+
+
+
+
+
+/* formulario de crear cuenta */
+.singUpView{
+    background-color: var(--color-neutral-0);
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
+    margin-top: 120px;
+    text-align: center;
+    border-radius: 41px 41px 0px 0px;
+    padding: 0 20px 50px 20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+.singUpView > div:nth-of-type(1){
+    transform: translateY(-50%);
+    background-color: var(--color-neutral-0);
+    width: fit-content;
+    margin: auto;
+    padding: 12px;
+    border-radius: 50%;
+    margin-bottom: -40px;
+}
+.singUpView h1{
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.singUpView h1 + p{
+    font-size: 1em;
+    color: var(--color-neutral-50);
+    margin-bottom: 30px;
+}
+
+.singUpView form, .addNewPetForm{
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    gap: 10px;
+}
+
+/* .singUpView form input, .addNewPetForm input{ */
+input, select, textarea{
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--color-neutral-40);
+    padding: 0 10px;
+    font-size: 1em;
+    transition: all 0.2s ease;
+}
+
+textarea{
+    height: auto;
+    resize: none;
+    padding: 10px;
+}
+
+.singUpView form > div:nth-of-type(1){
+    text-align: left;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap : 10px;
+    color: var(--color-neutral-50);
+    margin-bottom: 10px;
+}
+
+.singUpView form > div:nth-of-type(1) a{
+    color: var(--color-neutral-50);
+    font-weight: 600;
+}
+
+.singUpView form > div:nth-of-type(2){
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn, button{
+    border: 1.5px solid var(--color-green);
+    background-color: var(--color-green);
+    color: var(--color-neutral-0);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+    min-width: min-content;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.btn.small, button.small{
+    padding: 5px 12px;
+    font-size: 0.9em;
+    font-weight: 300;
+}
+
+.btn:hover, button:hover{
+    background-color: #006567c4;
+}
+
+button[disabled] {
+    background-color: var(--color-neutral-20);
+    color: var(--color-neutral-0);
+    cursor: not-allowed;
+    border-color: var(--color-neutral-20);
+}
+
+.btn.secundary{
+    background-color: var(--color-neutral-0) !important;
+    color: var(--color-green) !important;
+    border-color: var(--color-green) !important;
+}
+
+.btn.secundary:hover{
+    background-color: var(--color-neutral-20) !important;
+    /* color: var(--color-neutral-0) !important; */
+}
+
+.listAlertas .btn.secundary:hover{
+    background-color: var(--color-green) !important;
+    color: var(--color-neutral-0) !important;
+}
+
+form label + p {
+    font-size: 0.9em;
+    margin: 0;
+    color: var(--color-neutral-50);
+    font-weight: 300;
+}
+
+
+
+/* estilos de la vista de agregar mascota */
+.addNewPetForm{
+    margin-top: -10px;
+}
+.stepsForm{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.stepsForm svg.active{
+    fill: var(--color-oragne);
+}
+.addNewPetForm h1, .mapMain h1{
+    font-size: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+
+.addNewPetForm h2{
+    text-align: center;
+}
+
+.step1, .step2{
+    margin-bottom: 50px;
+}
+.petsIconList{
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    gap: 30px;
+    margin-top: 50px;
+    /* min-height: 280px; */
+    flex-wrap: wrap;
+    padding: 0 45px;
+}
+
+.petsIconList li{
+    flex: 1 1 calc(50% - 30px);
+}
+
+.petsIconList li div{
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.petsIconList li div:hover{
+    background-color: var(--color-neutral-20);
+}
+
+
+.petsIconList li.selected div{
+    background-color: var(--color-green-background);
+    
+}
+
+.petsIconList + p {
+    text-align: center;
+    color: var(--color-neutral-50);
+    margin-top: 20px;
+    text-decoration: underline;
+    margin: 30px auto 200px;
+    /* height: 150px; */
+    font-weight: 300;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+.petsIconList + p:hover{
+    color: var(--color-green);
+}
+
+.sexSelector{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.sexSelector div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.sexSelector div span{
+    font-weight: 300;
+    font-size: 0.8em;
+    margin-top: 8px;
+    color: var(--color-neutral-50);
+}
+
+.sexSelector div.selected svg{
+    border: 2px solid var(--color-green);
+    border-radius: 50%;
+}
+
+.sexSelector div.selected span{
+    color: var(--color-green);
+    font-weight: 500;
+}
+
+.sizeSelector{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.sizeSelector li{
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sizeSelector li svg{
+    fill: var(--color-neutral-0);
+    transition: all 0.1s ease;
+}
+
+.sizeSelector li:hover svg, .sizeSelector li.selected svg{
+    transform: scale(1.1);
+}
+.sizeSelector li.selected svg{
+    fill: var(--color-darkblue);
+}
+
+#petSizeText.selected{
+    text-transform: capitalize;
+    color: var(--color-darkblue);
+    font-size: 1em;
+}
+
+.colorInputs{
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.colorInputs li{
+    cursor: pointer;
+    color: var(--color-neutral-50);
+    padding: 8px 12px;
+    border: 1px solid var(--color-neutral-50);
+    border-radius: 8px;
+    transition: all 0.1s ease;
+}
+
+.colorInputs li:hover{
+    background-color: var(--color-neutral-20);
+    color: var(--color-darkblue);
+}
+
+.colorInputs li.selected {
+    background-color: var(--color-darkblue);
+    color: var(--color-neutral-0);
+}
+
+.errorInput{
+    color: red;
+    font-size: 0.9em;
+    margin-top: -8px;
+}
+
+input.error, select.error{
+    border: red 2px solid;
+}
+
+#imageInput{
+    display: none;
+}
+
+.labelImgInput{
+    /* display: block; */
+    /* width: clamp(120px, 90%, 300px); */
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    background-color: var(--color-neutral-0);
+    border: 2px dashed var(--color-neutral-20);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    cursor: pointer;
+    margin: 50px auto;
+    gap: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.labelImgInput p {
+    color: var(--color-neutral-50);
+}
+/* .labelImgInput{
+    cursor: pointer;
+} */
+
+/* 
+.addNewPetForm .petTypeSelector img{
+    border-radius: 8px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.addNewPetForm .petTypeSelector img.selected{
+    border: 2px solid var(--color-green);
+    opacity: 1;
+}*/
+
+.addNewPetForm .step2 > div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 0;
+}
+
+/* 
+.addNewPetForm > div:nth-of-type(2) div{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+
+/* estilos en alertas */
+/* -- estilos para alerta de mascota encontrada luego de refactorizar */
+.containerFormStepsSelectors{
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 0;
+    text-align: center;
+    /* min-height: fit-content; */
+}
+
+.stepSubHeading{
+    text-align: center;
+    color: var(--color-neutral-50);
+}
+
+.containerFormStepsSelectors .inputDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* padding: 0 20px; */
+    text-align: left;
+    width: 100%;
+}
+
+#mi_mapa, #mi_mapa2{
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+}
+
+.btnStepForm{
+    display: flex;
+    gap: 10px;
+}
+
+.btnStepForm button{
+    flex: 1;
+}
+/* .stepSubHeading.selected{
+    text-transform: capitalize;
+    color: var(--color-darkblue);
+} */
+
+.containerFormStepsSelectors .errorInput{
+    margin: 0;
+}
+
+.containerFormStepsSelectors .logInOptions{
+    /* width: 50%;
+    min-width: 150px; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: end;
+}
+
+.containerFormStepsSelectors .logInOptions p{
+    width: 50%;
+    min-width: 150px;
+    text-align: right;
+    font-weight: 300;
+}
+
+.containerFormStepsSelectors .logInOptions p span{
+    display: block;
+    /* text-decoration: underline; */
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.1em;
+    color: var(--color-green);
+    /* width: fit-content;
+    text-align: right; */
+}
+
+.containerFormStepsSelectors .logInOptions p span:hover{
+    text-decoration: underline;
+}
+
+.alertPreview h3{
+    text-align: left;
+    margin-top: 30px;
+}
+.imgPrevContainer{
+    /* background: cover no-repeat center; */
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--color-neutral-20);
+    border-radius: 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.prevInfoContainter{
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 15px;
+    text-align: left;
+    font-weight: 300;
+}
+
+.prevInfoContainter span, .infoContactoP{
+    font-weight: 500;
+    text-transform: capitalize;
+
+}
+
+
+
+.previewMap{
+    height: 150px !important;
+    border: 1px solid var(--color-neutral-20);
+    margin-top: 30px;
+}
+
+
+.alertPreview .editLink{
+    margin: 50px auto 30px ;
+    text-align: center;
+    color: var(--color-neutral-50);
+    text-decoration: underline;
+    font-weight: 300;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+.alerts h1{
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.alerts p {
+    font-family: 'Rubik', sans-serif;
+    font-weight: 300px;
+    text-align: center;
+}
+
+.alerts .lose{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-flow: column;
+    border-radius: 8px;
+    margin-bottom: 22px;
+    margin-top: 5%;
+    width: 201px;
+    height: 82px;
+    flex-shrink: 0;
+    background: #FFDAD2;
+    cursor: pointer;
+}
+
+.lose svg{
+    width: 33.165px;
+    height: 37.536px;
+    flex-shrink: 0;
+}
+.alerts .find{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-flow: column;
+    border-radius: 8px;
+    background: rgba(255, 214, 0, 0.30);
+     width: 201px;
+    height: 82px;
+    flex-shrink: 0;
+    margin-bottom: 22px;  
+    cursor: pointer;
+}
+.find svg{
+    width: 33.165px;
+    height: 37.536px;
+    flex-shrink: 0;
+}
+.alert_lose h1{
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+.alert_lose> p {
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px;
+    font-weight: 400px;
+    text-align: center;
+}
+
+.myPetsLose{
+    display: flex;
+    background-color: var(--color-neutral-10);
+    border-radius: 8px;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.15);
+    /* justify-content: center; */
+}
+.myPetsLose p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.alert_lose > h2{
+    color: rgba(0, 0, 0, 0.50);
+font-family: Rubik;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: 135%; /* 17.55px */
+text-align: center;
+}
+
+.alert_lose h3{
+text-align: center;
+font-size: 15px;
+}
+
+.myPetsAddLose{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-flow: column;
+}
+
+.myPetsAddLose .addPetBtn{
+    margin-top: 5%;
+}
+/* alertfind */
+.alert_find h1{
+    text-align: center;
+}
+.alert_find form{
+    display: flex;
+    flex-direction: column;
+     padding: 0 20px;
+    gap: 10px;
+    margin: 5%;
+}
+.alert_find form input{
+    background: #F7F2FA;
+    border-radius: 6px;
+    border-color: #F7F2FA;
+}
+.alert_find form textarea{ 
+    background: #F7F2FA;
+    border-radius: 6px;
+    border-color: #F7F2FA;
+    font-size: 1em;
+    transition: all 0.2s ease;
+    padding: 5px;
+   
+}
+
+.alert_find .petTypeSelector{
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+.alert_find .petTypeSelector img {
+    border-radius: 8px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border-radius: 16px;
+    background:  #F7F2FA;
+    margin: 5px;
+    /* M3/Elevation Light/1 */
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+    
+}
+.alert_find .petTypeSelector img.selected{
+    border: 2px solid var(--color-green);
+    opacity: 1;
+}
+.alert_find .select_color {
+    display: flex; 
+    flex-direction: row;
+ }
+  
+ .select_color label {
+    margin:2px;
+  }
+ .alert_find form input[type="color"] {
+    width: 30px;
+    height: 30px; 
+    padding: 0; 
+    border: none; 
+    cursor: pointer; 
+    border-radius: 6px;
+    border-color: none;
+    background-color: none;
+ }
+.alert_find .fecha{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.divBtnContinuar{
+    display: flex; 
+    justify-content: space-between; 
+    padding: 10px;
+}
+.btnContinuar{
+    align-self: flex-end;
+    border-radius: 8px;
+    color: #FFF;
+    text-align: center;
+    font-family: "Rubik";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    background: #363A59;
+}
+ .info_contact{
+    display: none;
+}
+.info_contact p{
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 200;  
+}
+.info_contact .option_login {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
+}
+.alert_find .sectionSuccess{
+    background-color:#FFD600;
+}
+.alert_find .sectionSuccess .divSuccess{
+    display: flex;
+    width: 320px;
+    height: 568px;
+    padding: 0px 69px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+/* estilos del loading */
+.loadingBackground{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1d1a208a;
+    z-index: 500;
+}
+
+.loadingContainer{
+    background-color: var(--color-neutral-0);
+    padding: 20px 30px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.loadingContainer p {
+    font-size: 1em;
+    font-weight: 500;
+    text-align: center;
+    max-width: 130px;
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bouncer{
+
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    width: 100px;
+    height: 100px;
+    /* background-color: var(--color-neutral-40); */
+}
+
+.bouncer div{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--color-green);
+    animation: bouncer 0.5s cubic-bezier(.19,.57,.3,.98) infinite alternate;
+}
+
+.bouncer div:nth-child(2){
+    animation-delay: 0.1s;
+    opacity: 0.8;
+}
+.bouncer div:nth-child(3){
+    animation-delay: 0.2s;
+    opacity: 0.6;
+}
+.bouncer div:nth-child(4){
+    animation-delay: 0.3s;
+    opacity: 0.4;
+}
+
+
+@keyframes bouncer {
+    from {
+        transform: translateY(-5px);
+    }
+    to {
+        transform: translateY(-70px);
+    }
+}
+
+
+
+
+
+/* estilos del mapa de alertas */
+.mapMain{
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    /* height: 90vh; */
+}
+
+.buttonscontainer{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 20px 0;
+    align-items: center;
+    margin: 0;
+}
+
+.buttonscontainer button{
+    flex: 1;
+}
+
+.buttonscontainer i{
+    font-size: 2em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--color-neutral-50);
+}
+
+.buttonscontainer i:hover{
+    transform: scale(1.1);
+    color: var(--color-green);
+}
+
+#mapaAlertas{
+    width: 100%;
+    /* height: 100%; */
+    height: calc(100vh - 165px);
+    /* border-radius: 8px; */
+    /* margin: 20px 0; */
+    background-color: #1D1A20;
+    padding: 0;
+    margin: 0;
+    /* display: none; */
+}
+
+.markerInfoWindow{
+    /* width: 250px;
+    background-color: white; */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    font-size: 0.9em;
+}
+
+.markerInfoWindow > div:nth-of-type(1){
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100% !important;
+    /* padding: 10px; */
+}
+
+.markerInfoWindow > div:nth-of-type(1) div{
+    width: 100%;
+}
+
+.markerInfoWindow > div img{
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.markerInfoWindow  span{
+    text-transform: capitalize !important;
+
+} 
+
+/* .markerInfoWindow > div:first-child span:nth-of-type(1){
+    font-weight: 500;
+    font-size: 1.2em;
+} */
+
+.markerInfoWindow .petType{
+    font-weight: 500;
+    font-size: 1.2em;
+    /* display: block; */
+}
+
+.markerInfoWindow .foundAt{
+    font-weight: 300;
+    font-size: 0.9em;
+    color: var(--color-neutral-50);
+}
+
+.listAlertas{
+    padding: 20px;
+}
+.listAlertas ul{
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+gap: 20px;
+padding-bottom: 60px;
+}
+
+.listAlertas ul li{
+    /* flex: 1; */
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    padding: 12px;
+    background-color: var(--color-neutral-0);
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.listAlertas li div, .tituloAlerta{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1em;
+    justify-content: center;
+}
+
+.listAlertas li div h2, .tituloAlerta h2{
+    font-size: 1em;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.listAlertas li div img, .tituloAlerta img{
+    width: 20px;
+    height: 20px;
+}
+
+.listAlertas li {
+
+
+}
+
+.listAlertas li > img{
+    width: 100px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    display: block;
+    margin: auto;
+}
+
+.listAlertas li p{
+    font-size: 0.9em;
+    font-weight: 300;
+    color: var(--color-neutral-50);
+    text-align: center;
+}
