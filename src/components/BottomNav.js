@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'; 
 export const BottomNav = () => {
   return (
     <nav className="bottomNavBar">
@@ -13,9 +14,10 @@ export const BottomNav = () => {
                 </a>
             </li>
             <li>
-                <a href="/new-alert">
+                <Link to ="newAlert">
                     <i className="bi bi-plus"></i>
-                </a>
+                </Link>
+              
             </li>
             <li>
                 <a href="#">

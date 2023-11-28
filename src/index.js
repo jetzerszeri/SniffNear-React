@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Home } from './views/Home';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Register } from './views/Register';import { AddPet } from './views/AddPet';
-
+import { NewAlert } from './views/NewAlert';
 import { Login } from './views/Login';
 const router = createBrowserRouter([
   {
@@ -18,17 +18,13 @@ const router = createBrowserRouter([
     path: '/register',
     element: <Register />
   },
-  // {
-  //   path: '/details/:postId',
-  //   element: <Details />
-  // },
-  // {
-  //   path: 'post',
-  //   element: <Post />
-  // }
   {
     path: '/add-pet',
     element: <AddPet />
+  }, 
+  {
+    path: '/newAlert',
+    element: <NewAlert/>
   },
 ])
 
