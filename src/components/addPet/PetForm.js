@@ -6,7 +6,8 @@ export const PetForm = () => {
         <h1>Agregar mascota</h1>
 
         <div className="step1">
-            <h2>¿Qué tipo de mascota es?</h2>
+            {/* <h2>¿Qué tipo de mascota es?</h2> */}
+            <h2>Contanos sobre tu mascota</h2>
             <input type="hidden" name="type" id="type" />
             <ul className="petsIconList">
                 <li datavalue="perro">
@@ -45,11 +46,11 @@ export const PetForm = () => {
                     </div>
                 </li>
             </ul>
-            <p>Es otra mascota</p>
+            {/* <p>Es otra mascota</p> */}
         </div>
 
         <div className="step2">
-            <h2>Contanos sobre tu mascota</h2>
+            {/* <h2>Contanos sobre tu mascota</h2> */}
 
             <div>
                 <label htmlFor="name">Nombre</label>
@@ -161,7 +162,7 @@ export const PetForm = () => {
             </div>
         </div>
 
-        <div className="step3">
+        {/* <div className="step3">
             <h2>Foto de perfil de tu mascota</h2>
                 <label htmlFor="imageInput" className="labelImgInput">
                     <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -171,7 +172,7 @@ export const PetForm = () => {
                 </label>
                 <input type="file" id="imageInput" accept="image/*" name="img"/>
 
-        </div>
+        </div> */}
 
 
 
