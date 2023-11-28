@@ -25,7 +25,7 @@ export const Navbar = () => {
         <div>
         
          <Link to={"/login"}>
-         <i class="bi bi-person-fill"></i>
+         <i className="bi bi-person-fill"></i>
         </Link>
         </div>
     </div>

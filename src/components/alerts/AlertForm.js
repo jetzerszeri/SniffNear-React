@@ -3,9 +3,9 @@ export const AlertForm = () =>{
     
 return(
     <main>
-        <form class="addNewPetForm createAlert">
+        <form className="addNewPetForm createAlert">
     <h1>Crear alerta de mascota encontrada</h1>
-    <div class="step1">
+    <div className="step1">
                 <h2>¿Qué tipo de mascota encontraste?</h2>
                 <ul className="petsIconList">
                 <li datavalue="perro" >
