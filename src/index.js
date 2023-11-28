@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Home } from './views/Home';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AddPet } from './views/AddPet';
+import { Register } from './views/Register';import { AddPet } from './views/AddPet';
 
 
 const router = createBrowserRouter([
@@ -14,10 +14,10 @@ const router = createBrowserRouter([
   //   path: '/login',
   //   element: <Login />
   // },
-  // {
-  //   path: '/register',
-  //   element: <Register />
-  // },
+  {
+    path: '/register',
+    element: <Register />
+  },
   // {
   //   path: '/details/:postId',
   //   element: <Details />
