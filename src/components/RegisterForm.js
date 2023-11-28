@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -82,7 +82,7 @@ const RegisterForm = () => {
         <div>
         <button type="submit">Crear mi cuenta</button>
         <p>
-            ¿Ya tienes una cuenta? <a href="login.html">Ingresa</a>
+            ¿Ya tienes una cuenta? <Link to="/login">Ingresa</Link>
         </p>
         </div>
     </form>
