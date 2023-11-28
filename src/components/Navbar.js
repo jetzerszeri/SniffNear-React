@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'; //
 export const Navbar = () => {
   return (
     <>
@@ -22,7 +23,10 @@ export const Navbar = () => {
             </svg>            
         </div>
         <div>
-            {/* <i className="bi bi-gear"></i> */}
+        
+         <Link to={"/login"}>
+         <i class="bi bi-person-fill"></i>
+        </Link>
         </div>
     </div>
     </>
