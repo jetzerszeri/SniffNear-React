@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const MyPetsCards = () => {
   return (
     <section className="myPetsCard">
