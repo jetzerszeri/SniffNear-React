@@ -765,7 +765,8 @@ form label + p {
 .stepsForm svg.active{
     fill: var(--color-oragne);
 }
-.addNewPetForm h1, .mapMain h1{
+/* .addNewPetForm h1, .mapMain h1{ */
+.addNewPetForm h1{
     font-size: 0;
     height: 0;
     margin: 0;

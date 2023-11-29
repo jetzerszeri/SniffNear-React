@@ -14,7 +14,7 @@ export const BottomNav = () => {
                 </a>
             </li>
             <li>
-                <Link to ="newAlert">
+                <Link to ="/newAlert">
                     <i className="bi bi-plus"></i>
                 </Link>
               

@@ -6,6 +6,7 @@ import { Register } from './views/Register';import { AddPet } from './views/AddP
 // import { NewAlert } from './views/NewAlert';
 import { Login } from './views/Login';
 import { LostPetAlertForm } from './views/LostPetAlertForm';
+import { Alerts } from './views/Alerts';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
     path: '/newAlert',
     element: <LostPetAlertForm/>
   },
+  {
+    path: '/alerts',
+    element: <Alerts/>
+  }
 ])
 
 
