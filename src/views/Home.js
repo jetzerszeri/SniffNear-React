@@ -8,7 +8,7 @@ import { BottomNav } from '../components/BottomNav'
 
 export const Home = () => {
   const storedUserId = localStorage.getItem('userId');
-  const [ name, setName ] = useState('cargando...');
+  const [ name, setName ] = useState('');
   const [ pets, setPets ] = useState([]);
 
   const getUserInfo = useCallback( async () => {
