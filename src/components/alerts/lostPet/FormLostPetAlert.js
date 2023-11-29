@@ -6,7 +6,7 @@ export const FormLostPetAlert = ({petInfo, user}) => {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [description, setDescription] = useState('')
-
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
 
@@ -59,8 +59,21 @@ export const FormLostPetAlert = ({petInfo, user}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log(petInfo)
-        // console.log(formData)
+        const newErrors = {};
+
+        if (!date) {
+            newErrors.date = 'La fecha es requerida';
+        }
+    
+        if (!time) {
+            newErrors.time = 'La hora es requerida';
+        }
+    
+        if (!description) {
+            newErrors.description = 'La descripción es requerida';
+        }
+    
+        if (Object.keys(newErrors).length === 0) {
         try {
             const response = await fetch('https://sniffnear-api.onrender.com/api/alerts/', {
               method: 'POST',
@@ -82,7 +95,10 @@ export const FormLostPetAlert = ({petInfo, user}) => {
         } catch (error) {
             console.error('Error:', error);
         }
+    } else {
+        setErrors(newErrors);
     }
+};
 
 
 
@@ -101,7 +117,7 @@ export const FormLostPetAlert = ({petInfo, user}) => {
                 <label htmlFor="date">¿Cuándo?</label>
                 <input type="date" name="date" value={ date } onChange= { handleDateChange }/>
             </div>
-
+            {errors.date && <p style={{ color: 'red' }}>{errors.date}</p>}
             <div className="inputDiv">
                 <label htmlFor="time">¿A qué horas?</label>
                 <select name="time"  value={ time } onChange= { handleTimeChange }>
@@ -124,13 +140,13 @@ export const FormLostPetAlert = ({petInfo, user}) => {
                     <option value="9pm">9 PM</option>
                 </select>
             </div>
-
+            {errors.time && <p style={{ color: 'red' }}>{errors.time}</p>}
             <div className="inputDiv">
                 <label htmlFor="description">Describe la mascota</label>
                 <textarea name="description" placeholder="Puedes compartir todos los datos que consideres necesarios" rows="10" onChange= { handleDescriptionChange }></textarea>
             </div>
         </div>
-
+        {errors.description && <p style={{ color: 'red' }}>{errors.description}</p>}    
         <button id="next">Guardar</button>
 
         </form>
