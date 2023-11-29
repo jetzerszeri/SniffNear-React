@@ -1,22 +1,110 @@
-export const FormLostPetAlert = () => {
+import React, { useState } from 'react';
+import { useNavigate  } from 'react-router-dom';
+
+export const FormLostPetAlert = ({petInfo, user}) => {
+
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const [description, setDescription] = useState('')
+
+    const navigate = useNavigate();
+
+
+    const [formData, setFormData] = useState({
+        petName: petInfo.name,
+        type: petInfo.type,
+        size: petInfo.size,
+        color1: petInfo.color1,
+        color2: '',
+        breed: petInfo.breed,
+        description: '',
+        latitude: '',
+        longitude: '',
+        date: '',
+        time: '',
+        img: petInfo.img,
+        personName: user.name,
+        email: user.name,
+        password: '',
+        alertType: 'lost',
+        sex: petInfo.sex,
+        pet: petInfo._id,
+        creator: user._id,
+    });
+
+    const handleDateChange = (e) => {
+        setDate(e.target.value)
+        setFormData({
+            ...formData,
+            date: e.target.value
+        })
+    }
+
+    const handleTimeChange = (e) => {
+        setTime(e.target.value)
+        setFormData({
+            ...formData,
+            time: e.target.value
+        })
+    }
+
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value)
+        setFormData({
+            ...formData,
+            description: e.target.value
+        })
+    }
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // console.log(petInfo)
+        // console.log(formData)
+        try {
+            const response = await fetch('https://sniffnear-api.onrender.com/api/alerts/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
+      
+            const json = await response.json();
+            console.log(json);
+      
+            if (response.ok) {
+              console.log('se registro la alerta')
+            //   navigate('/')
+            } else {
+                console.error('Error en el registro:', json.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
+
+
   return (
     <>
-        <form className="addNewPetForm createAlert">
-        <h2>¿Dónde y cuándo la viste por última vez?</h2>
+        <form onSubmit={handleSubmit} className="addNewPetForm createAlert">
+        <h2>¿Cuándo la viste por última vez?</h2>
         <div className="containerFormStepsSelectors">
 
-            <div className="inputDiv">
+            {/* <div className="inputDiv">
                 <label htmlFor="lugar">Lugar</label>
                 <input type="text" name="lugar" />
-            </div>
+            </div> */}
             <div className="inputDiv">
                 <label htmlFor="date">¿Cuándo?</label>
-                <input type="date" name="date"/>
+                <input type="date" name="date" value={ date } onChange= { handleDateChange }/>
             </div>
 
             <div className="inputDiv">
                 <label htmlFor="time">¿A qué horas?</label>
-                <select name="time" >
+                <select name="time"  value={ time } onChange= { handleTimeChange }>
                     <option defaultValue="">Selecciona una hora</option>
                     <option value="6am">6 AM</option>
                     <option value="7am">7 AM</option>
@@ -39,11 +127,11 @@ export const FormLostPetAlert = () => {
 
             <div className="inputDiv">
                 <label htmlFor="description">Describe la mascota</label>
-                <textarea name="description" placeholder="Puedes compartir todos los datos que consideres necesarios" rows="10"></textarea>
+                <textarea name="description" placeholder="Puedes compartir todos los datos que consideres necesarios" rows="10" onChange= { handleDescriptionChange }></textarea>
             </div>
         </div>
 
-        <button id="next">Continuar</button>
+        <button id="next">Guardar</button>
 
         </form>
     </>

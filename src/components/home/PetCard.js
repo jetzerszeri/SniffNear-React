@@ -2,7 +2,7 @@ export const PetCard = ({pet, selectLostPet, clickType}) => {
 
   const handleClick = () => {
     if (clickType === "lost") {
-      selectLostPet(pet._id);
+      selectLostPet(pet);
     }
 
   }

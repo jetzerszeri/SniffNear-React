@@ -7,13 +7,16 @@ export const LostPetAlertForm = () => {
     const storedUserId = localStorage.getItem('userId');
     const [ pets, setPets ] = useState([]);
     const [ step, setStep ] = useState(1);
-    const [ petId, setPetId ] = useState('');
+    const [ petId, setPetId ] = useState({});
+    const [ user, setUser ] = useState({});
+
 
     const getUserPets = useCallback( async () => {
       const response = await fetch(`https://sniffnear-api.onrender.com/api/users/${storedUserId}`);
       if(response.ok){
-        const  {pets}  = await response.json();
+        const  {user, pets}  = await response.json();
         setPets(pets);
+        setUser(user);
       } 
     }, [storedUserId])
   
@@ -26,7 +29,7 @@ export const LostPetAlertForm = () => {
         setPetId(id);
         setStep(2);
         // console.log(id);
-        console.log(step, petId);
+        // console.log(step, petId);
     }
 
 
@@ -38,7 +41,7 @@ export const LostPetAlertForm = () => {
         <main>
             
             {step === 1 && <HomeLostPetAlert setPetHandler={setPetHandler} pets={pets}/>}
-            {step === 2 && <FormLostPetAlert />}
+            {step === 2 && <FormLostPetAlert petInfo={petId} user={user}/>}
             {/* <FormLostPetAlert /> */}
 
         </main>
