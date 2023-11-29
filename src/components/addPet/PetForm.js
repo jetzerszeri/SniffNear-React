@@ -18,6 +18,7 @@ export const PetForm = () => {
         color1: '',
     });
 
+    const [errors, setErrors] = useState({});
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -62,7 +63,25 @@ export const PetForm = () => {
   
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+        const newErrors = {};
+
+        if (!formData.type.trim()) {
+          newErrors.type = 'El tipo es requerido';
+        }
+    
+        if (!formData.name.trim()) {
+          newErrors.name = 'El nombre es requerido';
+        }
+        if(!selectedColor){
+            newErrors.color1 = "Debes elegir un color"
+         }
+         if (!formData.sex.trim()) {
+            newErrors.sex = 'El género es requerido';
+          }
+          if (!formData.size.trim()) {
+            newErrors.size = 'El tamaño es requerido';
+          }
+        if (Object.keys(newErrors).length === 0) {
         try {
             const response = await fetch('https://sniffnear-api.onrender.com/api/pets/', {
               method: 'POST',
@@ -84,6 +103,9 @@ export const PetForm = () => {
             } catch (error) {
               console.error('Error:', error);
             }
+        } else {
+            setErrors(newErrors);
+          }
       };
   return (
     <main>
@@ -130,6 +152,7 @@ export const PetForm = () => {
                         </div>
                     </li>
                 </ul>
+                {errors.type && <p style={{ color: 'red' }}>{errors.type}</p>}
             </div>
 
                 <div className="step2">
@@ -146,7 +169,7 @@ export const PetForm = () => {
                         />
                     
                     </div>
-
+                    {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
                     <div>
                         <div>
                             <label htmlFor="birthdate">Fecha de nacimiento</label>
@@ -171,7 +194,7 @@ export const PetForm = () => {
                             <option value="3">Raza 3</option>
                         </select>
                     </div>
-
+                    {errors.breed && <p style={{ color: 'red' }}>{errors.breed}</p>}
                     <div>
                         <label htmlFor="sex">Género</label>
                         <input 
@@ -200,7 +223,7 @@ export const PetForm = () => {
                             </div>
                         
                         </div>
-                        
+                        {errors.sex && <p style={{ color: 'red' }}> {errors.sex}</p>}
                     </div>
 
                     <div>
@@ -238,7 +261,7 @@ export const PetForm = () => {
                                 </svg>                                
                             </li>
                         </ul>
-                        
+                        {errors.size && <p style={{ color: 'red' }}> {errors.size}</p>}
                     </div>
                     <div>
                         <label>Color</label>
@@ -252,7 +275,8 @@ export const PetForm = () => {
                         </ul>
                     </div>
 
-                
+                    {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}
+
                 </div>
 
             <button>Guardar</button>

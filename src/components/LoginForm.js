@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate , Link } from 'react-router-dom';
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +17,18 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'El correo electrónico es requerido';
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = 'Ingrese un correo electrónico válido';
+    }
+
+    if (!formData.password.trim()) {
+      newErrors.password = 'La contraseña es requerida';
+    }
+    if (Object.keys(newErrors).length === 0) {
     try {
       const response = await fetch('https://sniffnear-api.onrender.com/api/users/auth', {
         method: 'POST',
@@ -37,6 +50,9 @@ const LoginForm = () => {
     } catch (error) {
       console.error('Error:', error);
     }
+  } else {
+    setErrors(newErrors);
+  }
   };
 
   return (
@@ -49,6 +65,7 @@ const LoginForm = () => {
         onChange={handleChange}
         required
       />
+      {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
       <input
         type="password"
         name="password"
@@ -57,8 +74,14 @@ const LoginForm = () => {
         onChange={handleChange}
         required
       />
+      {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+
       <button type="submit">Iniciar Sesión</button>
+      <p>
+            ¿Ya tienes una cuenta? <Link to="/register">Registrate</Link>
+        </p>
     </form>
+
   );
 };
 
