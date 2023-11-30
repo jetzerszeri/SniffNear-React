@@ -25,14 +25,14 @@ const LoginForm = () => {
     if (!formData.email.trim()) {
       newErrors.email = '*El correo electrónico es requerido';
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = '*Ingrese un correo electrónico válido';
+      newErrors.email = '*Ingresa un correo electrónico válido';
     }
 
     if (!formData.password.trim()) {
       newErrors.password = '*La contraseña es requerida';
     }
     if (Object.keys(newErrors).length === 0) {
-    // try {
+
       const response = await fetch('https://sniffnear-api.onrender.com/api/users/auth', {
         method: 'POST',
         headers: {
@@ -41,21 +41,15 @@ const LoginForm = () => {
         body: JSON.stringify(formData),
       });
       const json = await response.json();
-      console.log(json);
       if (response.ok) {
         localStorage.setItem('userId', json.userId);
         navigate('/')
         console.log('Inicio de sesión exitoso');
       } else {
-        // const errorData = await response.json();
-        setCredentialError(`*${json.message}`);
         newErrors.credentials = `*${json.message}`
-        console.error('Error en el inicio de sesión:', json.message);
       }
       setErrors(newErrors)
-    // } catch (error) {
-    //   console.error('Error:', error);
-    // }
+
   } else {
     setErrors(newErrors);
   }
@@ -64,12 +58,10 @@ const LoginForm = () => {
   return (
     
     <form onSubmit={handleSubmit}>
-            {/* <p className='errorInput'>Credenciales inválidas</p> */}
             {errors.credentials && <p className='errorInput'>{errors.credentials}</p>}
       <div>
       <label htmlFor="email">Email</label>
       <input
-        // type="email"
         name="email"
         placeholder="ejemplo@mail.com"
         value={formData.email}
