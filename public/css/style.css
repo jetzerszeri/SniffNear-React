@@ -718,6 +718,13 @@ textarea{
     padding-top: 0 !important;
 }
 
+.singUpView form div:last-of-type{
+    padding-top: 10px !important;
+    text-align: center;
+
+}
+
+
 .btn, button{
     border: 1.5px solid var(--color-green);
     background-color: var(--color-green);

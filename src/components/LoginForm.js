@@ -63,7 +63,7 @@ const LoginForm = () => {
       <input
         // type="email"
         name="email"
-        placeholder="Email"
+        placeholder="ejemplo@mail.com"
         value={formData.email}
         onChange={handleChange}
       />
@@ -75,16 +75,19 @@ const LoginForm = () => {
       <input
         type="password"
         name="password"
-        placeholder="Contraseña"
+        placeholder="Ingresá tu contraseña"
         value={formData.password}
         onChange={handleChange}
       />
       {errors.password && <p className='errorInput'>{errors.password}</p>}
       </div>
-      <button type="submit">Iniciar sesión</button>
-      <p>
-            ¿Ya tenés una cuenta? <Link to="/register">Registrate</Link>
-        </p>
+
+      <div>
+        <button type="submit">Iniciar sesión</button>
+        <p>¿Ya tenés una cuenta? <Link to="/register">Registrate</Link></p>
+      </div>
+
+
     </form>
 
   );

@@ -12,8 +12,8 @@ export const Register = () => {
         </div>
         
         <div>
-            <h1>Regístrate</h1>
-            <p>¡Bienvenido a SniffNear!</p>
+            <h1>Registrate</h1>
+            <p>¡Bienvenido a <span>SniffNear</span>!</p>
         </div>
 
         <RegisterForm />

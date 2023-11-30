@@ -23,22 +23,19 @@ const RegisterForm = () => {
     e.preventDefault();
     const newErrors = {};
     if (!formData.name.trim()) {
-      newErrors.name = 'El nombre es requerido';
+      newErrors.name = '*El nombre es requerido';
     }
     if (!formData.email.trim()) {
-      newErrors.email = 'El correo electrónico es requerido';
+      newErrors.email = '*El correo electrónico es requerido';
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = 'Ingrese un correo electrónico válido';
+      newErrors.email = '*Ingrese un correo electrónico válido';
     }
     if (!formData.password.trim()) {
-      newErrors.password = 'La contraseña es requerida';
+      newErrors.password = '*La contraseña es requerida';
     } else if (formData.password.length < 8) {
-      newErrors.password = 'La contraseña debe tener al menos 8 caracteres';
+      newErrors.password = '*La contraseña debe tener al menos 8 caracteres';
     }
 
-    if (!formData.aceptar) {
-      newErrors.aceptar = 'Debe aceptar los términos y condiciones';
-    }
 
     if (Object.keys(newErrors).length === 0) {
       try {
@@ -66,50 +63,50 @@ const RegisterForm = () => {
     }
   };
   return (
-        <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+
+      <div>
+        <label htmlFor="name">Nombre</label>
         <input
         type="text"
         name="name"
-        placeholder="Nombre"
         value={formData.name}
         onChange={handleChange}
         />
-        {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
+        {errors.name && <p className='errorInput'>{errors.name}</p>}
+      </div>
 
+
+      <div>
+        <label htmlFor="email">Email</label>
         <input
-        type="email"
         name="email"
-        placeholder="Email"
+        placeholder="ejemplo@mail.com"
         value={formData.email}
         onChange={handleChange}
         />
-         {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+         {errors.email && <p className='errorInput'>{errors.email}</p>}
+
+      </div>
+
+      <div>
+        <label htmlFor="password">Contraseña</label>
+
         <input
         type="password"
         name="password"
-        placeholder="Contraseña"
+        placeholder="Ingresá una contraseña"
         value={formData.password}
         onChange={handleChange}
         />
-        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+        {errors.password && <p className='errorInput'>{errors.password}</p>}
+      </div>
+
 
         <div>
-        <input
-            type="checkbox"
-            name="aceptar"
-            checked={formData.aceptar}
-            onChange={handleChange}
-        />
-        <label htmlFor="aceptar">
-            Acepto los <a href="/">Términos y Condiciones</a>
-        </label>
-        </div>
-        {errors.aceptar && <p style={{ color: 'red' }}>{errors.aceptar}</p>}
-
-        <div>
-        <button type="submit">Crear mi cuenta</button>
+        <button type="submit">Crear cuenta</button>
         <p>
-            ¿Ya tienes una cuenta? <Link to="/login">Ingresa</Link>
+            ¿Ya tenés una cuenta? <Link to="/login">Ingresá</Link>
         </p>
         </div>
     </form>
