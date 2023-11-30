@@ -647,7 +647,7 @@ main section{
 
 .singUpView h1 + p{
     font-size: 1em;
-    color: var(--color-neutral-50);
+    color: var(--color-neutral-90);
     margin-bottom: 30px;
 }
 
@@ -928,6 +928,12 @@ form label + p {
     color: red;
     font-size: 0.9em;
     margin-top: -8px;
+    text-align: left;
+}
+
+.singUpView .errorInput{
+    /* margin-top: 0; */
+    margin-bottom: 10px;
 }
 
 input.error, select.error{

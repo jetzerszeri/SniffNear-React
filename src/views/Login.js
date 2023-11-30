@@ -12,7 +12,7 @@ export const Login = () => {
         </div>
         <div>
             <h1>Iniciar sesión</h1>
-            <p>¡Bienvenido a SniffNear!</p>
+            <p>¡Bienvenido a <span>SniffNear!</span></p>
         </div>
         <LoginForm></LoginForm>
 
