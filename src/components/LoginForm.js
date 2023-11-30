@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate , Link } from 'react-router-dom';
 const LoginForm = () => {
+
+  const [credentialError, setCredentialError] = useState(null);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -29,7 +32,7 @@ const LoginForm = () => {
       newErrors.password = '*La contraseña es requerida';
     }
     if (Object.keys(newErrors).length === 0) {
-    try {
+    // try {
       const response = await fetch('https://sniffnear-api.onrender.com/api/users/auth', {
         method: 'POST',
         headers: {
@@ -44,12 +47,15 @@ const LoginForm = () => {
         navigate('/')
         console.log('Inicio de sesión exitoso');
       } else {
-        const errorData = await response.json();
-        console.error('Error en el inicio de sesión:', errorData.message);
+        // const errorData = await response.json();
+        setCredentialError(`*${json.message}`);
+        newErrors.credentials = `*${json.message}`
+        console.error('Error en el inicio de sesión:', json.message);
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+      setErrors(newErrors)
+    // } catch (error) {
+    //   console.error('Error:', error);
+    // }
   } else {
     setErrors(newErrors);
   }
@@ -58,6 +64,8 @@ const LoginForm = () => {
   return (
     
     <form onSubmit={handleSubmit}>
+            {/* <p className='errorInput'>Credenciales inválidas</p> */}
+            {errors.credentials && <p className='errorInput'>{errors.credentials}</p>}
       <div>
       <label htmlFor="email">Email</label>
       <input
