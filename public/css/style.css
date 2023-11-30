@@ -693,7 +693,7 @@ textarea{
     padding: 10px;
 }
 
-.singUpView form > div:nth-of-type(1){
+/* .singUpView form > div:nth-of-type(1){
     text-align: left;
     font-size: 12px;
     display: flex;
@@ -701,17 +701,21 @@ textarea{
     gap : 10px;
     color: var(--color-neutral-50);
     margin-bottom: 10px;
-}
+} */
 
-.singUpView form > div:nth-of-type(1) a{
+/* .singUpView form > div:nth-of-type(1) a{
     color: var(--color-neutral-50);
     font-weight: 600;
-}
-
+} */
+/* 
 .singUpView form > div:nth-of-type(2){
     display: flex;
     flex-direction: column;
     gap: 10px;
+} */
+
+.singUpView form div{
+    padding-top: 0 !important;
 }
 
 .btn, button{
@@ -950,10 +954,7 @@ form label + p {
     text-align: left;
 }
 
-.singUpView .errorInput{
-    /* margin-top: 0; */
-    margin-bottom: 10px;
-}
+
 
 input.error, select.error{
     border: red 2px solid;
@@ -1007,11 +1008,12 @@ input.error, select.error{
     opacity: 1;
 }*/
 
-.addNewPetForm .step2 > div{
+.addNewPetForm .step2 > div, .singUpView  form > div{
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 15px 0;
+    text-align: left;
 }
 
 /* 

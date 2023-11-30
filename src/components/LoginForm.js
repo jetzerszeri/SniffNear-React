@@ -58,6 +58,8 @@ const LoginForm = () => {
   return (
     
     <form onSubmit={handleSubmit}>
+      <div>
+      <label htmlFor="email">Email</label>
       <input
         // type="email"
         name="email"
@@ -66,6 +68,10 @@ const LoginForm = () => {
         onChange={handleChange}
       />
       {errors.email && <p className='errorInput'>{errors.email}</p>}
+      </div>
+
+      <div>
+      <label htmlFor="password">Contraseña</label>
       <input
         type="password"
         name="password"
@@ -74,8 +80,8 @@ const LoginForm = () => {
         onChange={handleChange}
       />
       {errors.password && <p className='errorInput'>{errors.password}</p>}
-
-      <button type="submit">Iniciar Sesión</button>
+      </div>
+      <button type="submit">Iniciar sesión</button>
       <p>
             ¿Ya tenés una cuenta? <Link to="/register">Registrate</Link>
         </p>
