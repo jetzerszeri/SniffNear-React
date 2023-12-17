@@ -7,6 +7,7 @@ import { Register } from './views/Register';import { AddPet } from './views/AddP
 import { Login } from './views/Login';
 import { LostPetAlertForm } from './views/LostPetAlertForm';
 import { Alerts } from './views/Alerts';
+import { PetInfo } from './components/PetInfo';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -31,7 +32,12 @@ const router = createBrowserRouter([
   {
     path: '/alerts',
     element: <Alerts/>
+  },
+  {
+    path: '/pet-profile',
+    element: <PetInfo/>
   }
+
 ])
 
 
