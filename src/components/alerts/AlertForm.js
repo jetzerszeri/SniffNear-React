@@ -92,7 +92,8 @@ return(
                         <li datavalue="naranja">Naranja</li>
                     </ul>
                 </div>
-   
+                
+        <button>Crear alerta</button>
     </form>
     </main>
     

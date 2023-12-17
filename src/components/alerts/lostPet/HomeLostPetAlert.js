@@ -1,4 +1,4 @@
-import { useState, useEffect,} from "react";
+// import { useState, useEffect,} from "react";
 import { PetCard } from "../../home/PetCard";
 
 
@@ -32,8 +32,8 @@ export const HomeLostPetAlert = ({pets, setPetHandler}) => {
         <div className="myPetsCard">
             <div className="myPetsAddLose">
                 <span className="addPetBtn">
-                    <i className="bi bi-plus"></i>
-                    </span>
+                <a href="/add-pet"><i className="bi bi-plus"></i></a>
+               </span>
                 <p>Agregá</p>
             </div>
         </div>
