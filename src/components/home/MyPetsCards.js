@@ -1,4 +1,5 @@
 import { PetCard } from "./PetCard"
+import { Link } from 'react-router-dom'; 
 
 export const MyPetsCards = ({pets}) => {
   return (
@@ -11,11 +12,20 @@ export const MyPetsCards = ({pets}) => {
                 </span>
                 <p>Agregá</p>
             </div>
-            <ul>
+            {/* <ul>
                 {pets.map((pet) => {
                     return <PetCard pet={pet} key={pet._id}/>
                 })}
+            </ul> */}
+
+            <ul>
+            {pets.map((pet) => (
+            <Link to={`/pet-profile?petId=${pet._id}`} key={pet._id}>
+              <PetCard pet={pet} />
+            </Link>
+             ))}
             </ul>
+            
         </div>
     </section>
   )
