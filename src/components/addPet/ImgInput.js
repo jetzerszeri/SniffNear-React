@@ -1,5 +1,7 @@
 import app from '../../js/config.js'; 
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.3.0/firebase-storage.js';
+import { createLoader, removeLoader } from '../../js/functions';
+
 const storage = getStorage(app);
 
 function getCurrentTimestamp() {
@@ -13,6 +15,7 @@ export const ImgInput = ( {setImgLink}) => {
     
 
     const handleImageChange = async (event) => {
+        createLoader('Cargando imagen')
         const file = event.target.files[0];
         if (file && file.type.match('image.*')) {
             const reader = new FileReader();
@@ -27,8 +30,9 @@ export const ImgInput = ( {setImgLink}) => {
             reader.readAsDataURL(file);
 
             const imageUrl = await uploadImage(file, 'PetProfile');
-            console.log('Se cargó la imagen', imageUrl);
+            // console.log('Se cargó la imagen', imageUrl);
             setImgLink(imageUrl)
+            removeLoader();
             // setImgLink('imagen cambio')
         }
     };

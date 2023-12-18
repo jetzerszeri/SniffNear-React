@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import { ImgInput } from './ImgInput';
 
-import {getCurrentUserId} from '../../js/functions';
+import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
 
 
 export const PetForm = () => {
@@ -112,6 +112,7 @@ export const PetForm = () => {
 
         if (Object.keys(newErrors).length === 0) {
         try {
+            createLoader();
             const response = await fetch('https://sniffnear-api.onrender.com/api/pets/', {
               method: 'POST',
               headers: {
@@ -128,9 +129,11 @@ export const PetForm = () => {
               console.log('se registro la mascota')
               navigate('/')
             } else {
+                removeLoader();
                 console.error('Error en el registro:', json.message);
               }
             } catch (error) {
+                removeLoader();
               console.error('Error:', error);
             }
         } else {
