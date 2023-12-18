@@ -22,14 +22,20 @@ export const Alerts = () => {
     useEffect(() => {
         getAlerts();
     }, [])
-
+    const handleAlertDelete = (id) => {
+        const updatedAlerts = alerts.filter(alert => alert._id !== id);
+        setAlerts(updatedAlerts);
+      };
 
     return (
         <>
             <Navbar />
 
             <main className="mapMain">
-                <AlertList alerts={alerts}/>
+                <AlertList
+                 alerts={alerts}
+                 onAlertDelete={handleAlertDelete} 
+                 />
 
 
             </main>

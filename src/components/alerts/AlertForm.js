@@ -5,12 +5,15 @@ export const AlertForm = () =>{
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedGender, setSelectedGender] = useState("");
+
+  
     const [formData, setFormData] = useState({
         type: '',
         sex: '',
         size: '',
         color1: '',
         description:'',
+        alertType:'',
     });
     const [errors, setErrors] = useState({});
     const handleChange = (e) => {
@@ -41,7 +44,6 @@ export const AlertForm = () =>{
             sex: value,
         });
     };
-
     const handleSeleccionColor = (color) => {
         setFormData({
           ...formData,
@@ -49,6 +51,7 @@ export const AlertForm = () =>{
         });
         setSelectedColor(color);
     };
+  
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -82,7 +85,7 @@ export const AlertForm = () =>{
       
             if (response.ok) {
               console.log('se registro la alerta')
-              navigate('/')
+              navigate('/alerts')
             } else {
                 console.error('Error en el registro:', json.message);
               }
@@ -96,9 +99,35 @@ export const AlertForm = () =>{
 return(
     <main>
     <form onSubmit={handleSubmit} className="addNewPetForm createAlert">
-    <h1>Crear alerta de mascota encontrada</h1>
+    
+         <div>
+         <h2>Crear alerta</h2>
+         <p>Seleccione el tipo de alerta que desea crear</p>
+         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+            
+                <label>
+                <input
+                    type="radio"
+                    name="alertType"
+                    value="perdido"
+                    onChange={handleChange}
+                />
+                Mascota perdida
+                </label>
+                <label>
+                <input
+                    type="radio"
+                    name="alertType"
+                    value="encontrado"
+                    onChange={handleChange}
+                />
+                Mascota encontrada
+                </label>
+         </div>
+         
+        </div>
             <div className="step1">
-                <h2>¿Qué tipo de mascota encontraste?</h2>
+                <p>¿Qué tipo de mascota encontraste?</p>
                 <ul className="petsIconList">
                     <li datavalue="perro" onClick={() => handleSelectType('perro')} className={selectedType === 'perro' ? 'selected' : ''}>
                         <div>
@@ -226,8 +255,9 @@ return(
                         onChange={handleChange}
                         rows="10"/>
             </div>
-        </div>    
-            <button>Crear alerta</button>
+        </div>
+       
+         <button>Crear alerta</button>
     </form>
     </main>
 
