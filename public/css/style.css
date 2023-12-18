@@ -63,7 +63,7 @@ body{
     transition: all 0.2s ease;
     cursor: pointer;
 }
-.bottomNavBar ul li:nth-of-type(3){
+.bottomNavBar ul li:nth-of-type(2){
     font-size: 2.5em;
     background-color: var(--color-neutral-90);
     width: 60px;
@@ -72,11 +72,11 @@ body{
     line-height: 60px;
     transform: translateY(-30%) ;
 }
-.bottomNavBar ul li:nth-of-type(3):hover{
+.bottomNavBar ul li:nth-of-type(2):hover{
     transform: translateY(-30%) scale(1.1);
 }
 
-.bottomNavBar ul li:nth-of-type(3) a{
+.bottomNavBar ul li:nth-of-type(2) a{
     color: var(--color-neutral-0);
 }
 
@@ -95,17 +95,17 @@ body{
     transform: translateY(-5px);
 }
 
-.bottomNavBar ul li:nth-of-type(3).active{
+.bottomNavBar ul li:nth-of-type(2).active{
     background-color: var(--color-green);
 }
 
-.bottomNavBar ul li:nth-of-type(3).active a{
+.bottomNavBar ul li:nth-of-type(2).active a{
     color: var(--color-neutral-0);
     margin-bottom: 3px;
 }
 
 
-.bottomNavBar ul li:not(:nth-child(3)) a::before, .sidebar nav ul li::before {
+.bottomNavBar ul li:not(:nth-child(2)) a::before, .sidebar nav ul li::before {
     content: "";
     position: absolute;
     left: 0;
@@ -119,7 +119,7 @@ body{
     transition: scale 0.25s;
 }
 
-.bottomNavBar ul li:not(:nth-child(3)).active a::before, .sidebar nav ul li:hover::before{
+.bottomNavBar ul li:not(:nth-child(2)).active a::before, .sidebar nav ul li:hover::before{
 scale: 1;
 transform-origin: left;
 }

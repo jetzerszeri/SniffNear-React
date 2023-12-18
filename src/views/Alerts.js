@@ -43,7 +43,7 @@ export const Alerts = () => {
 
             </main>
 
-            <BottomNav />
+            <BottomNav activeLink="alerts"/>
 
             
         </>

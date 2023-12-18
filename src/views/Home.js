@@ -35,7 +35,7 @@ export const Home = () => {
         <WelcomeCard name={name}/>
         <MyPetsCards pets={pets}/>
         <ServicesCards />
-        <BottomNav />
+        <BottomNav activeLink="home"/>
       </main>
     </>
   )
