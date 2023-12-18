@@ -74,7 +74,7 @@ export const EditPetProfile = () => {
           }
         if (Object.keys(newErrors).length === 0) {
         try {
-            const response = await fetch('https://sniffnear-api.onrender.com/api/pet/', {
+            const response = await fetch('https://sniffnear-api.onrender.com/api/user', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -102,47 +102,51 @@ export const EditPetProfile = () => {
     
    <>
     <Navbar />
- <section className="addNewPetForm alert_find">
-      <form action="" onSubmit={handleSubmit} method="post" id="find_1">
-        <h1>Editar el perfil de mi mascota</h1>
-        <div>
-          <label htmlFor="nombre">Nombre de tu mascota</label>
-          <input type="text" name="nombre"  onChange={handleChange}  id="nombre"  placeholder="Milo" />
-        </div>
+    <form onSubmit={handleSubmit}>
 
-        <div>
-          <label htmlFor="edad">¿Qué edad tiene?</label>
-          <input type="text" name="edad"  onChange={handleChange} placeholder="1 año" />
-        </div>
+<div>
+  <label htmlFor="name">Nombre</label>
+  <input
+  type="text"
+  name="name"
+  value={formData.name}
+  onChange={handleChange}
+  />
+  {errors.name && <p className='errorInput'>{errors.name}</p>}
+</div>
 
-        <div className="select_color">
-          <label htmlFor="color">¿Cuál es su color?</label>
-          <input type="color" id="colorInput" name="color"  onChange={handleChange} placeholder="seleccione el color" />
-        </div>
-        <div>
-          <label htmlFor="tamanio">¿Cuál es su tamaño?</label>
-          <input type="text" id="tamanio" name="tamanio"  onChange={handleChange} placeholder="grande" />
-        </div>
 
-        <div>
-          <label htmlFor="raza">¿Cuál es su raza?</label>
-          <input type="text" id="raza" name="raza"  onChange={handleChange}  placeholder="Ingrese la raza de la mascota, si la conoce" />
-        </div>
-        <div>
-          <label htmlFor="genero">¿Cuál es su género?</label>
-          <input name="genero" id="genero"  onChange={handleChange} placeholder="hembra"></input>
-        </div>
-        <div>
-          <label htmlFor="img">Añade fotos de la mascota</label>
-          <input type="file" id="img" name="file" accept=".png" />
-        </div>
+<div>
+  <label htmlFor="email">Email</label>
+  <input
+  name="email"
+  placeholder="ejemplo@mail.com"
+  value={formData.email}
+  onChange={handleChange}
+  />
+   {errors.email && <p className='errorInput'>{errors.email}</p>}
 
-        <div className="divBtnContinuar">
-          <button type="submit" className="btnContinuar">Continuar</button>
-        </div>
-      </form>
-    </section>
+</div>
+
+<div>
+  <label htmlFor="password">Contraseña</label>
+
+  <input
+  type="password"
+  name="password"
+  placeholder="Ingresá una contraseña"
+  value={formData.password}
+  onChange={handleChange}
+  />
+  {errors.password && <p className='errorInput'>{errors.password}</p>}
+</div>
+
+
+  <div>
+  <button type="submit">Crear cuenta</button>
+  </div>
+</form>
    </>
   )
 }
-export default EditPetProfile;
+export default EditUserProfile;
