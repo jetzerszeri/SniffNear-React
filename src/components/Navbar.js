@@ -24,7 +24,7 @@ export const Navbar = () => {
         </div>
         <div>
         
-         <Link to={"/user-profile"}>
+         <Link to={"/user-profile?id=${userIdTest}"}>
          <i className="bi bi-person-fill"></i>
         </Link>
         </div>

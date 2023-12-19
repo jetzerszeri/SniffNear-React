@@ -9,6 +9,7 @@ export const UserInfo = () => {
   const userImgRef = useRef(null);
   const sectionUserInfoRef = useRef(null);
   const editUserBtnRef = useRef(null);
+  
 
   const createLiOfUserInfo = (infoName, info, ul) => {
     const listItem = document.createElement('li');
@@ -23,37 +24,37 @@ export const UserInfo = () => {
         const userIdTest = urlParams.get('userId');
 
         const response = await fetch(
-          `https://sniffnear-api.onrender.com/api/user?userId=${userIdTest}`
+          `https://sniffnear-api.onrender.com/api/users?userId=${userIdTest}`
         );
 
         if (response.ok) {
           const data = await response.json();
-          const userData = data.user;
+          const formData = data.user;
 
-          setUser(userData);
+          setUser(formData);
 
           // Actualizar referencias
-          if (userData) {
-            userImgRef.current.src = userData.img;
-            userNameH2Ref.current.innerHTML = userData.name;
-            userEmailPRef.current.innerHTML = userData.email;
-            userPasswordPRef.current.innerHTML = userData.password;
+          if (formData) {
+            userImgRef.current.src = formData.img;
+            userNameH2Ref.current.innerHTML = formData.name;
+            userEmailPRef.current.innerHTML = formData.email;
+            userPasswordPRef.current.innerHTML = formData.password;
           }
 
           const usersUl = document.createElement('ul');
-          usersUl.classList.add(`${userData.sex}UserInfo`);
+          usersUl.classList.add(`${formData.sex}UserInfo`);
 
           // Solo añadir campos específicos
-          createLiOfUserInfo('Nombre', userData.name, usersUl);
-          createLiOfUserInfo('Email', userData.email, usersUl);
-          createLiOfUserInfo('Contraseña', userData.password, usersUl);
+          createLiOfUserInfo('Nombre', formData.name, usersUl);
+          createLiOfUserInfo('Email', formData.email, usersUl);
+          createLiOfUserInfo('Contraseña', formData.password, usersUl);
 
           // Actualizar referencias
           sectionUserInfoRef.current.appendChild(usersUl);
 
           // Añadir el evento del botón de edición
           editUserBtnRef.current.addEventListener('click', () => {
-            window.location.href = `/EditUserProfile?userId=${userIdTest}`;
+            window.location.href = `user-profile?id=${userIdTest}`;
           });
         } else {
           // Manejo de errores

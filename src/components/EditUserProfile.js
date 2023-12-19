@@ -74,7 +74,7 @@ export const EditPetProfile = () => {
           }
         if (Object.keys(newErrors).length === 0) {
         try {
-            const response = await fetch('https://sniffnear-api.onrender.com/api/user', {
+            const response = await fetch('https://sniffnear-api.onrender.com/api/users/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
