@@ -12,9 +12,12 @@ export const AlertCard = ({alert,  onDeleteClick , onEditClick}) => {
         <button onClick={() => onDeleteClick(alert._id)}>
         <i className="bi bi-trash"/>
         </button>
-        <button onClick={()=>onEditClick(alert)} >
+        {/* <button onClick={()=>onEditClick(alert)} > */}
+        <a className="btn" href={`alerts/${alert._id}/edit`}>
+
           <i className="bi bi-pencil"/>
-        </button>
+        </a>
+        {/* </button> */}
         {/* <p><i className="bi bi-calendar4-week"></i> {alert.date}, {alert.time}</p> */}
         {/* <button className="btn secundary small">Ver detalles</button> */}
     </li>

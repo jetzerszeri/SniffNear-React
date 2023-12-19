@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useNavigate  } from 'react-router-dom';
-export const AlertForm = () =>{
+import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
+
+export const AlertForm = ({titulo}) =>{
+    let { alertId } = useParams()
     const [selectedType, setSelectedType] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedGender, setSelectedGender] = useState("");
+
 
   
     const [formData, setFormData] = useState({
@@ -14,7 +19,11 @@ export const AlertForm = () =>{
         color1: '',
         description:'',
         alertType:'',
+        creator: getCurrentUserId(),
     });
+
+
+    
     const [errors, setErrors] = useState({});
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,6 +31,7 @@ export const AlertForm = () =>{
           ...formData,
           [name]: value,
         });
+        
     };
     const handleSelectType = (value) => {
         setSelectedType(value);
@@ -29,6 +39,7 @@ export const AlertForm = () =>{
           ...formData,
           type: value,
         });
+        console.log(formData)
     };
     const handleSelectSize = (value) => {
         setSelectedSize(value)
@@ -51,7 +62,64 @@ export const AlertForm = () =>{
         });
         setSelectedColor(color);
     };
+
+
+
+        // if(alertId){
+            const getAlertInfo = useCallback( async () => {
+
+                if (alertId){
+                createLoader();
+                const response = await fetch(`https://sniffnear-api.onrender.com/api/alerts/${alertId}`);
+                if(response.ok){
+                    const data = await response.json();
+    
+                    console.log(data);
+                    // setFormData({
+                    //     type: data.type,
+                    //     breed: data.breed,
+                    //     size: data.size,
+                    //     color1: data.color1,
+    
+    
+                    // })
+
+                    setFormData({
+                        ...formData,
+                        name: data.name,
+                        description: data.description,
+                        type: data.type,
+                        breed: data.breed,
+                        size: data.size,
+                        color1: data.color1,
+                        alertType: data.alertType,
+                        sex: data.sex,
+                      });
+
+                    //   handleSelectType(data.type);
+                      setSelectedType(data.type);
+                        setSelectedSize(data.size);
+                        setSelectedColor(data.color1);
+                        setSelectedGender(data.sex)
+
+                        
+
+                //   const  {user, pets}  = await response.json();
+                //   setName(user.name);
+                //   setPets(pets);
+                    removeLoader();
+                } 
+            }
+            }, [alertId])
+    
+            useEffect(() => {
+            getAlertInfo();
+            }, [getAlertInfo])
+        // }
+
   
+
+        
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -72,6 +140,9 @@ export const AlertForm = () =>{
           }
         if (Object.keys(newErrors).length === 0) {
         try {
+
+            if(titulo === "Crear alerta"){
+                console.log(formData)
             const response = await fetch('https://sniffnear-api.onrender.com/api/alerts/', {
               method: 'POST',
               headers: {
@@ -79,16 +150,38 @@ export const AlertForm = () =>{
               },
               body: JSON.stringify(formData),
             });
-      
             const json = await response.json();
             console.log(json);
-      
+
             if (response.ok) {
-              console.log('se registro la alerta')
-              navigate('/alerts')
-            } else {
-                console.error('Error en el registro:', json.message);
-              }
+                console.log('se registro la alerta')
+                navigate('/alerts')
+              } else {
+                  console.error('Error en el registro:', json.message);
+                }
+
+        }else if (titulo === "Editar alerta"){
+            const response = await fetch(`https://sniffnear-api.onrender.com/api/alerts/${alertId}`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+              });
+              const json = await response.json();
+              console.log(json);
+
+              if (response.ok) {
+                console.log('se editó la alerta')
+                navigate('/alerts')
+              } else {
+                  console.error('Error en el registro:', json.message);
+                }
+        }
+      
+
+      
+
             } catch (error) {
               console.error('Error:', error);
             }
@@ -100,32 +193,35 @@ return(
     <main>
     <form onSubmit={handleSubmit} className="addNewPetForm createAlert">
     
+         <h2>{titulo}</h2>
+
+         {titulo === "Crear alerta" && (
          <div>
-         <h2>Crear alerta</h2>
-         <p>Seleccione el tipo de alerta que desea crear</p>
-         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-            
-                <label>
-                <input
-                    type="radio"
-                    name="alertType"
-                    value="perdido"
-                    onChange={handleChange}
-                />
-                Mascota perdida
-                </label>
-                <label>
-                <input
-                    type="radio"
-                    name="alertType"
-                    value="encontrado"
-                    onChange={handleChange}
-                />
-                Mascota encontrada
-                </label>
-         </div>
          
+            <p>Seleccione el tipo de alerta que desea crear</p>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                
+                    <label>
+                    <input
+                        type="radio"
+                        name="alertType"
+                        value="perdido"
+                        onChange={handleChange}
+                    />
+                    Mascota perdida
+                    </label>
+                    <label>
+                    <input
+                        type="radio"
+                        name="alertType"
+                        value="encontrado"
+                        onChange={handleChange}
+                    />
+                    Mascota encontrada
+                    </label>
+            </div>
         </div>
+        )}
             <div className="step1">
                 <p>¿Qué tipo de mascota encontraste?</p>
                 <ul className="petsIconList">
@@ -257,7 +353,7 @@ return(
             </div>
         </div>
        
-         <button>Crear alerta</button>
+         <button>{titulo}</button>
     </form>
     </main>
 

@@ -8,6 +8,7 @@ import { Login } from './views/Login';
 // import { LostPetAlertForm } from './views/LostPetAlertForm';
 import { Alerts } from './views/Alerts';
 import { PetInfo } from './components/PetInfo';
+import { EditAlert } from './views/EditAlert';
 // import { NewAlert } from './views/NewAlert';
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: '/pet-profile',
     element: <PetInfo/>
+  },
+  {
+    path: '/alerts/:alertId/edit',
+    element: <EditAlert/>
   }
 
 ])
