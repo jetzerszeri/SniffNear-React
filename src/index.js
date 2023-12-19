@@ -7,7 +7,10 @@ import { Register } from './views/Register';import { AddPet } from './views/AddP
 import { Login } from './views/Login';
 // import { LostPetAlertForm } from './views/LostPetAlertForm';
 import { Alerts } from './views/Alerts';
-import { PetInfo } from './components/PetInfo';
+import PetInfo from './components/PetInfo';
+import { UserInfo } from './components/UserInfo';
+import { PetCard } from './components/home/PetCard';
+import { EditPetProfile } from "./components/EditPetProfile";
 // import { NewAlert } from './views/NewAlert';
 const router = createBrowserRouter([
   {
@@ -37,7 +40,15 @@ const router = createBrowserRouter([
   {
     path: '/pet-profile',
     element: <PetInfo/>
-  }
+  },
+  {
+    path: '/user-profile',
+    element: <UserInfo/>
+  },
+  {
+    path: '/EditPetProfile',
+    element: <EditPetProfile/>
+  },
 
 ])
 

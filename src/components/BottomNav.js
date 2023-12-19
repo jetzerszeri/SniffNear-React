@@ -25,9 +25,9 @@ export const BottomNav = () => {
                 </a>
             </li>
             <li>
-                <a href="/">
-                    <i className="bi bi-person"></i>
-                </a>
+            <Link to ="/user-profile">
+            <i className="bi bi-person"></i>
+            </Link>
             </li>
         </ul>
     </nav>

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar"
 import { AlertList } from "../components/alerts/AlertList"
 import { BottomNav } from "../components/BottomNav";
+import {getCurrentUserId, createLoader, removeLoader} from '../js/functions';
 
 
 
@@ -12,10 +13,12 @@ export const Alerts = () => {
 
 
     const getAlerts = useCallback( async () => {
+        createLoader('Cargando alertas');
         const response = await fetch(`https://sniffnear-api.onrender.com/api/alerts/`);
         if(response.ok){
           const  data  = await response.json();
           setAlerts(data);
+          removeLoader();
         } 
     })
     
@@ -40,7 +43,7 @@ export const Alerts = () => {
 
             </main>
 
-            <BottomNav />
+            <BottomNav activeLink="alerts"/>
 
             
         </>
