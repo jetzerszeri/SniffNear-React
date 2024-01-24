@@ -292,6 +292,7 @@ h3{
 /* secciones del main (puse una clase al main del home por si estos estilos no se aplican a las secciones de las demás páginas) */
 main section{
     background-color: var(--color-neutral-0);
+    
     box-shadow: 0px 0px 20px rgba(0,0,0,0.02);
     padding: 12px;
     border-radius: 8px;
@@ -324,6 +325,12 @@ main section{
 
 /* Cards en la sección "Tus mascotas" del home*/
 /* div contenedor del boton de agregar y del listado de mascotas */
+.CardHome{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: red;
+}
 .myPetsCard p{
     font-size: 10px;
     font-weight: 600;
@@ -1174,7 +1181,12 @@ input.error, select.error{
 
 
 
-
+.alerts{
+    width: '100%';
+    height: '100%';
+    background: 'white';
+    border-radius: 8;
+}
 .alerts h1{
     text-align: center;
     text-transform: uppercase;

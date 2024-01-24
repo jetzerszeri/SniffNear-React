@@ -5,7 +5,7 @@ import { MyPetsCards } from '../components/home/MyPetsCards'
 import { ServicesCards } from '../components/home/ServicesCards'
 import { BottomNav } from '../components/BottomNav'
 import {getCurrentUserId, createLoader, removeLoader} from '../js/functions';
-
+import { AddPetButton } from "../components/addPet/AddPetButton";
 
 export const Home = () => {
   const storedUserId = getCurrentUserId();
@@ -33,10 +33,16 @@ export const Home = () => {
       <Navbar />
       <main className='homeMain'>
         <WelcomeCard name={name}/>
-        <MyPetsCards pets={pets}/>
+        <div>
+          <h2>Mis mascotas</h2>
+          <section className="myPetsCard">
+            <AddPetButton/>
+            <MyPetsCards pets={pets}/>
+          </section>
+        </div>
         <ServicesCards />
-        <BottomNav activeLink="home"/>
-      </main>
+      </main> 
+      <BottomNav activeLink="home"/>
     </>
   )
 }

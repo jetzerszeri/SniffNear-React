@@ -8,10 +8,12 @@ import { Login } from './views/Login';
 // import { LostPetAlertForm } from './views/LostPetAlertForm';
 import { Alerts } from './views/Alerts';
 import PetInfo from './components/PetInfo';
-import { UserInfo } from './components/UserInfo';
-import { PetCard } from './components/home/PetCard';
-import { EditPetProfile } from "./components/EditPetProfile";
+// import { UserInfo } from './components/UserInfo';
+// import { PetCard } from './components/home/PetCard';
+// import { EditPetProfile } from "./components/EditPetProfile";
 import { EditAlert } from './views/EditAlert';
+import { FoundPetForm } from './components/alerts/FoundPetForm';
+import {LostPetForm} from './components/alerts/LostPetForm';
 // import { NewAlert } from './views/NewAlert';
 const router = createBrowserRouter([
   {
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
 {
   path: '/alerts/:alertId/edit',
   element: <EditAlert/>
+},
+{
+  path:'/lostPetForm',
+  element:<LostPetForm/>
+},
+{
+  path:'/foundPetForm',
+  element:<FoundPetForm/>
 }
 
 ])

@@ -4,9 +4,7 @@ export const PetCard = ({pet, selectLostPet, clickType}) => {
     if (clickType === "lost") {
       selectLostPet(pet);
     }
-
   }
-
   return (
     <li onClick={handleClick}>
         <div>
