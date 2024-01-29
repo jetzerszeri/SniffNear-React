@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 export const LostPetButton = () =>{
     return(
-        <Link to ='/lostPetForm' style={{color:'black'}}>
+        <Link to ='/lost-form' style={{color:'black'}}>
              <div className="lose">
             <svg xmlns="http://www.w3.org/2000/svg" width="34" height="38" viewBox="0 0 34 38" fill="none">
                     <path d="M16.5825 37.5361C17.8391 37.5361 19.0442 37.0369 19.9327 36.1484C20.8212 35.2599 21.3204 34.0548 21.3204 32.7982H11.8447C11.8447 34.0548 12.3438 35.2599 13.2324 36.1484C14.1209 37.0369 15.326 37.5361 16.5825 37.5361Z" fill="#FF896F"/>

@@ -49,11 +49,11 @@ const router = createBrowserRouter([
   element: <EditAlert/>
 },
 {
-  path:'/lostPetForm',
+  path:'/lost-form',
   element:<LostPetForm/>
 },
 {
-  path:'/foundPetForm',
+  path:'/found-form',
   element:<FoundPetForm/>
 }
 
