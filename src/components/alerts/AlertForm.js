@@ -97,7 +97,7 @@ export const AlertForm = ({titulo}) =>{
                       });
 
                     //   handleSelectType(data.type);
-                      setSelectedType(data.type);
+                        setSelectedType(data.type);
                         setSelectedSize(data.size);
                         setSelectedColor(data.color1);
                         setSelectedGender(data.sex)

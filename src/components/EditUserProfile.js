@@ -2,20 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import { Navbar } from "../components/Navbar"
 
-export const EditPetProfile = () => {
-    const [selectedType, setSelectedType] = useState("");
-    const [selectedSize, setSelectedSize] = useState("");
-    const [selectedColor, setSelectedColor] = useState("");
-    const [selectedGender, setSelectedGender] = useState("");
+export const EditUserProfile = () => {
+    const [selectedName, setSelectedName] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedEmail, setSelectedEmail] = useState("");
+    const [selectedPassword, setSelectedPassword] = useState("");
 
   
     const [formData, setFormData] = useState({
-        type: '',
-        sex: '',
-        size: '',
-        color1: '',
-        description:'',
-        alertType:'',
+        name: '',
+        location: '',
+        email: '',
+        password: '',
     });
     const [errors, setErrors] = useState({});
     const handleChange = (e) => {
@@ -25,52 +23,52 @@ export const EditPetProfile = () => {
           [name]: value,
         });
     };
-    const handleSelectType = (value) => {
-        setSelectedType(value);
+    const handleSelectName = (value) => {
+        setSelectedName(value);
         setFormData({
           ...formData,
-          type: value,
+          name: value,
         });
     };
-    const handleSelectSize = (value) => {
-        setSelectedSize(value)
+    const handleSelectLocation = (value) => {
+        setSelectedLocation(value)
         setFormData({
           ...formData,
-          size: value,
+          location: value,
         });
     };
-    const handleSelectGender = (value) => {
-        setSelectedGender(value)
+    const handleSelectEmail = (value) => {
+        setSelectedEmail(value)
         setFormData({
             ...formData,
-            sex: value,
+            email: value,
         });
     };
-    const handleSeleccionColor = (color) => {
-        setFormData({
+    const handleSelectPassword = (value) => {
+      setSelectedPassword(value)
+      setFormData({
           ...formData,
-          color1: color,
-        });
-        setSelectedColor(color);
-    };
+          password: value,
+      });
+  };
   
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
-        if (!formData.type.trim()) {
-          newErrors.type = 'El tipo es requerido';
+        if (!formData.name.trim()) {
+          newErrors.name = 'El nombre es requerido';
         }
     
-        if(!selectedColor){
-            newErrors.color1 = "Debes elegir un color"
+        if(!selectedLocation){
+            newErrors.location = "Debes ingresar tu ubicación"
          }
-         if (!formData.sex.trim()) {
-            newErrors.sex = 'El género es requerido';
+         if (!formData.email.trim()) {
+            newErrors.email = 'El email es requerido';
           }
-          if (!formData.size.trim()) {
-            newErrors.size = 'El tamaño es requerido';
+          if (!formData.password.trim()) {
+            newErrors.password = 'La password es requerida';
           }
         if (Object.keys(newErrors).length === 0) {
         try {
@@ -105,16 +103,28 @@ export const EditPetProfile = () => {
     <form onSubmit={handleSubmit}>
 
 <div>
-  <label htmlFor="name">Nombre</label>
+  <label htmlFor="name">Nombre Completo</label>
   <input
   type="text"
   name="name"
+  placeholder="Juan Gonzalez"
   value={formData.name}
   onChange={handleChange}
   />
   {errors.name && <p className='errorInput'>{errors.name}</p>}
 </div>
 
+<div>
+  <label htmlFor="location">Ubicación</label>
+  <input
+  type="text"
+  name="location"
+  placeholder="Banfield, Buenos Aires"
+  value={formData.location}
+  onChange={handleChange}
+  />
+  {errors.location && <p className='errorInput'>{errors.location}</p>}
+</div>
 
 <div>
   <label htmlFor="email">Email</label>
@@ -143,7 +153,7 @@ export const EditPetProfile = () => {
 
 
   <div>
-  <button type="submit">Crear cuenta</button>
+  <button type="submit">Editar Perfil</button>
   </div>
 </form>
    </>

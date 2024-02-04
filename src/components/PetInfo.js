@@ -88,6 +88,7 @@ const PetInfo = () => {
             petImgRef.current.src = petData.img;
             petNameH2Ref.current.innerHTML = petData.name;
             petTypePRef.current.innerHTML = petData.type;
+            sectionPetInfoRef.current.innerHTML = '';
           }
 
           const petsUl = document.createElement('ul');
@@ -104,7 +105,7 @@ const PetInfo = () => {
 
           // Añadir el evento del botón de edición
           editPetBtnRef.current.addEventListener('click', () => {
-            window.location.href = `/EditPetProfile?petId=${petIdTest}`;
+            window.location.href = `/edit-pet-profile?petId=${petIdTest}`;
           });
         } else {
           // Manejo de errores

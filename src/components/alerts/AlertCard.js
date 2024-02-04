@@ -6,7 +6,7 @@ export const AlertCard = ({alert,  onDeleteClick , onEditClick}) => {
             <img src="./img/foundIcon.svg" alt="icono"/>
             <h2>{alert.type} {alert.alertType}</h2>
         </div>
-        {/* <img src={alert.img} alt={alert.type}/> */}
+        <img src={alert.img} alt={alert.type}/>
         <p>Color: {alert.color1}, tamaño: {alert.size}</p>
         <p><i className="bi bi-geo-alt"></i>Argentina</p>
         <button onClick={() => onDeleteClick(alert._id)}>

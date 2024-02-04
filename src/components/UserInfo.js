@@ -4,6 +4,7 @@ import { Navbar } from "./Navbar";
 export const UserInfo = () => {
   const [user, setUser] = useState(null);
   const userNameH2Ref = useRef(null);
+  const userLocationPRef = useRef(null);
   const userEmailPRef = useRef(null);
   const userPasswordPRef = useRef(null);
   const userImgRef = useRef(null);
@@ -37,6 +38,7 @@ export const UserInfo = () => {
           if (formData) {
             userImgRef.current.src = formData.img;
             userNameH2Ref.current.innerHTML = formData.name;
+            userLocationPRef.current.innerHTML = formData.location;
             userEmailPRef.current.innerHTML = formData.email;
             userPasswordPRef.current.innerHTML = formData.password;
           }
@@ -46,16 +48,17 @@ export const UserInfo = () => {
 
           // Solo añadir campos específicos
           createLiOfUserInfo('Nombre', formData.name, usersUl);
+          createLiOfUserInfo('Ubicación', formData.location, usersUl);
           createLiOfUserInfo('Email', formData.email, usersUl);
           createLiOfUserInfo('Contraseña', formData.password, usersUl);
 
           // Actualizar referencias
           sectionUserInfoRef.current.appendChild(usersUl);
 
-          // Añadir el evento del botón de edición
           editUserBtnRef.current.addEventListener('click', () => {
-            window.location.href = `user-profile?id=${userIdTest}`;
+            window.location.href = `/edit-user-profile?userId=${userIdTest}`;
           });
+         
         } else {
           // Manejo de errores
           sectionUserInfoRef.current.innerHTML = `
@@ -84,6 +87,7 @@ export const UserInfo = () => {
           <img ref={userImgRef} alt="Avatar del usuario" />
           <div>
             <h2 ref={userNameH2Ref}>Cargando...</h2>
+            <p ref={userLocationPRef}>...</p>
             <p ref={userEmailPRef}>...</p>
             <p ref={userPasswordPRef}>...</p>
           </div>

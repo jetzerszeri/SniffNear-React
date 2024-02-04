@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate , Link } from 'react-router-dom';
+import { ImgInput } from './addPet/ImgInput';
+
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: '',
+    location: '',
     email: '',
     password: '',
     aceptar: false,
   });
+  const [img, setImg] = useState('')
   
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -19,11 +23,23 @@ const RegisterForm = () => {
     });
   };
 
+  
+  const handleImgLink = (link) => {
+    setImg(link)
+    setFormData({
+        ...formData,
+        img: link,
+    });
+}
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
     if (!formData.name.trim()) {
       newErrors.name = '*El nombre es requerido';
+    }
+    if (!formData.location.trim()) {
+      newErrors.location = '*La ubicación es requerida';
     }
     if (!formData.email.trim()) {
       newErrors.email = '*El correo electrónico es requerido';
@@ -36,6 +52,7 @@ const RegisterForm = () => {
       newErrors.password = '*La contraseña debe tener al menos 8 caracteres';
     }
 
+    
 
     if (Object.keys(newErrors).length === 0) {
       try {
@@ -64,18 +81,36 @@ const RegisterForm = () => {
   };
   return (
     <form onSubmit={handleSubmit}>
+  <div>
+        <p>Ingrese su foto de perfil</p>
+            <ImgInput setImgLink={handleImgLink}/>
+            {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
+            
+        </div>
 
       <div>
-        <label htmlFor="name">Nombre</label>
+        <label htmlFor="name">Nombre Completo</label>
         <input
         type="text"
         name="name"
+        placeholder="Juan Gonzalez"
         value={formData.name}
         onChange={handleChange}
         />
         {errors.name && <p className='errorInput'>{errors.name}</p>}
       </div>
 
+      <div>
+        <label htmlFor="location">Ubicación</label>
+        <input
+        type="text"
+        name="location"
+        placeholder="Banfield, Buenos Aires"
+        value={formData.location}
+        onChange={handleChange}
+        />
+        {errors.location && <p className='errorInput'>{errors.location}</p>}
+      </div>
 
       <div>
         <label htmlFor="email">Email</label>
@@ -101,6 +136,7 @@ const RegisterForm = () => {
         />
         {errors.password && <p className='errorInput'>{errors.password}</p>}
       </div>
+
 
 
         <div>
