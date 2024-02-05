@@ -1,9 +1,10 @@
+import React from "react";
 import { useCallback, useEffect, useState } from "react";
 import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
 import { PetCard } from "./PetCard"
 import { Link } from 'react-router-dom'; 
 
-export const MyPetsCards = () => {
+export const MyPetsCards = ({route}) => {
   const storedUserId = getCurrentUserId();
     const [ pets, setPets ] = useState([]);
     const getUserInfo = useCallback( async () => {
@@ -28,11 +29,17 @@ export const MyPetsCards = () => {
                 })}
             </ul> */}
             <ul>
-              {pets.map((pet) => (
-              <Link to={`/pet-profile?petId=${pet._id}`} key={pet._id} style={{color:"black"}}>
-                <PetCard pet={pet} />
-              </Link>
-              ))}
+            {pets.map((pet) => (
+                route === "/" ? (
+                  <Link to={`/pet-profile?petId=${pet._id}`} style={{ color: "black" }} key={pet._id}>
+                    <PetCard pet={pet} />
+                  </Link>
+                ) : (
+                   <Link to={`/create-alert-lose?petId=${pet._id}`} style={{ color: "black" }} key={pet._id}>
+                    <PetCard pet={pet} />
+                  </Link>
+                )
+          ))}
             </ul>
         </div>
       </section>

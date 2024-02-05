@@ -39,7 +39,7 @@ export const Home = () => {
           <h2>Mis mascotas</h2>
           <section className="myPetsCard">
           <AddPetButton route={current_route} /> 
-            <MyPetsCards pets={pets}/>
+            <MyPetsCards pets={pets} route={current_route}/>
           </section>
         </div>
         <ServicesCards />
