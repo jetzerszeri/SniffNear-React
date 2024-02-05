@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ImgInput } from './ImgInput';
-
 import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
 
 
@@ -67,7 +66,7 @@ export const PetForm = () => {
     };
     
     
-    const navigate = useNavigate();
+ 
 
     const handleImgLink = (link) => {
         setImg(link)
@@ -78,7 +77,9 @@ export const PetForm = () => {
     }
 
     
-  
+    const navigate = useNavigate();
+    const location = useLocation();
+    const route = new URLSearchParams(location.search).get("route");
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
@@ -127,8 +128,7 @@ export const PetForm = () => {
             console.log(formData)
       
             if (response.ok) {
-              console.log('se registro la mascota')
-              navigate('/')
+                navigate(route)
             } else {
                 removeLoader();
                 console.error('Error en el registro:', json.message);

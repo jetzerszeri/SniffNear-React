@@ -1,10 +1,12 @@
-
+import { useLocation } from "react-router";
 import { Navbar } from "../Navbar";
 import { BottomNav } from "../BottomNav";
 import { MyPetsCards } from "../home/MyPetsCards";
 import { AddPetButton } from "../addPet/AddPetButton";
 
 export const LostPetForm = () =>{
+    const location = useLocation();
+    const current_route = location.pathname;
     return (
         <>
             <Navbar/>
@@ -15,7 +17,7 @@ export const LostPetForm = () =>{
                         <MyPetsCards/>
                         <h2>Si tu mascota no tiene un perfil</h2>
                         <p>Por favor agregá una nueva mascota</p>
-                        <AddPetButton/> 
+                        <AddPetButton route={current_route} /> 
                     </section>
                 </main>
             <BottomNav/>

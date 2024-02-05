@@ -6,8 +6,10 @@ import { ServicesCards } from '../components/home/ServicesCards'
 import { BottomNav } from '../components/BottomNav'
 import {getCurrentUserId, createLoader, removeLoader} from '../js/functions';
 import { AddPetButton } from "../components/addPet/AddPetButton";
-
+import { useLocation } from "react-router";
 export const Home = () => {
+  const location = useLocation();
+  const current_route = location.pathname;
   const storedUserId = getCurrentUserId();
   const [ name, setName ] = useState('');
   const [ pets, setPets ] = useState([]);
@@ -36,7 +38,7 @@ export const Home = () => {
         <div>
           <h2>Mis mascotas</h2>
           <section className="myPetsCard">
-            <AddPetButton/>
+          <AddPetButton route={current_route} /> 
             <MyPetsCards pets={pets}/>
           </section>
         </div>
