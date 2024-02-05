@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Register } from './views/Register';import { AddPet } from './views/AddPet';
  import { NewAlert } from './views/NewAlert';
 import { Login } from './views/Login';
-import { LostPetAlertForm } from './views/LostPetAlertForm';
+// import { LostPetAlertForm } from './views/LostPetAlertForm';
 import { Alerts } from './views/Alerts';
 import PetInfo from './components/PetInfo';
 import { UserInfo } from './components/UserInfo';
@@ -58,10 +58,10 @@ const router = createBrowserRouter([
     path: '/edit-pet-profile',
     element: <EditPetProfile/>
   },
-  {
-    path: '/lost-pet-alert-form',
-    element: <LostPetAlertForm/>
-  },
+  // {
+  //   path: '/lost-pet-alert-form',
+  //   element: <LostPetAlertForm/>
+  // },
 {
   path: '/alerts/:alertId/edit',
   element: <EditAlert/>
