@@ -1,10 +1,10 @@
 import React from "react";
-import { useState, useEffect} from "react";
+import { useState, useEffect, useCallback} from "react";
 import { Navbar } from "../../Navbar";
 import { MapaLost } from "../map/MapLost";
 import { useNavigate } from "react-router";
 import {getCurrentUserId } from '../../../js/functions';
-
+import { useLocation } from "react-router";
 
 export const FormLostA = () =>{
     const [showStep1 , setShowStep1]= useState(true);
@@ -15,9 +15,28 @@ export const FormLostA = () =>{
     const [description, setDescription] = useState('')
     const [errors, setErrors] = useState({});
     const [petInfo, setPetInfo] = useState(null);
-    const [formData, setFormData] = useState({});
     const navigate =useNavigate();
-
+    const [formData, setFormData] = useState({
+        petName: '',
+        type: '',
+        size: '',
+        color1: '',
+        color2: '',
+        breed: '',
+        description: '',
+        latitude: '',
+        longitude: '',
+        date: '',
+        time: '',
+        img: '',
+        personName: '',
+        email: '',
+        password: '',
+        alertType: 'lost',
+        sex: '',
+        pet: '',
+        creator: '',
+    });
     const handlePrev = (e) =>{
         e.preventDefault();
         setShowStep1(true);
@@ -32,66 +51,64 @@ export const FormLostA = () =>{
         if (!showStep1) {
           setShowStep2(true);
         }
-      }, [showStep1]);
-      
-    useEffect(()=>{
-    const getUser = async () =>{
+    }, [showStep1]);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const petIdTest = searchParams.get("petId");
+    useEffect(() => {
+        const fetchData = async () => {
             try {
-                const userId = getCurrentUserId();
-                const response = await fetch(`https://sniffnear-api.onrender.com/api/users/${userId}`);
+                const response = await fetch(`https://sniffnear-api.onrender.com/api/pets/${petIdTest}`);
                 if (response.ok) {
-                  const { name, email } = await response.json();
-                  setUser({ name, email });
+                    const petData = await response.json();
+                    setPetInfo(petData);
+                    setFormData({
+                        ...formData,
+                        petName: petData.name,
+                        type: petData.type,
+                        size: petData.size,
+                        color1: petData.color1,
+                        breed: petData.breed,
+                        img: petData.img,
+                        sex: petData.sex,
+                        pet: petData._id,
+                    });
+    
                 } else {
-                  console.error('Error al obtener la información del usuario');
+                    throw new Error('Failed to fetch pet data');
                 }
-              } catch (error) {
-                console.error('Error:', error);
-              }
+            } catch (error) {
+                console.error('Error fetching pet data:', error);
             }
-            getUser();
-    }, [])
-    useEffect(()=>{
-    const getInfoPet = async () =>{
+        };
+        fetchData();
+    }, [petIdTest, formData]);
+
+    const getUserInfo = useCallback(async () => {
         try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const petIdTest = urlParams.get('petId');
-        const response = await fetch(
-            `https://sniffnear-api.onrender.com/api/pets/${petIdTest}`
-        );
-        if (response.ok) {
-            const petData = await response.json();
-            setPetInfo(petData); 
-            setFormData({
-                petName: petData.name,
-                type: petData.type,
-                size: petData.size,
-                color1: petData.color1,
-                color2: "",
-                breed: petData.breed,
-                description: "",
-                latitude: "",
-                longitude: "",
-                date: "",
-                time: "",
-                img: petData.img,
-                personName: user.name,
-                email: user.email,
-                password: "",
-                alertType: "lost",
-                sex: petData.sex,
-                pet: petData._id,
-                creator: user._id,
-            });
-          } else {
-            console.error('Error al obtener la información de la mascota');
-          }
+            const response = await fetch(`https://sniffnear-api.onrender.com/api/users/${getCurrentUserId()}`);
+            if (response.ok) {
+                const { user } = await response.json();
+                setUser(user);
+                setFormData({
+                    ...formData,
+                    personName: user.name,
+                    email: user.email,
+                    creator: user._id,
+                });
+            } else {
+                throw new Error('Failed to fetch user data');
+            }
         } catch (error) {
-          console.error('Error:', error);
+            console.error('Error fetching user data:', error);
         }
-    }
-    getInfoPet();
-    },[user,petInfo]);
+    }, [formData]);
+
+    useEffect(() => {
+        getUserInfo();
+    }, [getUserInfo]);
+
+   
     const handleDateChange = (e) => {
         setDate(e.target.value)
         setFormData({
@@ -115,10 +132,6 @@ export const FormLostA = () =>{
             description: e.target.value
         })
     }
-
-    
-  
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -186,7 +199,6 @@ return(
                     <div className="inputDiv">
                         <label htmlFor="time">¿A qué hora?</label>
                         <select name="time"  
-                        defaultValue="DEFAULT" 
                         value={time} 
                         onChange={handleTimeChange}>
                                 <option value="DEFAULT" disabled>Selecciona una hora</option>
