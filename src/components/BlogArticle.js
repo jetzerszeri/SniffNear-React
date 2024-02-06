@@ -1,92 +1,45 @@
 import React, { useEffect, useState, useRef } from 'react';
+import  Blog  from './Blog';
 
-const ArticleInfo = () => {
-  const [article, setArticle] = useState(null);
-  const articleTitleH2Ref = useRef(null);
-  const articleTypePRef = useRef(null);
-  const articleImgRef = useRef(null);
-  const articleContentRef = useRef(null);
-  const sectionArticleInfoRef = useRef(null);
-  const editArticleBtnRef = useRef(null);
+export const ArticleInfo = ({articles, onArticlesDelete}) => {
 
-  const createLiOfArticle = (articleTitle, info, ul) => {
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `<p><span>${articleTitle}:</span> <span>${info}</span></p>`;
-    ul.appendChild(listItem);
-  };
-
-
-  useEffect(() => {
-    const getArticleInfo = async () => {
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const articleIdTest = urlParams.get('articleId');
-
-        const response = await fetch(
-          `https://sniffnear-api.onrender.com/api/article/${articleIdTest}`
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          const articleData = data.article;
-
-          setArticle(articleData);
-
-          // Actualizar referencias
-          if (articleData) {
-            articleImgRef.current.src = articleData.img;
-            articleTitleH2Ref.current.innerHTML = articleData.title;
-            articleTypePRef.current.innerHTML = articleData.type;
-            sectionArticleInfoRef.current.innerHTML = '';
-          }
-
-          const articleUl = document.createElement('ul');
-          articleUl.classList.add(`${articleData.title}`);
-
-      
-          createLiOfArticle('Title', articleData.title, articleUl);
-        createLiOfArticle('Categoría', articleData.category, articleUl);
-        createLiOfArticle('Contenido', articleData.content, articleUl);
-
-          // Actualizar referencias
-          sectionArticleInfoRef.current.appendChild(articleUl);
-
-          // Añadir el evento del botón de edición
-          editArticleBtnRef.current.addEventListener('click', () => {
-            window.location.href = `/edit-article?articleId=${articleIdTest}`;
-          });
-        } else {
-          // Manejo de errores
-          sectionArticleInfoRef.current.innerHTML = `
-              <div class="errorMsgPetProfile">
-                  <p>Hubo un error en el servidor, por favor intenta más tarde.</p>
-
-                  <a href="/" class="btn">Regresar al Home</a>
-              </div>`;
+    const handleDeleteClick = async (id) => {
+        try {
+        
+        const response = await fetch(`https://sniffnear-api.onrender.com/api/articles/${id}`, {
+            method: 'DELETE',
+        });
+    
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-      } catch (error) {
-        // Manejo de errores
-      }
+    
+        onArticlesDelete(id);
+        console.log(`El artículo con el id ${id} se ha eliminado correctamente.`);
+        } catch (error) {
+        console.error('Error al eliminar el artículo:', error);
+        }
     };
+  
+  const handleEditClick = (articleToEdit) => {
+    console.log('Editar artículo:', articleToEdit);
+  };
+    return (
+        <div className="listAlertas">
+            <h1>Artículos de blog</h1>
 
-    getArticleInfo();
-  }, []);
-
-  return (
-    <main className="mainPetProfile">
-      <h1>Blog</h1>
-
-      <div className="petNameCard">
-        <img ref={articleImgRef} alt="Avatar de la mascota" />
-        <div>
-          <h2 ref={articleTitleH2Ref}>Cargando...</h2>
-          <p ref={articleTypePRef}>...</p>
+            <ul>
+                {articles.map((article) => {
+                    return <Blog 
+                    article={article} 
+                    key={article._id}
+                    onDeleteClick={handleDeleteClick} 
+                    onEditClick={handleEditClick}
+                    />
+                })}
+            </ul>
         </div>
-        <i ref={editArticleBtnRef} className="bi bi-pencil"></i>
-      </div>
-      <section ref={sectionArticleInfoRef}></section>
-    </main>
-  );
-};
+    )
+}
 
 export default ArticleInfo;
