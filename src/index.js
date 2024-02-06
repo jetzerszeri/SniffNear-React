@@ -17,6 +17,9 @@ import { FoundPetForm } from './components/alerts/FoundPetForm';
 import {LostPetForm} from './components/alerts/LostPetForm';
 import { FormLostA } from './components/alerts/lostPet/FormLostPetAlert';
 // import { NewAlert } from './views/NewAlert';
+import Blog from './components/Blog';
+import { BlogForm } from './components/BlogForm';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -77,8 +80,15 @@ const router = createBrowserRouter([
 {
   path:'/create-alert-lose',
   element:<FormLostA/>
+},
+{
+  path:'/blog',
+  element:<Blog/>
+},
+{
+  path:'/blog-form',
+  element:<BlogForm/>
 }
-
 ])
 
 

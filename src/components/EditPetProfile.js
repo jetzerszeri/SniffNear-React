@@ -21,8 +21,11 @@ export const EditPetProfile = () => {
 
     useEffect(() => {
         const fetchPetData = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const petIdTest = urlParams.get('petId');
+
             try {
-                const response = await fetch('https://sniffnear-api.onrender.com/api/pets/${petIdTest}'); // Reemplaza con la URL correcta de tu API
+                const response = await fetch(`https://sniffnear-api.onrender.com/api/pets/${petIdTest}`);
                 if (!response.ok) {
                     throw new Error(`Error de red: ${response.status}`);
                 }
@@ -35,7 +38,6 @@ export const EditPetProfile = () => {
                     color1: petData.color1 || '',
                     description: petData.description || '',
                     alertType: petData.alertType || '',
-                    // Añade las demás propiedades según sea necesario
                 });
 
                 setSelectedType(petData.type || '');
@@ -47,7 +49,7 @@ export const EditPetProfile = () => {
         };
 
         fetchPetData();
-    }, []); // Asegúrate de pasar un arreglo de dependencias vacío para que useEffect solo se ejecute una vez al montar el componente
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -126,8 +128,6 @@ export const EditPetProfile = () => {
                             value={formData.nombre}
                         />
                     </div>
-
-                    {/* Agrega más campos del formulario según sea necesario */}
                     
                     <div className="select_color">
                         <label htmlFor="color">¿Cuál es su color?</label>
