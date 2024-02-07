@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../../Navbar";
 import { MapaLost } from "../map/MapLost";
 import { useNavigate } from "react-router";
@@ -7,14 +6,12 @@ import {getCurrentUserId } from '../../../js/functions';
 import { useLocation } from "react-router";
 
 export const FormLostA = () =>{
-    const [showStep1 , setShowStep1]= useState(true);
-    const [showStep2, setShowStep2] = useState(false);
-    const [user, setUser] = useState({ name: '', email: '' }); 
-    const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
-    const [description, setDescription] = useState('')
+    const [currentStep, setCurrentStep] = useState(1);
+    const [user, setUser] = useState(null); 
     const [errors, setErrors] = useState({});
     const [petInfo, setPetInfo] = useState(null);
+    const location = useLocation();
+    const petIdTest = new URLSearchParams(location.search).get("petId");
     const navigate =useNavigate();
     const [formData, setFormData] = useState({
         petName: '',
@@ -37,115 +34,106 @@ export const FormLostA = () =>{
         pet: '',
         creator: '',
     });
-    const handlePrev = (e) =>{
+    const handlePrev = (e) => {
         e.preventDefault();
-        setShowStep1(true);
-        setShowStep2(false);
-    }
-
-    const handleNext = (e) =>{
-        e.preventDefault();
-        setShowStep1(false);
-    }
-    useEffect(() => {
-        if (!showStep1) {
-          setShowStep2(true);
-        }
-    }, [showStep1]);
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const petIdTest = searchParams.get("petId");
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`https://sniffnear-api.onrender.com/api/pets/${petIdTest}`);
-                if (response.ok) {
-                    const petData = await response.json();
-                    setPetInfo(petData);
-                    setFormData({
-                        ...formData,
-                        petName: petData.name,
-                        type: petData.type,
-                        size: petData.size,
-                        color1: petData.color1,
-                        breed: petData.breed,
-                        img: petData.img,
-                        sex: petData.sex,
-                        pet: petData._id,
-                    });
+        setCurrentStep(currentStep - 1);
+      };
     
-                } else {
-                    throw new Error('Failed to fetch pet data');
-                }
-            } catch (error) {
-                console.error('Error fetching pet data:', error);
-            }
-        };
-        fetchData();
-    }, [petIdTest, formData]);
-
-    const getUserInfo = useCallback(async () => {
-        try {
-            const response = await fetch(`https://sniffnear-api.onrender.com/api/users/${getCurrentUserId()}`);
-            if (response.ok) {
-                const { user } = await response.json();
-                setUser(user);
+      const handleNext = (e) => {
+        e.preventDefault();
+        setCurrentStep(currentStep + 1);
+      };
+      useEffect(() => {
+        if (currentStep === 2) {
+            
+          const fetchPet = async () => {
+            try {
+              const response = await fetch(
+                `https://sniffnear-api.onrender.com/api/pets/${petIdTest}`
+              );
+              if (response.ok) {
+                const { petData } = await response.json();
+                setPetInfo(petData);
                 setFormData({
-                    ...formData,
-                    personName: user.name,
-                    email: user.email,
-                    creator: user._id,
+                //   ...formData,
+                  petName: petData.name,
+                  type: petData.type,
+                  size: petData.size,
+                  color1: petData.color1,
+                  breed: petData.breed,
+                  img: petData.img,  
                 });
-            } else {
-                throw new Error('Failed to fetch user data');
+              } else {
+                throw new Error("Failed to fetch pet data");
+              }
+            } catch (error) {
+              console.error("Error fetching pet data:", error);
             }
-        } catch (error) {
-            console.error('Error fetching user data:', error);
+          };
+    
+          fetchPet();
         }
-    }, [formData]);
-
+      }, [currentStep, petIdTest, formData]);         
     useEffect(() => {
-        getUserInfo();
-    }, [getUserInfo]);
-
+        const fetchUser = async () => {
+          try {
+            const response = await fetch(
+              `https://sniffnear-api.onrender.com/api/users/${getCurrentUserId()}`
+            );
+            if (response.ok) {
+              const { user } = await response.json();
+              setUser(user);
+              setFormData({
+                personName: user.name,
+                email: user.email,
+                creator: user._id
+              });
+            } else {
+              throw new Error("Failed to fetch user data");
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        };
+    
+        fetchUser();
+      }, [formData]);
+     
    
-    const handleDateChange = (e) => {
-        setDate(e.target.value)
+      const handleDateChange = (e) => {
         setFormData({
-            ...formData,
-            date: e.target.value
-        })
-    }
-
-    const handleTimeChange = (e) => {
-        setTime(e.target.value)
+          ...formData,
+          date: e.target.value,
+        });
+      };
+    
+      const handleTimeChange = (e) => {
         setFormData({
-            ...formData,
-            time: e.target.value
-        })
-    }
-
-    const handleDescriptionChange = (e) => {
-        setDescription(e.target.value)
+          ...formData,
+          time: e.target.value,
+        });
+      };
+    
+      const handleDescriptionChange = (e) => {
         setFormData({
-            ...formData,
-            description: e.target.value
-        })
-    }
+          ...formData,
+          description: e.target.value
+        });
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
-        if (!date) {
+        if (!formData.date) {
             newErrors.date = 'La fecha es requerida';
         }
     
-        if (!time) {
+        if (!formData.time) {
             newErrors.time = 'La hora es requerida';
         }
     
-        if (!description) {
+        if (!formData.description) {
             newErrors.description = 'La descripción es requerida';
         }
     
@@ -176,12 +164,11 @@ export const FormLostA = () =>{
     }
 };
 
-
 return(
     <>
     <Navbar/>
     <form className="addNewPetForm createAlert" onSubmit={handleSubmit}>
-        {showStep1 && (
+    {currentStep === 1 && (
             <div className="lugarYFecha">
                 <h2>¿Dónde y cuándo la viste por última vez?</h2>
                 <MapaLost/>
@@ -191,33 +178,26 @@ return(
                         <input 
                         type="date" 
                         name="date"
-                        value={date}
+                        value={formData.date}
                         onChange={handleDateChange}
                         />
                     </div>
                     {errors.date && <p style={{ color: 'red' }}>{errors.date}</p>}
                     <div className="inputDiv">
                         <label htmlFor="time">¿A qué hora?</label>
-                        <select name="time"  
-                        value={time} 
-                        onChange={handleTimeChange}>
-                                <option value="DEFAULT" disabled>Selecciona una hora</option>
-                                <option value="6am">6 AM</option>
-                                <option value="7am">7 AM</option>
-                                <option value="8am">8 AM</option>
-                                <option value="9am">9 AM</option>
-                                <option value="10am">10 AM</option>
-                                <option value="11am">11 AM</option>
-                                <option value="12pm">12 PM</option>
-                                <option value="1pm">1 PM</option>
-                                <option value="2pm">2 PM</option>
-                                <option value="3pm">3 PM</option>
-                                <option value="4pm">4 PM</option>
-                                <option value="5pm">5 PM</option>
-                                <option value="6pm">6 PM</option>
-                                <option value="7pm">7 PM</option>
-                                <option value="8pm">8 PM</option>
-                                <option value="9pm">9 PM</option>
+                        <select
+                        name="time"
+                        value={formData.time}
+                        onChange={handleTimeChange}
+                        >
+                        <option value="DEFAULT" disabled>
+                            Selecciona una hora
+                        </option>
+                        {[...Array(24).keys()].map((hour) => (
+                            <option key={hour} value={`${hour}:00`}>
+                            {`${hour}:00`}
+                            </option>
+                        ))}
                         </select>
                     </div>
                     {errors.time && <p style={{ color: 'red' }}>{errors.time}</p>}
@@ -227,13 +207,14 @@ return(
                             <textarea name="description" 
                             placeholder="Puedes compartir todos los datos que consideres necesarios" 
                             rows="10"
+                            value={formData.description}
                             onChange= { handleDescriptionChange }></textarea>
                     </div>
                     {errors.description && <p style={{ color: 'red' }}>{errors.description}</p>}         
                 </div>
         </div>
         )}
-        {showStep2 && (
+        {currentStep === 2 && (
             <div className="verificacion">
                 <h2>Verificación</h2>
                     <div className="alertPreview">
@@ -243,6 +224,7 @@ return(
                             <div className="imgPrevContainer"></div>
                             <div>
                                 <ul>
+                                <li>Hora: {formData.time}</li>
                                 <li>Tipo de animal:<span>{formData.type}</span></li>
                                 <li>Tamaño: <span>{formData.size}</span></li>
                                 <li>Color: <span>{formData.color1}</span></li>
@@ -251,21 +233,32 @@ return(
                                 </ul>
                             </div>
                         </div>
-                        {/* tengo que traer la informacion de la mascota que se selecciono  */}
+                        <div>
+                        <p>Datos usuario</p>
+                        <ul>
+                            <li>{formData.personName}</li>
+                            <li>{formData.email}</li>
+                        </ul>
+                        </div>
                     </div>
-                    <div className="btnSpetForm">
-                    <button className="btn secundary" onClick={handlePrev}>Regresar</button>
-                    <button id="next" type="submit">Publicar Alerta</button>
-                    </div>
-
             </div>
         )}
             <div className="btnStepForm">
-                <button className="btn secundary" onClick={handlePrev}>Regresar</button>
-                <button id="next" onClick={handleNext}>Continuar</button>
+                {currentStep === 1 ? (
+                    <button id="next" onClick={handleNext}>
+                    Continuar
+                    </button>
+                ) : (
+                    <>
+                    <button className="btn secundary" onClick={handlePrev}>
+                    Regresar
+                </button>
+                    <button id="next" onClick={handleSubmit}>
+                    Crear Alerta
+                    </button>
+                    </>
+                )}
             </div>
-            
-
     </form>
       
       
