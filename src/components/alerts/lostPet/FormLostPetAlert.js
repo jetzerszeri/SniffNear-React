@@ -4,7 +4,7 @@ import { MapaLost } from "../map/MapLost";
 import { useNavigate } from "react-router";
 import {getCurrentUserId } from '../../../js/functions';
 import { useLocation } from "react-router";
-
+import axios from 'axios';
 export const FormLostA = () =>{
     const [currentStep, setCurrentStep] = useState(1);
     const [user, setUser] = useState(null); 
@@ -18,7 +18,6 @@ export const FormLostA = () =>{
         type: '',
         size: '',
         color1: '',
-        color2: '',
         breed: '',
         description: '',
         latitude: '',
@@ -28,10 +27,8 @@ export const FormLostA = () =>{
         img: '',
         personName: '',
         email: '',
-        password: '',
         alertType: 'lost',
         sex: '',
-        pet: '',
         creator: '',
     });
     const handlePrev = (e) => {
@@ -43,26 +40,29 @@ export const FormLostA = () =>{
         e.preventDefault();
         setCurrentStep(currentStep + 1);
       };
+      
       useEffect(() => {
-        if (currentStep === 2) {
-            
+        if (currentStep === 2) {  
           const fetchPet = async () => {
             try {
-              const response = await fetch(
+              const response = await axios.get(
                 `https://sniffnear-api.onrender.com/api/pets/${petIdTest}`
               );
-              if (response.ok) {
-                const { petData } = await response.json();
+              if (response.status === 200 && response.data) {
+                const petData = response.data.pet;
                 setPetInfo(petData);
-                setFormData({
-                //   ...formData,
-                  petName: petData.name,
-                  type: petData.type,
-                  size: petData.size,
-                  color1: petData.color1,
-                  breed: petData.breed,
-                  img: petData.img,  
-                });
+                if (petData) {
+                  setFormData((prevData) => ({
+                    ...prevData,
+                    petName: petData.name,
+                    type: petData.type,
+                    size: petData.size,
+                    color1: petData.color1,
+                    breed: petData.breed,
+                    img: petData.img,
+                  }));
+                }
+                console.log(formData)
               } else {
                 throw new Error("Failed to fetch pet data");
               }
@@ -71,9 +71,11 @@ export const FormLostA = () =>{
             }
           };
     
-          fetchPet();
+        if (currentStep === 2 && petIdTest) {
+            fetchPet();
         }
-      }, [currentStep, petIdTest, formData]);         
+        }
+      }, [currentStep, petIdTest]);         
     useEffect(() => {
         const fetchUser = async () => {
           try {
@@ -83,11 +85,12 @@ export const FormLostA = () =>{
             if (response.ok) {
               const { user } = await response.json();
               setUser(user);
-              setFormData({
+              setFormData((prevData)=>({
+                ...prevData,
                 personName: user.name,
                 email: user.email,
                 creator: user._id
-              });
+              }));
             } else {
               throw new Error("Failed to fetch user data");
             }
@@ -97,7 +100,7 @@ export const FormLostA = () =>{
         };
     
         fetchUser();
-      }, [formData]);
+      }, []);
      
    
       const handleDateChange = (e) => {
