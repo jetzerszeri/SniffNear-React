@@ -1664,3 +1664,10 @@ padding-bottom: 60px;
     color: var(--color-neutral-50);
     text-align: center;
 }
+.alertSuccess{
+    background-color: #FFD600;
+}
+.imageAlert{
+    width: 124px;
+    height: 120px;
+}

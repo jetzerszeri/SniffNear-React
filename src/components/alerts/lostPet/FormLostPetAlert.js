@@ -5,6 +5,13 @@ import { useNavigate } from "react-router";
 import {getCurrentUserId } from '../../../js/functions';
 import { useLocation } from "react-router";
 import axios from 'axios';
+const getCurrentDate = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 export const FormLostA = () =>{
     const [currentStep, setCurrentStep] = useState(1);
     const [user, setUser] = useState(null); 
@@ -13,6 +20,7 @@ export const FormLostA = () =>{
     const location = useLocation();
     const petIdTest = new URLSearchParams(location.search).get("petId");
     const navigate =useNavigate();
+ 
     const [formData, setFormData] = useState({
         petName: '',
         type: '',
@@ -22,7 +30,7 @@ export const FormLostA = () =>{
         description: '',
         latitude: '',
         longitude: '',
-        date: '',
+        date: getCurrentDate(),
         time: '',
         img: '',
         personName: '',
@@ -62,7 +70,6 @@ export const FormLostA = () =>{
                     img: petData.img,
                   }));
                 }
-                console.log(formData)
               } else {
                 throw new Error("Failed to fetch pet data");
               }
@@ -101,8 +108,7 @@ export const FormLostA = () =>{
     
         fetchUser();
       }, []);
-     
-   
+
       const handleDateChange = (e) => {
         setFormData({
           ...formData,
@@ -154,8 +160,10 @@ export const FormLostA = () =>{
             console.log(json);
       
             if (response.ok) {
-              console.log('se registro la alerta')
-              navigate('/alerts')
+              console.log('se registro la alerta');
+             navigate('/success')
+              
+              
             } else {
                 console.error('Error en el registro:', json.message);
             }
@@ -183,6 +191,7 @@ return(
                         name="date"
                         value={formData.date}
                         onChange={handleDateChange}
+                        max={getCurrentDate()}
                         />
                     </div>
                     {errors.date && <p style={{ color: 'red' }}>{errors.date}</p>}
@@ -224,7 +233,9 @@ return(
                         <p>Lamentamos mucho que {formData.petName} se haya extraviado, pero no será por mucho tiempo. Por favor verifica que la información sea correcta</p>
                         <h3>Información de {formData.petName}</h3>
                         <div className="prevInfoContainter">
-                            <div className="imgPrevContainer"></div>
+                        {petInfo && petInfo.img && (
+                             <img src={petInfo.img} alt="Imagen de la mascota perdida"className="imgPrevContainer" />
+                        )}
                             <div>
                                 <ul>
                                 <li>Hora: {formData.time}</li>
@@ -263,7 +274,8 @@ return(
                 )}
             </div>
     </form>
-      
+  
+     
       
     </>
 )

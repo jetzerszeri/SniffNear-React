@@ -20,7 +20,7 @@ import { FormLostA } from './components/alerts/lostPet/FormLostPetAlert';
 import Blog from './components/Blog';
 import { BlogForm } from './components/BlogForm';
 import ArticleInfo from './components/BlogArticle';
-
+import { AlertSuccess} from './components/alerts/AlertSuccess';
 
 const router = createBrowserRouter([
   {
@@ -94,6 +94,10 @@ const router = createBrowserRouter([
 {
   path:'/article',
   element:<ArticleInfo/>
+},
+{
+  path:'/success',
+  element:<AlertSuccess/>
 }
 ])
 
