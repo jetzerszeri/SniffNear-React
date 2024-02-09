@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { Navbar } from "../Navbar"
-
+import { ImgInput } from "../addPet/ImgInput";
+import { getCurrentUserId } from "../../js/functions";
+import { useNavigate } from "react-router";
 const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -12,11 +14,12 @@ export const FoundPetForm = () =>{
     const [currentStep, setCurrentStep] = useState(1);
     const [selectedType, setSelectedType] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
-    const [selectedGender, setSelectedGender] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
-    const [img, setImg] = useState('')
+    const [user, setUser] = useState(null);
+    const [img, setImg] = useState('');
+    const navigate = useNavigate();
     const [formData,setFormData] = useState({
-        alertType:'', 
+        alertType:'find', 
         type:'',
         size:'',
         color1:'', 
@@ -30,7 +33,10 @@ export const FoundPetForm = () =>{
         img: img,
         personName: '',
         email: '',
+        password:'',
+        creator:'',
     })
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const handlePrev = (e) => {
         e.preventDefault();
         setCurrentStep(currentStep - 1);
@@ -69,6 +75,25 @@ export const FoundPetForm = () =>{
         });
         setSelectedColor(color);
     };
+    const handleDescriptionChange = (e) => {
+        setFormData({
+          ...formData,
+          description: e.target.value
+        });
+      };
+    const handleDateChange = (e) => {
+        setFormData({
+          ...formData,
+          date: e.target.value,
+        });
+    }; 
+    const handleTimeChange = (e) => {
+        setFormData({
+          ...formData,
+          time: e.target.value,
+        });
+      };
+    
     const handleImgLink = (link) => {
         setImg(link)
         setFormData({
@@ -76,7 +101,99 @@ export const FoundPetForm = () =>{
             img: link,
         });
     }
-
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const response = await fetch(
+              `https://sniffnear-api.onrender.com/api/users/${getCurrentUserId()}`
+            );
+            if (response.ok) {
+              const { user } = await response.json();
+              setUser(user);
+              setFormData((prevData)=>({
+                ...prevData,
+                personName: user.name,
+                email: user.email,
+                creator: user._id
+              }));
+              setIsAuthenticated(true);
+            } else {
+              throw new Error("Failed to fetch user data");
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        };
+    
+        fetchUser();
+      }, []);
+    useEffect(()=>{
+        if (!user) {
+            setIsAuthenticated(false);
+            setFormData({
+                personName: "",
+                email: "",
+                password: "",
+            });
+        }
+    }, [user]);
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        const newErrors = {};
+        if (!formData.date) {
+            newErrors.date = 'La fecha es requerida';
+        }
+    
+        if (!formData.time) {
+            newErrors.time = 'La hora es requerida';
+        }
+    
+        if (!formData.description) {
+            newErrors.description = 'La descripción es requerida';
+        }
+    
+        if (Object.keys(newErrors).length === 0) {
+        try {
+            if (!isAuthenticated) {
+                const newUserResponse = await fetch('https://sniffnear-api.onrender.com/api/users/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: formData.personName,
+                        email: formData.email,
+                        password: formData.password,
+                    }),
+                });
+                if (!newUserResponse.ok) {
+                    throw new Error('Failed to create new user');
+                }
+            }
+            const response = await fetch('https://sniffnear-api.onrender.com/api/alerts/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
+      
+            const json = await response.json();
+            console.log(json);
+      
+            if (response.ok) {
+              console.log('se registro la alerta');
+                navigate('/success')
+            } else {
+                console.error('Error en el registro:', json.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    } else {
+        setErrors(newErrors);
+    }
+};
     return(
         <>
         <Navbar/>
@@ -117,7 +234,7 @@ export const FoundPetForm = () =>{
                         <li data-value="perro" onClick={() => handleSelectType('perro')} className={selectedType === 'perro' ? 'selected' : ''}>
                             <div>
                                 <svg width="55" height="47" viewBox="0 0 55 47" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M46.2067 27.8397C52.3567 27.8397 55.4167 23.1797 52.7467 17.3197C49.9867 11.2697 45.8567 6.16965 40.3767 2.29965C39.8567 1.92965 39.2567 1.66965 38.6267 1.43965C37.2967 0.949653 35.7967 1.21965 34.7067 2.13965L34.1967 2.56965C33.9367 2.78965 33.5767 2.81965 33.2767 2.65965C29.3367 0.589653 25.3667 0.269653 21.4367 2.76965C21.1267 2.95965 20.7367 2.94965 20.4567 2.71965L19.4967 1.90965C18.6267 1.17965 17.4367 0.929653 16.3567 1.27965C14.2167 1.97965 12.5167 3.46965 10.8867 4.93965C7.18674 8.26965 4.18674 12.2697 2.22674 16.8097C-0.183263 22.3697 0.966737 25.7397 5.59674 27.5597C6.38674 27.8697 7.34674 27.7697 8.22674 27.8597" stroke="#363A59" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M46.2067 27.8397C52.3567 27.8397 55.4167 23.1797 52.7467 17.3197C49.9867 11.2697 45.8567 6.16965 40.3767 2.29965C39.8567 1.92965 39.2567 1.66965 38.6267 1.43965C37.2967 0.949653 35.7967 1.21965 34.7067 2.13965L34.1967 2.56965C33.9367 2.78965 33.5767 2.81965 33.2767 2.65965C29.3367 0.589653 25.3667 0.269653 21.4367 2.76965C21.1267 2.95965 20.7367 2.94965 20.4567 2.71965L19.4967 1.90965C18.6267 1.17965 17.4367 0.929653 16.3567 1.27965C14.2167 1.97965 12.5167 3.46965 10.8867 4.93965C7.18674 8.26965 4.18674 12.2697 2.22674 16.8097C-0.183263 22.3697 0.966737 25.7397 5.59674 27.5597C6.38674 27.8697 7.34674 27.7697 8.22674 27.8597" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
                                     <path d="M14.2967 10.4297C10.8267 15.6197 9.28673 21.6297 8.71673 27.5997C8.32673 31.6397 9.05673 36.1597 11.9367 39.7097C14.9167 43.3897 19.0167 44.9597 23.5367 45.4897C27.7367 45.9797 31.8067 45.4897 35.9667 44.3097C42.3167 42.4997 45.3267 36.7497 45.6867 31.2697C46.1567 23.9797 44.3667 17.2297 40.6867 10.9597" stroke="#363A59" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                     <path d="M39.6467 31.7697C39.6467 35.1997 36.8667 37.9797 33.4367 37.9797C30.0067 37.9797 27.2267 35.1997 27.2267 31.7697" stroke="#363A59" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                     <path d="M14.7867 31.7697C14.7867 35.1997 17.5667 37.9797 20.9967 37.9797C24.4267 37.9797 27.2067 35.1997 27.2067 31.7697" stroke="#363A59" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -157,7 +274,7 @@ export const FoundPetForm = () =>{
         
         {/* Step2 */}
         {currentStep === 2 &&(
-               <div class="step2">
+               <div className="step2">
                 <h2>¿Cuál es su tamaño?</h2>
                 <p className="stepSubHeading">Pequeño, mediano o grande</p>
                 <div className="containerFormStepsSelectors">
@@ -165,7 +282,7 @@ export const FoundPetForm = () =>{
                     <ul className="sizeSelector">
                         <li data-value="pequeño" onClick={() => handleSelectSize('pequeño')} className={selectedSize === 'pequeño' ? 'selected' : ''}>
                             <svg width="28" height="30" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.422 23.202C4.54024 22.3541 4.81182 21.7457 4.96516 21.408C5.33465 20.5911 5.76696 20.0431 6.03115 19.7122C6.67037 18.9109 7.29112 18.4042 7.68463 18.0871C8.21485 17.6597 8.70074 17.3426 9.07023 17.1203C9.96256 16.5671 10.7736 16.2397 11.3537 16.0432C12.0299 15.8158 13.3028 15.3867 14.7216 15.5159C15.2814 15.5676 15.8911 15.7055 15.8911 15.7055C16.4749 15.8382 16.9201 15.9984 17.1843 16.0949C17.4799 16.2018 17.7238 16.3035 17.8993 16.381C18.097 16.4689 18.339 16.5827 18.6106 16.724C18.8008 16.8222 19.1833 17.0255 19.6488 17.322C19.9684 17.5253 20.5171 17.8769 21.1508 18.4249C21.4538 18.6868 21.8233 19.0349 22.2113 19.4727C22.7027 20.019 23.0242 20.5274 23.2292 20.9099C23.2976 21.034 23.5119 21.4424 23.7114 22.006C23.813 22.2938 23.8832 22.5471 23.9331 22.747C24.0569 23.3381 24.1382 24.155 23.9553 25.0942C23.8943 25.4044 23.813 25.687 23.7225 25.9403C23.6264 26.1885 23.5304 26.4366 23.4343 26.6831C23.329 26.9226 23.1609 27.2483 22.893 27.5964C22.7193 27.8222 22.4755 28.141 22.069 28.4185C21.9194 28.5219 21.1859 29.0044 20.216 28.982C19.8927 28.9751 19.6895 28.9148 18.5958 28.4753C16.7834 27.7481 16.5451 27.5947 15.9206 27.4517C15.5105 27.3569 14.8639 27.2535 14.0159 27.3018C13.6519 27.3052 13.1254 27.3362 12.5084 27.4689C11.956 27.5878 11.5551 27.7412 11.1135 27.9101C10.066 28.3134 10.0789 28.446 9.33811 28.6856C8.70259 28.8907 8.17236 29.0785 7.52944 28.932C7.12115 28.839 6.75905 28.6753 6.43759 28.4667C6.07364 28.2289 5.7725 27.9049 5.51386 27.5534C5.24782 27.1949 5.05384 26.802 4.87094 26.4074C4.78226 26.2161 4.72314 26.0006 4.64555 25.8025C4.62338 25.7456 4.51253 25.3837 4.44417 25.0046C4.29638 24.1877 4.3869 23.4363 4.422 23.1951V23.202Z" stroke="#363A59" stroke-miterlimit="10"></path>
+                                <path d="M4.422 23.202C4.54024 22.3541 4.81182 21.7457 4.96516 21.408C5.33465 20.5911 5.76696 20.0431 6.03115 19.7122C6.67037 18.9109 7.29112 18.4042 7.68463 18.0871C8.21485 17.6597 8.70074 17.3426 9.07023 17.1203C9.96256 16.5671 10.7736 16.2397 11.3537 16.0432C12.0299 15.8158 13.3028 15.3867 14.7216 15.5159C15.2814 15.5676 15.8911 15.7055 15.8911 15.7055C16.4749 15.8382 16.9201 15.9984 17.1843 16.0949C17.4799 16.2018 17.7238 16.3035 17.8993 16.381C18.097 16.4689 18.339 16.5827 18.6106 16.724C18.8008 16.8222 19.1833 17.0255 19.6488 17.322C19.9684 17.5253 20.5171 17.8769 21.1508 18.4249C21.4538 18.6868 21.8233 19.0349 22.2113 19.4727C22.7027 20.019 23.0242 20.5274 23.2292 20.9099C23.2976 21.034 23.5119 21.4424 23.7114 22.006C23.813 22.2938 23.8832 22.5471 23.9331 22.747C24.0569 23.3381 24.1382 24.155 23.9553 25.0942C23.8943 25.4044 23.813 25.687 23.7225 25.9403C23.6264 26.1885 23.5304 26.4366 23.4343 26.6831C23.329 26.9226 23.1609 27.2483 22.893 27.5964C22.7193 27.8222 22.4755 28.141 22.069 28.4185C21.9194 28.5219 21.1859 29.0044 20.216 28.982C19.8927 28.9751 19.6895 28.9148 18.5958 28.4753C16.7834 27.7481 16.5451 27.5947 15.9206 27.4517C15.5105 27.3569 14.8639 27.2535 14.0159 27.3018C13.6519 27.3052 13.1254 27.3362 12.5084 27.4689C11.956 27.5878 11.5551 27.7412 11.1135 27.9101C10.066 28.3134 10.0789 28.446 9.33811 28.6856C8.70259 28.8907 8.17236 29.0785 7.52944 28.932C7.12115 28.839 6.75905 28.6753 6.43759 28.4667C6.07364 28.2289 5.7725 27.9049 5.51386 27.5534C5.24782 27.1949 5.05384 26.802 4.87094 26.4074C4.78226 26.2161 4.72314 26.0006 4.64555 25.8025C4.62338 25.7456 4.51253 25.3837 4.44417 25.0046C4.29638 24.1877 4.3869 23.4363 4.422 23.1951V23.202Z" stroke="#363A59" strokeMiterlimit="10"></path>
                                 <path d="M15.1336 8.35035C15.0856 8.12287 15.0265 7.78166 14.9987 7.36116C14.9784 7.06475 14.984 6.84072 14.995 6.40472C15.0024 6.10486 15.0265 5.13635 15.0302 4.96574C15.0689 4.50044 15.1059 4.03514 15.1447 3.56984C15.1539 3.43542 15.2241 2.47725 15.5419 1.8534C15.5881 1.76379 15.7359 1.48633 15.9816 1.30539C16.0777 1.23301 16.1904 1.17269 16.3197 1.12271C16.5672 1.02793 16.7926 1.00897 17.0347 1.01587C17.3469 1.02448 17.6314 1.16235 17.8863 1.30194C18.6678 1.73105 19.2627 2.35489 19.8022 3.02182C19.9888 3.25275 20.3139 3.72149 20.6206 4.36602C20.8127 4.76928 20.9402 5.12945 21.0252 5.41553C21.1286 5.83257 21.2302 6.24962 21.3337 6.66666C21.4113 7.04407 21.4704 7.55245 21.4168 8.14873C21.378 8.58645 21.2857 8.96214 21.1896 9.26372C21.1434 9.45328 21.0603 9.71695 20.9106 10.0099C20.7887 10.246 20.4913 10.8027 19.8373 11.249C19.6359 11.3851 19.3163 11.5695 18.8729 11.6971C18.7343 11.735 18.5237 11.7781 18.2651 11.7694C17.8974 11.7557 17.6443 11.623 17.4078 11.542C16.8 11.3369 16.4231 10.9026 16.0481 10.4563C16.0019 10.4028 15.9003 10.2512 15.7839 10.0565C15.7839 10.0565 15.6491 9.83242 15.5382 9.59287C15.3017 9.08622 15.1761 8.54509 15.1336 8.35035Z" stroke="#363A59" stroke-miterlimit="10"></path>
                                 <path d="M7.10078 6.58563C7.1599 6.19271 7.24119 5.87562 7.29846 5.67054L7.63285 4.72443C7.74739 4.44698 7.91551 4.09369 8.15383 3.7025C8.49377 3.14759 8.8374 2.7495 9.03692 2.53063C9.21798 2.33245 9.92925 1.57936 10.8142 1.17782C11.0322 1.07959 11.2945 0.984808 11.6197 1.00204C11.6954 1.00549 11.895 1.02272 12.1277 1.11923C12.2109 1.15369 12.4677 1.26916 12.682 1.52076C12.8852 1.75858 12.9517 1.99985 12.9924 2.15667C13.1254 2.66505 13.2676 3.23892 13.4099 3.87655C13.578 4.97948 13.639 6.3254 13.3803 7.82298C13.3194 8.17454 13.2455 8.51059 13.1605 8.8294C13.0977 9.07928 13.0034 9.36019 12.8612 9.65315C12.4086 10.5855 11.7028 11.1662 11.2483 11.4764C11.0581 11.5833 10.6553 11.7746 10.1232 11.7677C9.70201 11.7625 9.39903 11.635 9.14777 11.5281C8.5769 11.2869 8.20372 10.9405 7.99865 10.7078C7.73076 10.408 7.57003 10.1116 7.47212 9.88063C7.27629 9.44808 7.17468 9.07928 7.11925 8.82595C6.91049 7.87468 7.02318 7.09056 7.09893 6.58563H7.10078Z" stroke="#363A59" stroke-miterlimit="10"></path>
                                 <path d="M1.00416 13.3618C0.998614 13.1481 0.998614 12.9413 1.00416 12.7431C1.02817 12.2244 1.08545 11.6522 1.19075 11.0387C1.2665 10.5993 1.35887 10.1874 1.45863 9.80827C1.51775 9.4929 1.65631 8.98107 2.02026 8.43822C2.42116 7.84023 2.91259 7.48177 3.20634 7.29738C3.33566 7.24051 3.46498 7.18191 3.59431 7.12504C3.65712 7.10264 3.75319 7.07679 3.87143 7.06817C3.94163 7.063 4.20397 7.05439 4.55129 7.24395C4.64551 7.29565 5.01686 7.51107 5.54708 8.30208C5.89995 8.82769 6.10132 9.27921 6.19554 9.49117C6.33595 9.80654 6.46342 10.1529 6.53178 10.3408C6.62046 10.5803 6.69066 10.7837 6.74054 10.9336C6.79042 11.1163 6.84031 11.3007 6.89019 11.4833C6.9567 11.7953 7.0232 12.1089 7.08971 12.4208C7.17654 12.8517 7.19871 13.2205 7.20056 13.4979C7.20056 13.7668 7.20056 14.2217 7.05276 14.7973C6.92344 15.2988 6.74239 15.6572 6.68881 15.7572C6.53363 16.0536 6.26759 16.4793 5.82235 16.9136C5.66901 17.0755 5.29028 17.4323 4.66584 17.6115C4.10236 17.7735 3.62387 17.7115 3.39847 17.6684C3.14168 17.5874 2.76664 17.434 2.40269 17.1341C2.22718 16.9894 2.09047 16.8429 1.98701 16.7119C1.84291 16.5189 1.69326 16.288 1.55655 16.0174C1.29975 15.509 1.17597 15.0386 1.11685 14.6767C1.05958 14.2734 1.01709 13.834 1.00416 13.3635V13.3618Z" stroke="#363A59" stroke-miterlimit="10"></path>
@@ -204,22 +321,11 @@ export const FoundPetForm = () =>{
                         <p>Color principal</p>
                         <input type="hidden" name="color1" id="color1" />
                         <ul className="colorInputs principal">
-                            <li data-value="blanco">Blanco</li>
-                            <li data-value="negro">Negro</li>
-                            <li data-value="gris">Gris</li>
-                            <li data-value="cafe">Café</li>
-                            <li data-value="naranja">Naranja</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <input type="hidden" name="color2" id="color2" />
-                        <p>Color secundario (opcional)</p>
-                        <ul className="colorInputs secundario">
-                            <li data-value="blanco">Blanco</li>
-                            <li data-value="negro">Negro</li>
-                            <li data-value="gris">Gris</li>
-                            <li data-value="cafe">Café</li>
-                            <li data-value="naranja">Naranja</li>
+                        <li onClick={() => handleSeleccionColor('blanco')} datavalue="blanco" className={selectedColor === 'blanco' ? 'selected' : ''}>Blanco</li>
+                    <li onClick={() => handleSeleccionColor('negro')}datavalue="negro" className={selectedColor === 'negro' ? 'selected' : ''}>Negro</li>
+                    <li onClick={() => handleSeleccionColor('gris')}datavalue="gris" className={selectedColor === 'gris' ? 'selected' : ''}>Gris</li>
+                    <li onClick={() => handleSeleccionColor('cafe')}datavalue="cafe" className={selectedColor === 'cafe' ? 'selected' : ''}>Café</li>
+                    <li onClick={() => handleSeleccionColor('naranja')}datavalue="naranja" className={selectedColor === 'naranja' ? 'selected' : ''}>Naranja</li>
                         </ul>
                     </div>
                 </div>
@@ -227,16 +333,27 @@ export const FoundPetForm = () =>{
         )}
         {currentStep === 4 &&(
             <div class="step4">
-                <h2>Comparte un poco más de info</h2>
+                <h2>Comparte un poco más de información</h2>
                 <div className="containerFormStepsSelectors">
                     <div className="inputDiv">
                         <label htmlFor="breed">¿Sabés su raza?</label>
-                        <input type="text" name="breed" placeholder="Si la conoces, ingresa la raza de la mascota"/>
+                        <input 
+                        type="text" 
+                        name="breed"
+                        value={formData.breed}
+                        onChange={handleChange}
+                        placeholder="Si la conoces, ingresa la raza de la mascota"/>
                     </div>
 
                     <div className="inputDiv">
                         <label htmlFor="description">Describe la mascota</label>
-                        <textarea name="description" placeholder="Podés compartir todos los datos que consideres necesarios" rows="10"></textarea>
+                        <textarea 
+                        name="description"
+                        placeholder="Podés compartir todos los datos que consideres necesarios" 
+                        rows="10"
+                        value={formData.description}
+                        onChange={handleDescriptionChange}
+                        ></textarea>
                     </div>
                 </div>
             </div>
@@ -255,8 +372,8 @@ export const FoundPetForm = () =>{
                         <input 
                         type="date" 
                         name="date"
-                        // value={formData.date}
-                        // onChange={handleDateChange}
+                        value={formData.date}
+                        onChange={handleDateChange}
                         max={getCurrentDate()}
                         />
                     </div>
@@ -265,7 +382,8 @@ export const FoundPetForm = () =>{
                         <label htmlFor="time">¿A qué hora?</label>
                         <select
                         name="time"
-                       
+                        value={formData.time}
+                        onChange={handleTimeChange}
                         >
                         <option value="DEFAULT" disabled>
                             Selecciona una hora
@@ -283,7 +401,7 @@ export const FoundPetForm = () =>{
          {currentStep === 6 &&(
             <div className="step6">
                 <h2>Foto de la mascota</h2>
-                <div className="containerFormStepsSelectors">
+                {/* <div className="containerFormStepsSelectors">
                     <label htmlFor="imageInput" className="labelImgInput">
                         <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" clipRule="evenodd" d="M20.4431 58.6666H43.5541C52.5949 58.6666 58.6666 52.325 58.6666 42.8887V21.1112C58.6666 11.6749 52.5949 5.33331 43.5568 5.33331H20.4431C11.405 5.33331 5.33325 11.6749 5.33325 21.1112V42.8887C5.33325 52.325 11.405 58.6666 20.4431 58.6666ZM22.6635 29.3333C18.9872 29.3333 15.9999 26.342 15.9999 22.6666C15.9999 18.9913 18.9872 16 22.6635 16C26.3372 16 29.3272 18.9913 29.3272 22.6666C29.3272 26.342 26.3372 29.3333 22.6635 29.3333ZM52.8554 39.8239C53.7484 42.1135 53.2845 44.8655 52.3298 47.1331C51.1982 49.83 49.0316 51.872 46.3017 52.7636C45.0897 53.1599 43.8186 53.3333 42.5503 53.3333H20.0763C17.8399 53.3333 15.8609 52.7967 14.2386 51.7977C13.2223 51.1703 13.0426 49.7227 13.7961 48.7843C15.0565 47.2157 16.3007 45.6415 17.5557 44.0536C19.9476 41.0155 21.5592 40.1348 23.3505 40.9081C24.0772 41.2274 24.8065 41.7062 25.5574 42.2126C27.5578 43.572 30.3386 45.4406 34.0015 43.4124C36.5082 42.0085 37.9621 39.6003 39.2281 37.5032L39.2493 37.4682C39.339 37.321 39.4279 37.1739 39.5166 37.0272L39.5166 37.0271C39.9421 36.3231 40.3619 35.6286 40.8368 34.9886C41.4321 34.1878 43.639 31.6835 46.4975 33.4668C48.3183 34.5896 49.8494 36.1087 51.4878 37.7351C52.1126 38.357 52.5578 39.0643 52.8554 39.8239Z" fill="#363A59"/>
@@ -292,7 +410,9 @@ export const FoundPetForm = () =>{
                     </label>
                     <input type="file" id="imageInput" accept="image/*" name="img"/>
 
-                </div>
+                </div> */}
+                <ImgInput setImgLink={handleImgLink}/>
+                {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
             </div>
          )}
         {currentStep === 7 &&(
@@ -302,18 +422,20 @@ export const FoundPetForm = () =>{
                 <p>Tu información está protegida y no se compartirá con nadie.</p>
                 <div className="containerFormStepsSelectors">
                     <div class="inputDiv">
-                        <label htmlFor="personName">Nombre</label>
-                        <input type="text" name="personName"/>
+                        <label htmlFor="personName">Nombre:</label>
+                        <input type="text" name="personName" value={formData.personName}/>
                     </div>
                     <div class="inputDiv">
                         <label htmlFor="email">Correo electrónico</label>
-                        <input type="email" name="email" placeholder="ejemplo@mail.com"/>
+                        <input type="email" name="email" placeholder="ejemplo@mail.com" value={formData.email} />
                     </div>
-
-                    <div className="logInOptions">
-                        <p>¿Ya eres miembro? <span className="logInBtn">Ingresá</span></p>
-                        <p>¿Querés crear una cuenta? <span className="singInBtn">Registrate</span></p>
-                    </div>
+                    {!isAuthenticated && ( 
+                        <div className="inputDiv">
+                        <label htmlFor="password">Contraseña:</label>
+                        <input type="password" name="password" value={formData.password} onChange={(e) => setFormData({...formData, password: e.target.value})} />
+                        </div>
+                    )}
+                    
                 </div>
             </div>  
         )} 
@@ -323,15 +445,20 @@ export const FoundPetForm = () =>{
                     <div className="alertPreview">
                         <p>Muchas gracias por ayudarnos a que el regreso a casa sea una realidad. Por favor verificá que la información sea correcta.</p>
                         <h3>Información de la mascota</h3>
-                            <div className="imgPrevContainer"></div>
+                            <div className="imgPrevContainer">
+                            { formData.img && (
+                             <img src={formData.img} alt="Imagen de la mascota perdida"className="imgPrevContainer" />
+                             )}
+
+                            </div>
                             <div>
                                 <ul>
-                                    <li>Tipo de animal: <span></span></li>
-                                    <li>Tamaño: <span></span></li>
-                                    <li>Color: <span></span></li>
-                                    <li>Raza: <span></span></li>
-                                    <li>Encontrado en <span></span> <span></span></li>
-                                    <li>Descripción</li>
+                                    <li>Tipo de animal: <span>{formData.type}</span></li>
+                                    <li>Tamaño: <span>{formData.size}</span></li>
+                                    <li>Color: <span>{formData.color1}</span></li>
+                                    <li>Raza: <span>{formData.breed}</span></li>
+                                    <li>Encontrado en: <span></span> <span></span></li>
+                                    <li>Descripción: {formData.description}</li>
                                 </ul>
                             </div>
                         </div>
@@ -351,7 +478,7 @@ export const FoundPetForm = () =>{
                     Continuar
                 </button>
             ) : (
-                <button id="next">
+                <button id="next" onClick={handleSubmit}>
                     Crear Alerta
                 </button>
             )}
