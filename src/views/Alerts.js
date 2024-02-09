@@ -11,7 +11,7 @@ export const Alerts = () => {
 
     const [alerts, setAlerts] = useState([]);
 
-
+    console.log(getCurrentUserId());
     const getAlerts = useCallback( async () => {
         createLoader('Cargando alertas');
         const response = await fetch(`https://sniffnear-api.onrender.com/api/alerts/`);
@@ -19,12 +19,15 @@ export const Alerts = () => {
           const  data  = await response.json();
           setAlerts(data);
           removeLoader();
+         console.log(data) 
         } 
-    })
+        
+    },[])
     
     useEffect(() => {
-        getAlerts();
-    }, [])
+        getAlerts()
+    },[]);
+    
     const handleAlertDelete = (id) => {
         const updatedAlerts = alerts.filter(alert => alert._id !== id);
         setAlerts(updatedAlerts);
@@ -38,8 +41,9 @@ export const Alerts = () => {
                 <AlertList
                  alerts={alerts}
                  onAlertDelete={handleAlertDelete} 
+                 userId={getCurrentUserId()}
                  />
-
+                
 
             </main>
 

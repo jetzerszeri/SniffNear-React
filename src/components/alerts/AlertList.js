@@ -1,14 +1,11 @@
 import React, { useState,useEffect} from 'react';
-import { AlertCard } from './AlertCard'
-
+import { AlertCard } from './AlertCard';
 // import { useNavigate  } from 'react-router-dom';
-export const AlertList = ({alerts, onAlertDelete}) => {
+export const AlertList = ({alerts, onAlertDelete, userId}) => {
     // const [alertList, setAlertList] = useState([]);
-    
-
+  
     const handleDeleteClick = async (id) => {
         try {
-        
         const response = await fetch(`https://sniffnear-api.onrender.com/api/alerts/${id}`, {
             method: 'DELETE',
         });
@@ -40,13 +37,14 @@ export const AlertList = ({alerts, onAlertDelete}) => {
 
             <ul>
                 {alerts.map((alert) => {
+                const isOwner = alert.creator._id === userId;
                     return <AlertCard 
                     alert={alert} 
                     key={alert._id}
                     onDeleteClick={handleDeleteClick} 
                     onEditClick={handleEditClick}
+                    showButtons={isOwner}
                     />
-
                 })}
             </ul>
 
