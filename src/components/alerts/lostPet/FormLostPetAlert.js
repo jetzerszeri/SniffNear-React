@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navbar } from "../../Navbar";
-import { MapaLost } from "../map/MapLost";
+import MapComponente from "../map/MapLost";
 import { useNavigate } from "react-router";
 import {getCurrentUserId } from '../../../js/functions';
 import { useLocation } from "react-router";
@@ -182,7 +182,7 @@ return(
     {currentStep === 1 && (
             <div className="lugarYFecha">
                 <h2>¿Dónde y cuándo la viste por última vez?</h2>
-                <MapaLost/>
+                <MapComponente/>
                 <div className="containerFormStepsSelectors">
                     <div className="inputDiv">
                         <label htmlFor="date">¿Cuándo?</label>
