@@ -35,7 +35,7 @@ export const FormLostA = () =>{
         img: '',
         personName: '',
         email: '',
-        alertType: 'lost',
+        alertType: 'perdido',
         sex: '',
         creator: '',
     });
