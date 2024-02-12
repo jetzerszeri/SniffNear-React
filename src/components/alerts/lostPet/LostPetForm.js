@@ -1,8 +1,8 @@
 import { useLocation } from "react-router";
-import { Navbar } from "../Navbar";
-import { BottomNav } from "../BottomNav";
-import { MyPetsCards } from "../home/MyPetsCards";
-import { AddPetButton } from "../addPet/AddPetButton";
+import { Navbar } from "../../Navbar";
+import { BottomNav } from "../../BottomNav";
+import { MyPetsCards } from "../../home/MyPetsCards";
+import { AddPetButton } from "../../addPet/AddPetButton";
 
 export const LostPetForm = () =>{
     const location = useLocation();

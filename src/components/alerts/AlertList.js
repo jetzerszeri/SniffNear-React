@@ -2,8 +2,6 @@ import React, { useState,useEffect} from 'react';
 import { AlertCard } from './AlertCard';
 // import { useNavigate  } from 'react-router-dom';
 export const AlertList = ({alerts, onAlertDelete, userId}) => {
-    // const [alertList, setAlertList] = useState([]);
-  
     const handleDeleteClick = async (id) => {
         try {
         const response = await fetch(`https://sniffnear-api.onrender.com/api/alerts/${id}`, {
@@ -23,18 +21,13 @@ export const AlertList = ({alerts, onAlertDelete, userId}) => {
         console.error('Error al eliminar la alerta:', error);
         }
     };
-  
-    
-
-  const handleEditClick = (alertToEdit) => {
-    // Aquí puedes abrir un formulario con los datos precargados para editar la alerta
-    console.log('Editar alerta:', alertToEdit);
-  };
-
+    const handleEditClick = (alertToEdit) => {
+        // Aquí puedes abrir un formulario con los datos precargados para editar la alerta
+        console.log('Editar alerta:', alertToEdit);
+    };
     return (
         <div className="listAlertas">
             <h1>Listado de alertas</h1>
-
             <ul>
                 {alerts.map((alert) => {
                 const isOwner = alert.creator._id === userId;
@@ -47,8 +40,6 @@ export const AlertList = ({alerts, onAlertDelete, userId}) => {
                     />
                 })}
             </ul>
-
-
         </div>
 
     )

@@ -1,11 +1,12 @@
-import { Navbar } from "../components/Navbar"
-import { AlertForm } from "../components/alerts/AlertForm"
-
+import { Navbar } from "../components/Navbar";
+import { EditAlertForm } from "../components/alerts/EditAlertForm";
+import { BottomNav } from "../components/BottomNav";
 export const EditAlert = () => {
   return (
     <>
-    
-    <AlertForm titulo="Editar alerta"/>
+    <Navbar/>
+    <EditAlertForm/>
+    <BottomNav/>
     </>
   )
 }

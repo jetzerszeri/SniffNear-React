@@ -1,5 +1,5 @@
-import { LostPetButton } from "./LostPetButton";
-import { FoundPetButton } from "./FoundPetButton";
+import { LostPetButton } from "./lostPet/LostPetButton";
+import { FoundPetButton } from "./foundPet/FoundPetButton";
 export const PetActionSelector = () =>{
     return (
         <main>

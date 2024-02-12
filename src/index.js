@@ -13,10 +13,9 @@ import { UserInfo } from './components/UserInfo';
 import { EditUserProfile } from "./components/EditUserProfile";
 import { EditPetProfile } from "./components/EditPetProfile";
 import { EditAlert } from './views/EditAlert';
-import { FoundPetForm } from './components/alerts/FoundPetForm';
-import {LostPetForm} from './components/alerts/LostPetForm';
+import { FoundPetForm } from './components/alerts/foundPet/FoundPetForm';
+import { LostPetForm } from './components/alerts/lostPet/LostPetForm';
 import { FormLostA } from './components/alerts/lostPet/FormLostPetAlert';
-// import { NewAlert } from './views/NewAlert';
 import Blog from './components/Blog';
 import { BlogForm } from './components/BlogForm';
 import ArticleInfo from './components/BlogArticle';
@@ -63,10 +62,6 @@ const router = createBrowserRouter([
     path: '/edit-pet-profile',
     element: <EditPetProfile/>
   },
-  // {
-  //   path: '/lost-pet-alert-form',
-  //   element: <LostPetAlertForm/>
-  // },
 {
   path: '/alerts/:alertId/edit',
   element: <EditAlert/>

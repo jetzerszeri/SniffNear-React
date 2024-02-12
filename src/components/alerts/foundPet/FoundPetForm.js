@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
-import { Navbar } from "../Navbar"
-import { ImgInput } from "../addPet/ImgInput";
-import { getCurrentUserId } from "../../js/functions";
+import { Navbar } from "../../Navbar"
+import { ImgInput } from "../../addPet/ImgInput";
+import { getCurrentUserId } from "../../../js/functions";
 import { useNavigate } from "react-router";
 const getCurrentDate = () => {
     const date = new Date();

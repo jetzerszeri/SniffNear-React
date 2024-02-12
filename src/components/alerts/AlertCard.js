@@ -1,5 +1,6 @@
+import { useNavigate } from "react-router"
 export const AlertCard = ({alert,  onDeleteClick , onEditClick , showButtons}) => {
-    
+  const navigate = useNavigate();
   return (
     <li>
         <div>
@@ -12,17 +13,13 @@ export const AlertCard = ({alert,  onDeleteClick , onEditClick , showButtons}) =
         {showButtons && (
           <>
             <button onClick={() => onDeleteClick(alert._id)}>
-        <i className="bi bi-trash"/>
-        </button>
-        {/* <button onClick={()=>onEditClick(alert)} > */}
-        <a className="btn" href={`alerts/${alert._id}/edit`}>    
-          <i className="bi bi-pencil"/>
-        </a>
+              <i className="bi bi-trash"/>
+            </button>
+            <button className="btn" onClick={() => navigate(`${alert._id}/edit`)}>
+              <i className="bi bi-pencil"/>
+            </button>
           </>
         )}
-        {/* </button> */}
-        {/* <p><i className="bi bi-calendar4-week"></i> {alert.date}, {alert.time}</p> */}
-        {/* <button className="btn secundary small">Ver detalles</button> */}
     </li>
   )
 }
