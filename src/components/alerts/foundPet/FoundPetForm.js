@@ -3,6 +3,7 @@ import { Navbar } from "../../Navbar"
 import { ImgInput } from "../../addPet/ImgInput";
 import { getCurrentUserId } from "../../../js/functions";
 import { useNavigate } from "react-router";
+import Mapa from "../map/MapLost";
 const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -60,6 +61,13 @@ export const FoundPetForm = () =>{
           type: value,
         });
     };
+    const handleNewCoords = (lat , lng) =>{
+        setFormData(prevData => ({
+          ...prevData,
+          latitude: lat,
+          longitude: lng,
+        }));
+      }
 
     const handleSelectSize = (value) => {
         setSelectedSize(value)
@@ -370,8 +378,7 @@ export const FoundPetForm = () =>{
               <div className="step5">
                 <h2>¿Dónde y cuándo encontraste la mascota?</h2>
                 <p className="stepSubHeading">Arrastrá el marcador a la zona donde encontraste la mascota</p>
-                <input type="hidden" name="latitude" id="latitude" />
-                <input type="hidden" name="longitude" id="longitude"/>
+                <Mapa onMarkerDragEnd={handleNewCoords}/>
                 <div className="containerFormStepsSelectors">
                     <div className="mapacontainer"></div>
                     <div id="mi_mapa"></div>
@@ -473,7 +480,9 @@ export const FoundPetForm = () =>{
                             </div>
                         </div>
 
-                        <div id="mi_mapa" className="previewMap"></div>
+                        <div id="mi_mapa" className="previewMap">
+                            <Mapa></Mapa>
+                        </div>
             </div> 
          )}
 
