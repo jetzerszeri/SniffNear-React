@@ -49,7 +49,13 @@ export const FormLostA = () =>{
         e.preventDefault();
         setCurrentStep(currentStep + 1);
       };
-      
+      const handleNewCoords = (lat , lng) =>{
+        setFormData(prevData => ({
+          ...prevData,
+          latitude: lat,
+          longitude: lng,
+        }));
+      }
       useEffect(() => {
         if (currentStep === 2) {  
           const fetchPet = async () => {
@@ -183,7 +189,7 @@ return(
     {currentStep === 1 && (
             <div className="lugarYFecha">
                 <h2>¿Dónde y cuándo la viste por última vez?</h2>
-                <Mapa/>
+                <Mapa onMarkerDragEnd={handleNewCoords}/>
                 <div className="containerFormStepsSelectors">
                     <div className="inputDiv">
                         <label htmlFor="date">¿Cuándo?</label>

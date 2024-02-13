@@ -1,7 +1,7 @@
 
 import React,{useEffect, useState}from "react";
 import { APIProvider, Map,  AdvancedMarker} from "@vis.gl/react-google-maps";
-const Mapa = () =>{
+const Mapa = ({onMarkerDragEnd}) =>{
   const apiKey = 'AIzaSyDYLirWViZkclvbf15XO8IJHY1KSo679tQ';
   const [currentLocation, setCurrentLocation] = useState(null);
 
@@ -24,6 +24,7 @@ const handleMarker = (coord) =>{
     const lng = latLng.lng();
     console.log(`Coordenadas: ${lat}, ${lng}`);
     setCurrentLocation( {lat, lng})
+    onMarkerDragEnd(lat,lng)
   
 }
 
