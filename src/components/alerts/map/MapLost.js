@@ -2,7 +2,7 @@
 import React,{useEffect, useState}from "react";
 import { APIProvider, Map,  AdvancedMarker} from "@vis.gl/react-google-maps";
 const Mapa = ({onMarkerDragEnd}) =>{
-  const apiKey = 'AIzaSyDYLirWViZkclvbf15XO8IJHY1KSo679tQ';
+  const apiKey = process.env.REACT_APP_API_KEY;
   const [currentLocation, setCurrentLocation] = useState(null);
 
   useEffect(()=>{
