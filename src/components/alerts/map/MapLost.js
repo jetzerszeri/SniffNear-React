@@ -1,11 +1,10 @@
-import React,{useEffect, useState}from "react";
-import GoogleMapReact from 'google-map-react';
-import { MyMarker } from "./MyMarker";
 
+import React,{useEffect, useState}from "react";
+import { APIProvider, Map,  AdvancedMarker} from "@vis.gl/react-google-maps";
 const Mapa = () =>{
   const apiKey = 'AIzaSyDYLirWViZkclvbf15XO8IJHY1KSo679tQ';
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
+
   useEffect(()=>{
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position)=>{
@@ -18,40 +17,41 @@ const Mapa = () =>{
   alert("Tu navegador no soporta Geolocalizacion");
 }
 },[]);
-const handleMarkerDragStart = () => {
-  setIsDragging(true);
-};
 
-const handleMarkerDrag = (event) => {
-  if (isDragging) {
-    setCurrentLocation({ lat: event.lat, lng: event.lng });
-  }
+const handleMarker = (coord) =>{
+  const { latLng } = coord;
+    const lat = latLng.lat();
+    const lng = latLng.lng();
+    console.log(`Coordenadas: ${lat}, ${lng}`);
+    setCurrentLocation( {lat, lng})
+  
 }
-  const handleMarkerDragEnd = () => {
-    setIsDragging(false);
-  };
+
 
 return(
     <>
     <div className="mapacontainer">
       <div id="mi_mapa">
-        <GoogleMapReact
-        bootstrapURLKeys={ { key: apiKey } }
-        center={currentLocation} // coord inici
-        defaultZoom = {10}
+        <APIProvider apiKey={apiKey}>
+          <Map 
+          defaultCenter={currentLocation} 
+          defaultZoom={15}
+          disableDefaultUI={true}
+          mapId={'8b111d92cbfeefd5'}
+          >
+        <AdvancedMarker
+        position={currentLocation}
+        draggable= {true}
+        onDragEnd={handleMarker}
         >
-        {currentLocation &&(
-          <MyMarker
-            lat={currentLocation.lat}
-            lng={currentLocation.lng}
-            text="Mi ubicación"
-            draggable // Hacer el marcador arrastrable
-            onDragStart={handleMarkerDragStart}
-            onDrag={handleMarkerDrag}
-            onDragEnd={handleMarkerDragEnd}
-          />
-        )}
-        </GoogleMapReact>
+          <div>
+            <i className="bi bi-balloon-fill"> ARRASTRAME!</i>
+          </div>
+          
+        </AdvancedMarker>
+          </Map>
+
+        </APIProvider>
       </div>
     </div>
     </>
