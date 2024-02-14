@@ -1084,7 +1084,10 @@ input.error, select.error{
     height: 250px;
     border-radius: 8px;
 }
-
+.mapaList{
+    width: 500px;
+    height: 500px;
+}
 .btnStepForm{
     display: flex;
     gap: 10px;

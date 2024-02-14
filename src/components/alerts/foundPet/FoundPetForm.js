@@ -187,12 +187,17 @@ export const FoundPetForm = () =>{
                     throw new Error('Failed to create new user');
                 }
             }
+            const dataToSend = {
+                ...formData,
+                alertType: "encontrado",
+            };
+            console.log(dataToSend)
             const response = await fetch('https://sniffnear-api.onrender.com/api/alerts/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify(formData),
+              body: JSON.stringify(dataToSend),
             });
       
             const json = await response.json();
@@ -237,7 +242,52 @@ export const FoundPetForm = () =>{
         </div>
         <form className="addNewPetForm createAlert">
         {/* Step1 */}
-        { currentStep === 1 && (
+         {currentStep === 1 &&(
+              <div className="step5">
+                <h2>¿Dónde y cuándo encontraste la mascota?</h2>
+                <p className="stepSubHeading">Arrastrá el marcador a la zona donde encontraste la mascota</p>
+               <Mapa onMarkerDragEnd={handleNewCoords} route={current_route}/>
+                <div className="containerFormStepsSelectors">
+                    
+                    <div className="mapacontainer"> 
+                    <div id="mi_mapa">
+                    
+                    </div>
+                    </div>
+                    <div className="inputDiv">
+                        <label htmlFor="date">¿Cuándo?</label>
+                        <input 
+                        id="date"
+                        type="date" 
+                        name="date"
+                        value={formData.date}
+                        onChange={handleDateChange}
+                        max={getCurrentDate()}
+                        />
+                    </div>
+
+                    <div className="inputDiv">
+                        <label htmlFor="time">¿A qué hora?</label>
+                        <select
+                        id="time"
+                        name="time"
+                        value={formData.time}
+                        onChange={handleTimeChange}
+                        >
+                        <option value="DEFAULT" disabled>
+                            Selecciona una hora
+                        </option>
+                        {[...Array(24).keys()].map((hour) => (
+                            <option key={hour} value={`${hour}:00`}>
+                            {`${hour}:00`}
+                            </option>
+                        ))}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        )}
+        { currentStep === 2 && (
            <div className="step1">
                 <h2>¿Qué tipo de mascota encontraste?</h2>
                 {/* <input 
@@ -290,7 +340,7 @@ export const FoundPetForm = () =>{
         )}
         
         {/* Step2 */}
-        {currentStep === 2 &&(
+        {currentStep === 3 &&(
                <div className="step2">
                 <h2>¿Cuál es su tamaño?</h2>
                 <p className="stepSubHeading">Pequeño, mediano o grande</p>
@@ -330,7 +380,7 @@ export const FoundPetForm = () =>{
         </div>  
         )}
 
-        {currentStep === 3 &&(
+        {currentStep === 4 &&(
         <div className="step3">
                 <h2>¿Cuál es su color?</h2>
                 <div className="containerFormStepsSelectors">
@@ -348,7 +398,7 @@ export const FoundPetForm = () =>{
                 </div>
         </div>
         )}
-        {currentStep === 4 &&(
+        {currentStep === 5 &&(
             <div className="step4">
                 <h2>Comparte un poco más de información</h2>
                 <div className="containerFormStepsSelectors">
@@ -377,50 +427,7 @@ export const FoundPetForm = () =>{
                 </div>
             </div>
         )}
-        {currentStep === 5 &&(
-              <div className="step5">
-                <h2>¿Dónde y cuándo encontraste la mascota?</h2>
-                <p className="stepSubHeading">Arrastrá el marcador a la zona donde encontraste la mascota</p>
-               
-                <div className="containerFormStepsSelectors">
-                    <div className="mapacontainer"> 
-                    <div id="mi_mapa">
-                    <Mapa onMarkerDragEnd={handleNewCoords} route={current_route}/>
-                    </div>
-                    </div>
-                    <div className="inputDiv">
-                        <label htmlFor="date">¿Cuándo?</label>
-                        <input 
-                        id="date"
-                        type="date" 
-                        name="date"
-                        value={formData.date}
-                        onChange={handleDateChange}
-                        max={getCurrentDate()}
-                        />
-                    </div>
-
-                    <div className="inputDiv">
-                        <label htmlFor="time">¿A qué hora?</label>
-                        <select
-                        id="time"
-                        name="time"
-                        value={formData.time}
-                        onChange={handleTimeChange}
-                        >
-                        <option value="DEFAULT" disabled>
-                            Selecciona una hora
-                        </option>
-                        {[...Array(24).keys()].map((hour) => (
-                            <option key={hour} value={`${hour}:00`}>
-                            {`${hour}:00`}
-                            </option>
-                        ))}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        )}
+       
          {currentStep === 6 &&(
             <div className="step6">
                 <h2>Foto de la mascota</h2>

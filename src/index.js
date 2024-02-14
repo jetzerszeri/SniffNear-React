@@ -20,7 +20,7 @@ import Blog from './components/Blog';
 import { BlogForm } from './components/BlogForm';
 import ArticleInfo from './components/BlogArticle';
 import { AlertSuccess} from './components/alerts/AlertSuccess';
-
+import MapaList from './components/alerts/map/MapList';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -93,6 +93,10 @@ const router = createBrowserRouter([
 {
   path:'/success',
   element:<AlertSuccess/>
+},
+{
+  path: '/mapa-list',
+  element:<MapaList/>
 }
 ])
 

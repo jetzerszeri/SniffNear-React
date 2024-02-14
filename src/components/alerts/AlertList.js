@@ -1,5 +1,6 @@
 import React, { useState,useEffect} from 'react';
 import { AlertCard } from './AlertCard';
+import { Link } from 'react-router-dom';
 // import { useNavigate  } from 'react-router-dom';
 export const AlertList = ({alerts, onAlertDelete, userId}) => {
     const handleDeleteClick = async (id) => {
@@ -27,7 +28,16 @@ export const AlertList = ({alerts, onAlertDelete, userId}) => {
     };
     return (
         <div className="listAlertas">
-            <h1>Listado de alertas</h1>
+ 
+                <div className='topNavBar'>
+                    
+                        <h1>Listado de alertas</h1>
+                    <Link to={"/mapa-list"}>
+                        <i className="bi bi-map-fill"></i>
+                    </Link>
+                 </div> 
+     
+           
             <ul>
                 {alerts.map((alert) => {
                 const isOwner = alert.creator._id === userId;
