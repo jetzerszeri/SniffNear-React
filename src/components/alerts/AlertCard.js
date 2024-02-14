@@ -1,6 +1,8 @@
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router";
+
 export const AlertCard = ({alert,  onDeleteClick , onEditClick , showButtons}) => {
   const navigate = useNavigate();
+
   return (
     <li>
         <div>

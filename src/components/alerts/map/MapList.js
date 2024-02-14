@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
-
+import {Navbar} from "../../Navbar";
+import {BottomNav} from "../../BottomNav";
 import { createLoader, removeLoader } from "../../../js/functions";
 import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 
@@ -59,6 +60,9 @@ console.log(coordV)
    
 
   return (
+    <>
+    <Navbar/>
+      
     <div className="mapacontainer">
       <div id="mi_mapaL">
         <APIProvider apiKey={apiKey}>
@@ -92,6 +96,9 @@ console.log(coordV)
         </APIProvider>
       </div>
     </div>
+    <BottomNav/>
+    </>
+    
   );
 };
 
