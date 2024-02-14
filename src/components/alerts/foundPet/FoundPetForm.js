@@ -4,6 +4,7 @@ import { ImgInput } from "../../addPet/ImgInput";
 import { getCurrentUserId } from "../../../js/functions";
 import { useNavigate } from "react-router";
 import Mapa from "../map/MapLost";
+import { useLocation } from "react-router";
 const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -19,6 +20,8 @@ export const FoundPetForm = () =>{
     const [user, setUser] = useState(null);
     const [img, setImg] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
+    const current_route = location.pathname;
     const [formData,setFormData] = useState({
         type:'',
         size:'',
@@ -378,10 +381,13 @@ export const FoundPetForm = () =>{
               <div className="step5">
                 <h2>¿Dónde y cuándo encontraste la mascota?</h2>
                 <p className="stepSubHeading">Arrastrá el marcador a la zona donde encontraste la mascota</p>
-                <Mapa onMarkerDragEnd={handleNewCoords}/>
+               
                 <div className="containerFormStepsSelectors">
-                    <div className="mapacontainer"></div>
-                    <div id="mi_mapa"></div>
+                    <div className="mapacontainer"> 
+                    <div id="mi_mapa">
+                    <Mapa onMarkerDragEnd={handleNewCoords} route={current_route}/>
+                    </div>
+                    </div>
                     <div className="inputDiv">
                         <label htmlFor="date">¿Cuándo?</label>
                         <input 
@@ -478,11 +484,7 @@ export const FoundPetForm = () =>{
                                     <li>Descripción: {formData.description}</li>
                                 </ul>
                             </div>
-                        </div>
-
-                        <div id="mi_mapa" className="previewMap">
-                            <Mapa></Mapa>
-                        </div>
+                        </div>      
             </div> 
          )}
 

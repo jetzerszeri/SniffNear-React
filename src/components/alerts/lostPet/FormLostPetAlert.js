@@ -21,7 +21,7 @@ export const FormLostA = () =>{
     const location = useLocation();
     const petIdTest = new URLSearchParams(location.search).get("petId");
     const navigate =useNavigate();
- 
+    const current_route = location.pathname;
     const [formData, setFormData] = useState({
         petName: '',
         type: '',
@@ -189,7 +189,7 @@ return(
     {currentStep === 1 && (
             <div className="lugarYFecha">
                 <h2>¿Dónde y cuándo la viste por última vez?</h2>
-                <Mapa onMarkerDragEnd={handleNewCoords}/>
+                <Mapa onMarkerDragEnd={handleNewCoords} route={current_route}/>
                 <div className="containerFormStepsSelectors">
                     <div className="inputDiv">
                         <label htmlFor="date">¿Cuándo?</label>
