@@ -1073,7 +1073,15 @@ input.error, select.error{
     text-align: center;
     /* min-height: fit-content; */
 }
-
+.containerDate .inputDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 20px;
+    text-align: left;
+    width: 100%;
+     margin-bottom: 25px;
+}
 .stepSubHeading{
     text-align: center;
     color: var(--color-neutral-50);
@@ -1098,6 +1106,10 @@ input.error, select.error{
     /* padding: 0 20px; */
     text-align: left;
     width: 100%;
+}
+.mapaFound{
+    margin-top: 5px;
+    height: 300px;
 }
 #mi_mapaL{
     margin-top: 5px;
