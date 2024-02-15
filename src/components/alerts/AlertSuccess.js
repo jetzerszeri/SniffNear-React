@@ -11,11 +11,12 @@ export const AlertSuccess = () =>{
   }, [navigate]);
     return(
         <>
-        <main className="alertSuccess homeMain">
-                <i className="bi bi-check-lg"></i>
-            <h1>Alerta publicada con éxito!</h1>
-            <p>Redireccionando a la página de alertas en 5 segundos...</p>
-        </main>
+        <body className="alertSuccess"> <main className="homeMain"> 
+        <i className="bi bi-check-lg sizeCheck"></i> 
+        <h1>Alerta publicada con éxito!</h1>
+        <p>Redireccionando a la página de alertas en 5 segundos...</p>
+        </main> 
+        </body>
         </>
        
     )

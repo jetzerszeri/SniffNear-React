@@ -16,6 +16,7 @@
     "dotenv": "^16.4.4",
     "google-map-react": "^2.2.1",
     "google-maps-react-markers": "^2.0.8",
+    "nodejs": "^0.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.20.0",

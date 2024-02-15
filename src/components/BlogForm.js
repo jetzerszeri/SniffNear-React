@@ -138,10 +138,9 @@ export const BlogForm = () => {
 
   return (
     <main>
-      <form onSubmit={handleSubmit} className="addNewPetForm">
-        <h1>Agregar un artículo</h1>
-
-        <div className="step2">
+     <form action="" onSubmit={handleSubmit} className="addNewPetForm">
+       <div className="step2"> 
+       <h1>Agregar un artículo</h1>
           <div>
             <label htmlFor="title">Titulo</label>
             <input

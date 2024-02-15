@@ -1677,8 +1677,16 @@ padding-bottom: 60px;
     color: var(--color-neutral-50);
     text-align: center;
 }
-.alertSuccess{
-    background-color: #FFD600;
+.alertSuccess{ background-color: #FFD600; 
+    text-align: center; 
+} 
+
+.sizeCheck{ 
+    margin-top: 80px; 
+    text-align: center; 
+    display: inline; 
+    font-size: 170px; 
+    color: #006667; 
 }
 .imageAlert{
     width: 124px;
