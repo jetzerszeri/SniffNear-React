@@ -863,20 +863,20 @@ form label + p {
     
 }
 
-.petsIconList + p {
+.petsIconList p {
     text-align: center;
     color: var(--color-neutral-50);
     margin-top: 20px;
     text-decoration: underline;
     margin: 30px auto 200px;
-    /* height: 150px; */
     font-weight: 300;
     font-size: 0.8em;
     cursor: pointer;
 }
 
-.petsIconList + p:hover{
+.petsIconList  p:hover{
     color: var(--color-green);
+    cursor: pointer;
 }
 
 .sexSelector{
@@ -1069,7 +1069,19 @@ input.error, select.error{
     text-align: center;
     color: var(--color-neutral-50);
 }
+#otherPet{
+    color:#AEAEAE;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-decoration: underline;
+    border:none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+#otherPet:hover{
+    color: #006667;
+    background-color: #B2D1D1;
 
+}
 .containerFormStepsSelectors .inputDiv{
     display: flex;
     flex-direction: column;
@@ -1101,6 +1113,8 @@ input.error, select.error{
 .btnStepForm button{
     flex: 1;
 }
+
+
 /* .stepSubHeading.selected{
     text-transform: capitalize;
     color: var(--color-darkblue);

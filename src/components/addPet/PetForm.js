@@ -5,13 +5,21 @@ import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
 
 
 export const PetForm = () => {
+    const [currentStep, setCurrentStep]=useState(1);
     const [selectedType, setSelectedType] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedGender, setSelectedGender] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
     const [img, setImg] = useState('')
     // const storedUserId = localStorage.getItem('userId');
-
+    const handlePrev = (e) => {
+        e.preventDefault();
+        setCurrentStep(currentStep - 1);
+      };
+    const handleNext = (e) => {
+        e.preventDefault();
+        setCurrentStep(currentStep + 1);
+    };
     const [formData, setFormData] = useState({
         type: '',
         name: '',
@@ -143,55 +151,74 @@ export const PetForm = () => {
       };
   return (
     <main>
-        <form onSubmit={handleSubmit} className="addNewPetForm">
-            <h1>Agregar mascota</h1>
 
-            <div className="step1">
-                {/* <h2>¿Qué tipo de mascota es?</h2> */}
-                <h2>Contanos sobre tu mascota</h2>
-                <ul className="petsIconList">
-                    <li datavalue="perro" onClick={() => handleSelectType('perro')} className={selectedType === 'perro' ? 'selected' : ''}>
-                        <div>
-                            <svg width="55" height="47" viewBox="0 0 55 47" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M46.2067 27.8397C52.3567 27.8397 55.4167 23.1797 52.7467 17.3197C49.9867 11.2697 45.8567 6.16965 40.3767 2.29965C39.8567 1.92965 39.2567 1.66965 38.6267 1.43965C37.2967 0.949653 35.7967 1.21965 34.7067 2.13965L34.1967 2.56965C33.9367 2.78965 33.5767 2.81965 33.2767 2.65965C29.3367 0.589653 25.3667 0.269653 21.4367 2.76965C21.1267 2.95965 20.7367 2.94965 20.4567 2.71965L19.4967 1.90965C18.6267 1.17965 17.4367 0.929653 16.3567 1.27965C14.2167 1.97965 12.5167 3.46965 10.8867 4.93965C7.18674 8.26965 4.18674 12.2697 2.22674 16.8097C-0.183263 22.3697 0.966737 25.7397 5.59674 27.5597C6.38674 27.8697 7.34674 27.7697 8.22674 27.8597" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M14.2967 10.4297C10.8267 15.6197 9.28673 21.6297 8.71673 27.5997C8.32673 31.6397 9.05673 36.1597 11.9367 39.7097C14.9167 43.3897 19.0167 44.9597 23.5367 45.4897C27.7367 45.9797 31.8067 45.4897 35.9667 44.3097C42.3167 42.4997 45.3267 36.7497 45.6867 31.2697C46.1567 23.9797 44.3667 17.2297 40.6867 10.9597" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M39.6467 31.7697C39.6467 35.1997 36.8667 37.9797 33.4367 37.9797C30.0067 37.9797 27.2267 35.1997 27.2267 31.7697" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M14.7867 31.7697C14.7867 35.1997 17.5667 37.9797 20.9967 37.9797C24.4267 37.9797 27.2067 35.1997 27.2067 31.7697" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M31.7667 37.7497C31.6867 40.1897 29.6767 42.1397 27.2167 42.1397C24.7567 42.1397 22.7567 40.1897 22.6667 37.7497" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M25.7468 27.9197L26.2468 27.8197C26.8868 27.6897 27.5568 27.6897 28.1968 27.8197L28.6968 27.9197C29.3168 27.9197 29.7068 28.6197 29.4068 29.1897L27.2268 31.3997L25.0468 29.1897C24.7468 28.6197 25.1368 27.9197 25.7568 27.9197H25.7468Z" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M20.2867 21.0897C21.0599 21.0897 21.6867 20.4629 21.6867 19.6897C21.6867 18.9165 21.0599 18.2897 20.2867 18.2897C19.5135 18.2897 18.8867 18.9165 18.8867 19.6897C18.8867 20.4629 19.5135 21.0897 20.2867 21.0897Z" fill="#363A59"/>
-                                <path d="M34.1567 21.0897C34.9299 21.0897 35.5567 20.4629 35.5567 19.6897C35.5567 18.9165 34.9299 18.2897 34.1567 18.2897C33.3835 18.2897 32.7567 18.9165 32.7567 19.6897C32.7567 20.4629 33.3835 21.0897 34.1567 21.0897Z" fill="#363A59"/>
-                            </svg>                            
-                        </div>
-                    </li>
+        <div className='stepsForm'>
+            {[...Array(3).keys()].map((step, index) => (
+                <svg
+                    key={index}
+                    width="22"
+                    height="11"
+                    viewBox="0 0 22 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={currentStep === index + 1 ? "active" : ""}
+                >
+                    <path
+                        d="M20.507 2.98467C20.3017 1.83214 19.3556 0.919716 18.2168 0.764651C16.9418 0.591857 15.8265 1.33706 15.4109 2.43495C15.2426 2.87423 14.8358 3.1687 14.3709 3.17142L7.28646 3.1951C6.82028 3.19467 6.40041 2.90385 6.21759 2.46487C5.759 1.36806 4.61585 0.63149 3.34555 0.812639C2.21099 0.975052 1.30054 1.89708 1.13983 3.04865C1.0086 3.98272 1.34989 4.84494 1.95038 5.42889C1.37311 6.01679 1.06891 6.87841 1.23071 7.81024C1.43681 8.97346 2.40034 9.89344 3.55314 10.0391C4.85888 10.1993 5.99255 9.4026 6.37022 8.24683C6.5168 7.7981 6.94708 7.50869 7.41634 7.50786L14.4068 7.48221C14.8761 7.48138 15.3144 7.76468 15.48 8.21433C15.9036 9.3658 17.0655 10.1571 18.365 9.98603C19.5121 9.83683 20.441 8.90725 20.604 7.74375C20.7322 6.81093 20.3922 5.95186 19.7947 5.36666C20.372 4.77876 20.6793 3.91588 20.5131 2.98216L20.507 2.98467Z"
+                        stroke="#FF8367"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    ></path>
+                </svg>
+            ))}
+         </div>
+        <form className="addNewPetForm">   
+        {currentStep === 1 &&(
+        <div className="step1">
+            <h2>¿Qué tipo de mascota es?</h2>
+              <ul className="petsIconList">
+                   <li datavalue="perro" onClick={() => handleSelectType('perro')} className={selectedType === 'perro' ? 'selected' : ''}>
+                          <div>
+                                    <svg width="55" height="47" viewBox="0 0 55 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M46.2067 27.8397C52.3567 27.8397 55.4167 23.1797 52.7467 17.3197C49.9867 11.2697 45.8567 6.16965 40.3767 2.29965C39.8567 1.92965 39.2567 1.66965 38.6267 1.43965C37.2967 0.949653 35.7967 1.21965 34.7067 2.13965L34.1967 2.56965C33.9367 2.78965 33.5767 2.81965 33.2767 2.65965C29.3367 0.589653 25.3667 0.269653 21.4367 2.76965C21.1267 2.95965 20.7367 2.94965 20.4567 2.71965L19.4967 1.90965C18.6267 1.17965 17.4367 0.929653 16.3567 1.27965C14.2167 1.97965 12.5167 3.46965 10.8867 4.93965C7.18674 8.26965 4.18674 12.2697 2.22674 16.8097C-0.183263 22.3697 0.966737 25.7397 5.59674 27.5597C6.38674 27.8697 7.34674 27.7697 8.22674 27.8597" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M14.2967 10.4297C10.8267 15.6197 9.28673 21.6297 8.71673 27.5997C8.32673 31.6397 9.05673 36.1597 11.9367 39.7097C14.9167 43.3897 19.0167 44.9597 23.5367 45.4897C27.7367 45.9797 31.8067 45.4897 35.9667 44.3097C42.3167 42.4997 45.3267 36.7497 45.6867 31.2697C46.1567 23.9797 44.3667 17.2297 40.6867 10.9597" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M39.6467 31.7697C39.6467 35.1997 36.8667 37.9797 33.4367 37.9797C30.0067 37.9797 27.2267 35.1997 27.2267 31.7697" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M14.7867 31.7697C14.7867 35.1997 17.5667 37.9797 20.9967 37.9797C24.4267 37.9797 27.2067 35.1997 27.2067 31.7697" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M31.7667 37.7497C31.6867 40.1897 29.6767 42.1397 27.2167 42.1397C24.7567 42.1397 22.7567 40.1897 22.6667 37.7497" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M25.7468 27.9197L26.2468 27.8197C26.8868 27.6897 27.5568 27.6897 28.1968 27.8197L28.6968 27.9197C29.3168 27.9197 29.7068 28.6197 29.4068 29.1897L27.2268 31.3997L25.0468 29.1897C24.7468 28.6197 25.1368 27.9197 25.7568 27.9197H25.7468Z" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M20.2867 21.0897C21.0599 21.0897 21.6867 20.4629 21.6867 19.6897C21.6867 18.9165 21.0599 18.2897 20.2867 18.2897C19.5135 18.2897 18.8867 18.9165 18.8867 19.6897C18.8867 20.4629 19.5135 21.0897 20.2867 21.0897Z" fill="#363A59"/>
+                                        <path d="M34.1567 21.0897C34.9299 21.0897 35.5567 20.4629 35.5567 19.6897C35.5567 18.9165 34.9299 18.2897 34.1567 18.2897C33.3835 18.2897 32.7567 18.9165 32.7567 19.6897C32.7567 20.4629 33.3835 21.0897 34.1567 21.0897Z" fill="#363A59"/>
+                                    </svg>                            
+                            </div>          
+                    </li>        
                     <li  datavalue="gato" onClick={() => handleSelectType('gato')} className={selectedType === 'gato' ? 'selected' : ''}>
-                        <div>
-                            <svg width="56" height="44" viewBox="0 0 56 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M54.2768 24.1397C50.7268 22.8497 47.2168 23.0797 43.7268 24.3997" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M34.7668 6.80981V11.4798" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M45.3169 1.97974C43.9069 3.90974 42.5069 5.84974 40.7869 8.20974" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M21.0466 6.61975V11.4798" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M11.0269 3.03979C12.6369 4.84979 14.2469 6.65979 15.8269 8.43979C24.2369 3.36979 33.8669 4.0098 40.5669 8.4198" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M54.2768 29.9397C50.8968 28.3697 47.4468 27.4497 43.7268 28.6197" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M11.5568 24.1397C8.00684 22.9997 4.48684 22.9897 1.00684 24.3997" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M6.01684 28.3597C4.34684 28.9797 2.67684 29.5897 1.00684 30.2097" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M27.9067 6.46973V11.4797" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M11.5566 28.3597H6.54663" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M11.0268 3.03975C6.51682 11.1297 4.63682 18.9997 6.33682 28.0897C7.59682 34.7897 12.2868 38.6897 18.4168 41.0097C24.3168 43.2397 30.4068 43.3497 36.3268 41.4897C45.8068 38.5197 50.6568 31.8597 50.3168 21.7697C50.1068 15.6397 48.9268 9.70975 46.3468 4.10975C46.1568 3.68975 45.6668 2.33975 45.3168 1.98975" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M18.5967 30.8098C18.5967 30.8098 23.9667 35.8298 28.1567 30.8098C28.1567 30.8098 33.0567 35.5898 36.9067 30.8098" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M15.2368 19.1797C15.2368 19.1797 18.3268 15.6897 20.9168 19.1797" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M34.5767 19.1797C34.5767 19.1797 37.6667 15.6897 40.2567 19.1797" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                <path d="M26.6068 23.8397H29.4368C30.0268 23.8397 30.4068 24.4797 30.1168 24.9997L28.0168 27.0197L25.9168 24.9997C25.6268 24.4797 26.0068 23.8397 26.5968 23.8397H26.6068Z" stroke="#363A59" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>     
-                        </div>
+                            <div>    
+                                    <svg width="56" height="44" viewBox="0 0 56 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M54.2768 24.1397C50.7268 22.8497 47.2168 23.0797 43.7268 24.3997" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M34.7668 6.80981V11.4798" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M45.3169 1.97974C43.9069 3.90974 42.5069 5.84974 40.7869 8.20974" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M21.0466 6.61975V11.4798" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.0269 3.03979C12.6369 4.84979 14.2469 6.65979 15.8269 8.43979C24.2369 3.36979 33.8669 4.0098 40.5669 8.4198" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M54.2768 29.9397C50.8968 28.3697 47.4468 27.4497 43.7268 28.6197" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.5568 24.1397C8.00684 22.9997 4.48684 22.9897 1.00684 24.3997" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M6.01684 28.3597C4.34684 28.9797 2.67684 29.5897 1.00684 30.2097" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M27.9067 6.46973V11.4797" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.5566 28.3597H6.54663" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.0268 3.03975C6.51682 11.1297 4.63682 18.9997 6.33682 28.0897C7.59682 34.7897 12.2868 38.6897 18.4168 41.0097C24.3168 43.2397 30.4068 43.3497 36.3268 41.4897C45.8068 38.5197 50.6568 31.8597 50.3168 21.7697C50.1068 15.6397 48.9268 9.70975 46.3468 4.10975C46.1568 3.68975 45.6668 2.33975 45.3168 1.98975" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M18.5967 30.8098C18.5967 30.8098 23.9667 35.8298 28.1567 30.8098C28.1567 30.8098 33.0567 35.5898 36.9067 30.8098" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M15.2368 19.1797C15.2368 19.1797 18.3268 15.6897 20.9168 19.1797" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M34.5767 19.1797C34.5767 19.1797 37.6667 15.6897 40.2567 19.1797" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M26.6068 23.8397H29.4368C30.0268 23.8397 30.4068 24.4797 30.1168 24.9997L28.0168 27.0197L25.9168 24.9997C25.6268 24.4797 26.0068 23.8397 26.5968 23.8397H26.6068Z" stroke="#363A59" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>     
+                            </div>    
                     </li>
-                </ul>
+                    <p datavalue="otraMascota" onClick={() => handleSelectType('otraMascota')} className={selectedType === 'otraMascota' ? 'selected' : ''}>Otra mascota</p>
+                 </ul>                         
                 {errors.type && <p style={{ color: 'red' }}>{errors.type}</p>}
-            </div>
-
+        </div>          
+        )} 
+        {currentStep === 2 &&(
         <div className="step2">
-            {/* <h2>Contanos sobre tu mascota</h2> */}
-
             <div>
                 <label htmlFor="name">Nombre</label>
                 <input
@@ -312,21 +339,30 @@ export const PetForm = () => {
             {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}
 
         </div>
-
-        <div>
-        <h2>Foto de perfil de tu mascota</h2>
-
-            <ImgInput setImgLink={handleImgLink}/>
-            {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
-            
-
-
+        )}
+        {currentStep === 3 &&(
+            <div>
+            <h2>Foto de perfil de tu mascota</h2>
+                <ImgInput setImgLink={handleImgLink}/>
+                {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
+            </div>
+        )}    
+        <div className="btnStepForm">
+            {currentStep > 1 && (
+                <button className="btn secundary " onClick={handlePrev}>
+                    Regresar
+                </button>
+            )}
+            {currentStep <= 2 ? (
+                <button id="next" onClick={handleNext}>
+                    Continuar
+                </button>
+            ) : (
+                <button id="next" onClick={handleSubmit}>
+                   Crear perfil mascota
+                </button>
+            )}
         </div>
-
-
-
-
-            <button>Guardar</button>
         </form>
     </main>
   )
