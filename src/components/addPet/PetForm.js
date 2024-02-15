@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ImgInput } from './ImgInput';
 import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
-
+const getCurrentDate = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
 
 export const PetForm = () => {
     const [currentStep, setCurrentStep]=useState(1);
@@ -11,6 +17,7 @@ export const PetForm = () => {
     const [selectedGender, setSelectedGender] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
     const [img, setImg] = useState('')
+
     // const storedUserId = localStorage.getItem('userId');
     const handlePrev = (e) => {
         e.preventDefault();
@@ -23,7 +30,7 @@ export const PetForm = () => {
     const [formData, setFormData] = useState({
         type: '',
         name: '',
-        birthdate: '',
+        birthdate: getCurrentDate(),
         breed: '',
         sex: '',
         size: '',
@@ -73,7 +80,6 @@ export const PetForm = () => {
         setSelectedColor(color);
     };
     
-    
  
 
     const handleImgLink = (link) => {
@@ -117,10 +123,8 @@ export const PetForm = () => {
           if (!formData.img.trim()){
             newErrors.img = 'La imagen es requerida';
           }
-
-          
-
         if (Object.keys(newErrors).length === 0) {
+
         try {
             createLoader();
             const response = await fetch('https://sniffnear-api.onrender.com/api/pets/', {
@@ -236,25 +240,29 @@ export const PetForm = () => {
                     <label htmlFor="birthdate">Fecha de nacimiento</label>
                     <p>Puede ser un aproximado*</p>
                 </div>
-                <input type="date"
+                <input 
+                type="date"
+                id='birthdate'
                 name="birthdate"
                 value={formData.birthdate}
                 onChange={handleChange}
+                max={getCurrentDate()}
                 />
             </div>
 
-            <div>
-                <label htmlFor="breed">Raza</label>
-                <select name="breed"
-                value={formData.breed}
-                onChange={handleChange}
-                >
-                    <option value="" disabled defaultValue>Selecciona una raza</option>
-                    <option value="1">Raza 1</option>
-                    <option value="2">Raza 2</option>
-                    <option value="3">Raza 3</option>
-                </select>
-            </div>
+                <div>
+                    <label htmlFor="breed">Raza</label>
+                    <select 
+                        name="breed"
+                        value={formData.breed}
+                        onChange={handleChange}
+                    >
+                        <option value="" disabled defaultValue>Selecciona una opción</option>
+                        <option value="raza">Mi mascota es de raza</option>
+                        <option value="callejero">Mi mascota es callejera</option>
+                    </select>
+                </div>
+
             {errors.breed && <p style={{ color: 'red' }}>{errors.breed}</p>}
             <div>
                 <label htmlFor="sex">Género</label>
@@ -326,17 +334,18 @@ export const PetForm = () => {
             </div>
             <div>
                 <label>Color</label>
-                <input type="hidden" name="color1" id="color1" />
+                <input type="hidden" name="color1" id="color1"  value={selectedColor}/>
                 <ul className="colorInputs principal">
                     <li onClick={() => handleSeleccionColor('blanco')} datavalue="blanco" className={selectedColor === 'blanco' ? 'selected' : ''}>Blanco</li>
                     <li onClick={() => handleSeleccionColor('negro')}datavalue="negro" className={selectedColor === 'negro' ? 'selected' : ''}>Negro</li>
                     <li onClick={() => handleSeleccionColor('gris')}datavalue="gris" className={selectedColor === 'gris' ? 'selected' : ''}>Gris</li>
                     <li onClick={() => handleSeleccionColor('cafe')}datavalue="cafe" className={selectedColor === 'cafe' ? 'selected' : ''}>Café</li>
                     <li onClick={() => handleSeleccionColor('naranja')}datavalue="naranja" className={selectedColor === 'naranja' ? 'selected' : ''}>Naranja</li>
-                </ul>
+                     <li onClick={() => handleSeleccionColor('marron')}datavalue="marron" className={selectedColor === 'marron' ? 'selected' : ''}>Marron</li>
+                    <li onClick={() => handleSeleccionColor('otro')}datavalue="otro" className={selectedColor === 'otro' ? 'selected' : ''}>Otro</li>
+                </ul>     
             </div>
-
-            {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}
+                 {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}
 
         </div>
         )}

@@ -826,11 +826,13 @@ form label + p {
 .step1, .step2{
     margin-bottom: 50px;
 }
+
 .petsIconList{
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
     gap: 30px;
+
     margin-top: 50px;
     /* min-height: 280px; */
     flex-wrap: wrap;
@@ -861,6 +863,13 @@ form label + p {
 .petsIconList li.selected div{
     background-color: var(--color-green-background);
     
+}
+.petsIconList p.selected {
+    background-color: var(--color-green-background);
+    border-radius: 8px;
+    color: black;
+    text-decoration: none;
+    padding: 15px;
 }
 
 .petsIconList p {
