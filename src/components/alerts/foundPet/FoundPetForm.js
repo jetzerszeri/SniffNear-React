@@ -262,7 +262,6 @@ export const FoundPetForm = () =>{
             ))}
         </div>
         <form className="addNewPetForm createAlert">
-        {/* Step1 */}
          {currentStep === 1 &&(
               <div className="step5">
                 <h2>¿Dónde y cuándo encontraste la mascota?</h2>
@@ -282,8 +281,12 @@ export const FoundPetForm = () =>{
                         onChange={handleDateChange}
                         max={getCurrentDate()}
                         />
+                        
                     </div>
-                    {errors.date && <p style={{ color: 'red' }}>{errors.date}</p>}
+                    <div className="inputDiv">
+                         {errors.date && <p style={{ color: 'red' }}>{errors.date}</p>}
+                    </div>
+                   
                     <div className="inputDiv">
                         <label htmlFor="time">¿A qué hora?</label>
                         <select
@@ -302,7 +305,10 @@ export const FoundPetForm = () =>{
                         ))}
                         </select>
                     </div>
-                    {errors.time && <p style={{ color: 'red' }}>{errors.time}</p>}
+                    <div className="inputDiv">
+                        {errors.time && <p style={{ color: 'red' }}>{errors.time}</p>}
+                    </div>
+                    
                 </div>
             </div>
         )}
@@ -346,13 +352,12 @@ export const FoundPetForm = () =>{
                                 </svg>     
                             </div>
                         </li>
+                        <p datavalue="otraMascota" onClick={() => handleSelectType('otraMascota')} className={selectedType === 'otraMascota' ? 'selected' : ''}>Otra mascota</p>
                     </ul>
                 {errors.type && <p style={{ color: 'red' }}>{errors.type}</p>}
                 </div>
         </div> 
         )}
-        
-        {/* Step2 */}
         {currentStep === 3 &&(
                <div className="step2">
                 <h2>¿Cuál es su tamaño?</h2>
@@ -403,17 +408,15 @@ export const FoundPetForm = () =>{
                         <input type="hidden" name="color1" id="color1" />
                         <ul className="colorInputs principal">
                         <li onClick={() => handleSeleccionColor('blanco')} datavalue="blanco" className={selectedColor === 'blanco' ? 'selected' : ''}>Blanco</li>
-                    <li onClick={() => handleSeleccionColor('negro')}datavalue="negro" className={selectedColor === 'negro' ? 'selected' : ''}>Negro</li>
-                    <li onClick={() => handleSeleccionColor('gris')}datavalue="gris" className={selectedColor === 'gris' ? 'selected' : ''}>Gris</li>
-                    <li onClick={() => handleSeleccionColor('cafe')}datavalue="cafe" className={selectedColor === 'cafe' ? 'selected' : ''}>Café</li>
-                    <li onClick={() => handleSeleccionColor('naranja')}datavalue="naranja" className={selectedColor === 'naranja' ? 'selected' : ''}>Naranja</li>
-                        </ul>
-                      {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}    
+                            <li onClick={() => handleSeleccionColor('negro')}datavalue="negro" className={selectedColor === 'negro' ? 'selected' : ''}>Negro</li>
+                            <li onClick={() => handleSeleccionColor('gris')}datavalue="gris" className={selectedColor === 'gris' ? 'selected' : ''}>Gris</li>
+                            <li onClick={() => handleSeleccionColor('cafe')}datavalue="cafe" className={selectedColor === 'cafe' ? 'selected' : ''}>Café</li>
+                            <li onClick={() => handleSeleccionColor('naranja')}datavalue="naranja" className={selectedColor === 'naranja' ? 'selected' : ''}>Naranja</li>
+                            <li onClick={() => handleSeleccionColor('otro')}datavalue="otro" className={selectedColor === 'otro' ? 'selected' : ''}>Otro color</li>
+                    </ul>
+                    {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}    
                     </div>
-                  
-                </div>
-                
-
+                </div> 
         </div>
         )}
         {currentStep === 5 &&(
@@ -482,14 +485,15 @@ export const FoundPetForm = () =>{
            <div className="step8">
                 <h2>Verificación</h2>
                     <div className="alertPreview">
-                        <p>Muchas gracias por ayudarnos a que el regreso a casa sea una realidad. Por favor verificá que la información sea correcta.</p>
+                        <p>Muchas gracias por ayudarnos a que el regreso a casa sea una realidad.<br/> Por favor verificá que la información sea correcta.</p>
                         <h3>Información de la mascota</h3>
-                            <div className="prevInfoContainter">
+                        <div className="infoVerif">
+                            <div className="prevInfoContainter ">
                             { formData.img && (
                              <img src={formData.img} alt="Imagen de la mascota perdida"className="imgPrevContainer" />
                              )}
                             </div>
-                            <div>
+                            <div className="infoAnimal">
                                 <ul>
                                     <li>Tipo de animal: <span>{formData.type}</span></li>
                                     <li>Tamaño: <span>{formData.size}</span></li>
@@ -499,6 +503,8 @@ export const FoundPetForm = () =>{
                                     <li>Descripción: {formData.description}</li>
                                 </ul>
                             </div>
+                        </div>
+                            
                         </div>      
             </div> 
          )}

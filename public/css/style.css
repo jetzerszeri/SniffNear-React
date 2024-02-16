@@ -1173,6 +1173,20 @@ input.error, select.error{
     /* width: fit-content;
     text-align: right; */
 }
+.infoVerif {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+}
+
+  /* Estilos para la columna de la información */
+  .infoAnimal {
+    flex: 3; /* Ocupa el 50% del ancho total */
+  }
+  
+.infoAnimal ul{
+    margin: 5px;
+}
 
 .containerFormStepsSelectors .logInOptions p span:hover{
     text-decoration: underline;
