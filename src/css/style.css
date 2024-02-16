@@ -786,9 +786,6 @@ form label + p {
     color: var(--color-neutral-50);
     font-weight: 300;
 }
-
-
-
 /* estilos de la vista de agregar mascota */
 .addNewPetForm{
     margin-top: -10px;
@@ -875,6 +872,10 @@ form label + p {
     display: flex;
     justify-content: center;
     gap: 20px;
+}
+.descriptionSelector{
+    display: block;
+    justify-content: center;
 }
 
 .sexSelector div{

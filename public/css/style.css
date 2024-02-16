@@ -1117,6 +1117,7 @@ input.error, select.error{
 .btnStepForm{
     display: flex;
     gap: 10px;
+    margin-bottom: 40px;
 }
 
 .btnStepForm button{
@@ -1679,10 +1680,35 @@ padding-bottom: 60px;
     width: 20px;
     height: 20px;
 }
-
-.listAlertas li {
-
-
+.menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .menu li {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+  }
+.adoptionForm{
+    text-align: center;
+}
+.adoptionForm p{
+    margin-bottom: 35px;
 }
 
 .listAlertas li > img{

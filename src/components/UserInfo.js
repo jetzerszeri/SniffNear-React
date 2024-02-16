@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Navbar } from "./Navbar";
 
 export const UserInfo = () => {
-  const [user, setUser] = useState(null);
+  const [users, setUser] = useState(null);
   const userNameH2Ref = useRef(null);
-  const userLocationPRef = useRef(null);
+  // const userLocationPRef = useRef(null);
   const userEmailPRef = useRef(null);
   const userPasswordPRef = useRef(null);
-  const userImgRef = useRef(null);
+  // const profileImg = useRef(null);
   const sectionUserInfoRef = useRef(null);
   const editUserBtnRef = useRef(null);
   
@@ -36,9 +36,9 @@ export const UserInfo = () => {
 
           // Actualizar referencias
           if (formData) {
-            userImgRef.current.src = formData.img;
+            // profileImg.current.src = formData.profileImg;
             userNameH2Ref.current.innerHTML = formData.name;
-            userLocationPRef.current.innerHTML = formData.location;
+            // userLocationPRef.current.innerHTML = formData.location;
             userEmailPRef.current.innerHTML = formData.email;
             userPasswordPRef.current.innerHTML = formData.password;
           }
@@ -48,7 +48,7 @@ export const UserInfo = () => {
 
           // Solo añadir campos específicos
           createLiOfUserInfo('Nombre', formData.name, usersUl);
-          createLiOfUserInfo('Ubicación', formData.location, usersUl);
+          // createLiOfUserInfo('Ubicación', formData.location, usersUl);
           createLiOfUserInfo('Email', formData.email, usersUl);
           createLiOfUserInfo('Contraseña', formData.password, usersUl);
 
@@ -84,10 +84,10 @@ export const UserInfo = () => {
         <h1>Perfil del usuario</h1>
 
         <div className="petNameCard">
-          <img ref={userImgRef} alt="Avatar del usuario" />
+          {/* <img ref={profileImg} alt="Avatar del usuario" /> */}
           <div>
             <h2 ref={userNameH2Ref}>Cargando...</h2>
-            <p ref={userLocationPRef}>...</p>
+            {/* <p ref={userLocationPRef}>...</p> */}
             <p ref={userEmailPRef}>...</p>
             <p ref={userPasswordPRef}>...</p>
           </div>

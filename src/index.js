@@ -21,6 +21,10 @@ import { BlogForm } from './components/BlogForm';
 import ArticleInfo from './components/BlogArticle';
 import { AlertSuccess} from './components/alerts/AlertSuccess';
 import MapaList from './components/alerts/map/MapList';
+import { AdoptionForm } from './views/AdoptionForm';
+import { AdoptionList } from './views/AdoptionList';
+import { AdoptionCard } from './views/AdoptionCard';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -97,6 +101,19 @@ const router = createBrowserRouter([
 {
   path: '/mapa-list',
   element:<MapaList/>
+},
+{
+  path: '/adoption-form',
+  element:<AdoptionForm/>
+},
+{
+  path: '/adoption-list',
+  element:<AdoptionList/>
+}
+,
+{
+  path: '/adoption-card',
+  element:<AdoptionCard/>
 }
 ])
 

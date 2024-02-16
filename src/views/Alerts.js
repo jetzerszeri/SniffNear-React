@@ -4,9 +4,6 @@ import { AlertList } from "../components/alerts/AlertList"
 import { BottomNav } from "../components/BottomNav";
 import {getCurrentUserId, createLoader, removeLoader} from '../js/functions';
 
-
-
-
 export const Alerts = () => {
 
     const [alerts, setAlerts] = useState([]);
@@ -43,13 +40,10 @@ export const Alerts = () => {
                  onAlertDelete={handleAlertDelete} 
                  userId={getCurrentUserId()}
                  />
-                
-
             </main>
 
             <BottomNav activeLink="alerts"/>
 
-            
         </>
 
     )

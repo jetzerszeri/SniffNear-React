@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import  Blog  from './Blog';
 
-export const ArticleInfo = ({articles, onArticlesDelete}) => {
+export const ArticleInfo = ({articles = [], onArticlesDelete}) => {
 
     const handleDeleteClick = async (id) => {
         try {
@@ -26,19 +26,19 @@ export const ArticleInfo = ({articles, onArticlesDelete}) => {
   };
     return (
         <div className="listAlertas">
-            <h1>Artículos de blog</h1>
+        <h1>Artículos de blog</h1>
 
-            <ul>
-                {articles.map((article) => {
-                    return <Blog 
-                    article={article} 
+        <ul>
+            {articles && articles.map((article) => (
+                <Blog
+                    article={article}
                     key={article._id}
-                    onDeleteClick={handleDeleteClick} 
+                    onDeleteClick={handleDeleteClick}
                     onEditClick={handleEditClick}
-                    />
-                })}
-            </ul>
-        </div>
+                />
+            ))}
+        </ul>
+    </div>
     )
 }
 

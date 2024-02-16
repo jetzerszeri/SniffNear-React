@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate  } from 'react-router-dom';
 import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
+import { ImgInput } from '../addPet/ImgInput';
 
 export const EditAlertForm = () =>{
     let { alertId } = useParams();
@@ -9,12 +10,14 @@ export const EditAlertForm = () =>{
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
     const [selectedGender, setSelectedGender] = useState("");
+    const [selectedImg, setSelectedImg] = useState("");
     const [formData, setFormData] = useState({
         type: '',
         sex: '',
         size: '',
         color1: '',
         description:'',
+        img: '',
         alertType:'',
         creator: getCurrentUserId(),
     });
@@ -55,6 +58,13 @@ export const EditAlertForm = () =>{
         });
         setSelectedColor(color);
     };
+    const handleImgLink = (value) => {
+        setSelectedImg(value)
+        setFormData({
+          ...formData,
+          img: value,
+        });
+    };
 
     const getAlertInfo = useCallback( async () => {
         if (alertId){
@@ -69,6 +79,7 @@ export const EditAlertForm = () =>{
                         type: data.type,
                         breed: data.breed,
                         size: data.size,
+                        img: data.img,
                         color1: data.color1,
                         alertType: data.alertType,
                         sex: data.sex,
@@ -77,6 +88,7 @@ export const EditAlertForm = () =>{
                         setSelectedType(data.type);
                         setSelectedSize(data.size);
                         setSelectedColor(data.color1);
+                        setSelectedImg(data.img);
                         setSelectedGender(data.sex)
                     removeLoader();
                 } 
@@ -105,6 +117,9 @@ export const EditAlertForm = () =>{
     
         if (!formData.size) {
             newErrors.size = 'El tamaño es requerido';
+        }
+        if (!formData.img) {
+            newErrors.img = 'La imagen es requerido';
         }
     
         if (Object.keys(newErrors).length === 0) {
@@ -253,16 +268,22 @@ export const EditAlertForm = () =>{
                 </div>
                     {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}
             <div>
-                <div className="inputDiv">
+                <div className="addNewPetForm">
                             <label htmlFor="description">Describe la mascota</label>
                             <textarea
+                            className='step2'
                             name="description"
                             placeholder="Podés compartir todos los datos que consideres necesarios" 
                             value={formData.description}
                             onChange={handleChange}
-                            rows="10"/>
+                            rows="4"/>
                 </div>
             </div>
+            <div>
+          <h2>Imagen de referencia a tu mascota</h2>
+          <ImgInput setSelectedImg={handleImgLink} />
+          {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
+        </div>
         
             <button>Editar Alerta</button>
         </form>
