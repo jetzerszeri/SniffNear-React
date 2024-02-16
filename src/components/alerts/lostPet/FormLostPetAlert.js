@@ -47,7 +47,24 @@ export const FormLostA = () =>{
     
       const handleNext = (e) => {
         e.preventDefault();
-        setCurrentStep(currentStep + 1);
+        const newErrors = {};
+
+        if (!formData.date) {
+            newErrors.date = 'La fecha es requerida';
+        }
+    
+        if (!formData.time) {
+            newErrors.time = 'La hora es requerida';
+        }
+    
+        if (!formData.description) {
+            newErrors.description = 'Debe ingresar una descripción';
+        }
+        setErrors(newErrors);
+        if (Object.keys(newErrors).length === 0) {
+          setCurrentStep(currentStep + 1);
+      }
+      
       };
       const handleNewCoords = (lat , lng) =>{
         setFormData(prevData => ({
@@ -139,21 +156,6 @@ export const FormLostA = () =>{
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newErrors = {};
-
-        if (!formData.date) {
-            newErrors.date = 'La fecha es requerida';
-        }
-    
-        if (!formData.time) {
-            newErrors.time = 'La hora es requerida';
-        }
-    
-        if (!formData.description) {
-            newErrors.description = 'La descripción es requerida';
-        }
-    
-        if (Object.keys(newErrors).length === 0) {
         try {
             const response = await fetch('https://sniffnear-api.onrender.com/api/alerts/', {
               method: 'POST',
@@ -177,15 +179,13 @@ export const FormLostA = () =>{
         } catch (error) {
             console.error('Error:', error);
         }
-    } else {
-        setErrors(newErrors);
-    }
 };
 
 return(
     <>
     <Navbar/>
-    <form className="addNewPetForm createAlert" onSubmit={handleSubmit}>
+    <main>
+      <form className="addNewPetForm createAlert" onSubmit={handleSubmit}>
     {currentStep === 1 && (
             <div className="lugarYFecha">
                 <h2>¿Dónde y cuándo la viste por última vez?</h2>
@@ -237,8 +237,8 @@ return(
             <div className="verificacion">
                 <h2>Verificación</h2>
                     <div className="alertPreview">
-                        <p>Lamentamos mucho que {formData.petName} se haya extraviado, pero no será por mucho tiempo. Por favor verifica que la información sea correcta</p>
-                        <h3>Información de {formData.petName}</h3>
+                        <p>Lamentamos mucho que <strong>{formData.petName}</strong> se haya extraviado, pero no será por mucho tiempo. Por favor verifica que la información sea correcta</p>
+                        <h3>Información de <strong>{formData.petName}</strong></h3>
                         <div className="prevInfoContainter">
                         {petInfo && petInfo.img && (
                              <img src={petInfo.img} alt="Imagen de la mascota perdida"className="imgPrevContainer" />
@@ -255,11 +255,14 @@ return(
                             </div>
                         </div>
                         <div>
-                        <p>Datos usuario</p>
-                        <ul>
-                            <li>{formData.personName}</li>
-                            <li>{formData.email}</li>
-                        </ul>
+                        <div>
+                            <h3> Datos del usuario</h3>
+                            <ul>
+                                <li>Nombre de usuario: {formData.personName}</li>
+                                <li> Email: {formData.email}</li>
+                            </ul>
+                        </div>
+                      
                         </div>
                     </div>
             </div>
@@ -282,6 +285,8 @@ return(
             </div>
     </form>
   
+    </main>
+    
      
       
     </>
