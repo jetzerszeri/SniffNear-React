@@ -6,7 +6,7 @@ export const ArticleInfo = ({articles = [], onArticlesDelete}) => {
     const handleDeleteClick = async (id) => {
         try {
         
-        const response = await fetch(`https://sniffnear-api.onrender.com/api/articles/${id}`, {
+        const response = await fetch(`https://sniffnear-api.onrender.com/api/blog/${id}`, {
             method: 'DELETE',
         });
     

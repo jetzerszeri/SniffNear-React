@@ -5,7 +5,7 @@ import { ImgInput } from '../components/addPet/ImgInput';
 import { getCurrentUserId, createLoader, removeLoader } from '../js/functions';
 
 export const BlogForm = () => {
-  let { articleId } = useParams();
+  let { blogId } = useParams();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [img, setImg] = useState('');
 
@@ -44,10 +44,10 @@ export const BlogForm = () => {
     });
   };
 
-  const getArticleInfo = useCallback(async () => {
-    if (articleId) {
+  const getBlogInfo = useCallback(async () => {
+    if (blogId) {
       createLoader();
-      const response = await fetch(`https://sniffnear-api.onrender.com/api/articles/${articleId}`);
+      const response = await fetch(`https://sniffnear-api.onrender.com/api/blog/${blogId}`);
       if (response.ok) {
         const data = await response.json();
         console.log(data);
@@ -61,11 +61,11 @@ export const BlogForm = () => {
         setSelectedCategory(data.category);
       }
     }
-  }, [articleId, formData]);
+  }, [blogId, formData]);
 
   useEffect(() => {
-    getArticleInfo();
-  }, [getArticleInfo]);
+    getBlogInfo();
+  }, [getBlogInfo]);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -95,9 +95,9 @@ export const BlogForm = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         createLoader();
-        const apiUrl = articleId ? `https://sniffnear-api.onrender.com/api/articles/${articleId}` : 'https://sniffnear-api.onrender.com/api/articles/';
+        const apiUrl = blogId ? `https://sniffnear-api.onrender.com/api/blog/${blogId}` : 'https://sniffnear-api.onrender.com/api/blog/';
   
-        const method = articleId ? 'PUT' : 'POST';
+        const method = blogId ? 'PUT' : 'POST';
   
         const response = await fetch(apiUrl, {
           method,
