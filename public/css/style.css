@@ -1187,7 +1187,23 @@ input.error, select.error{
 .infoAnimal ul{
     margin: 5px;
 }
-
+.alertEdit{
+    display: flex;
+    justify-content: center;
+}
+.editAlert{
+    display: flex;
+}
+.editAlert div{
+    margin: 5px;
+}
+.editDescription{
+    display: flex;
+    flex-direction: column;
+}
+.editDescription textarea{
+    margin-top: 15px;
+}
 .containerFormStepsSelectors .logInOptions p span:hover{
     text-decoration: underline;
 }
