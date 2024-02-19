@@ -17,16 +17,50 @@ export const PetForm = () => {
     const [selectedGender, setSelectedGender] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
     const [img, setImg] = useState('')
+    const [errors, setErrors] = useState({});
 
-    // const storedUserId = localStorage.getItem('userId');
     const handlePrev = (e) => {
         e.preventDefault();
         setCurrentStep(currentStep - 1);
       };
     const handleNext = (e) => {
         e.preventDefault();
-        setCurrentStep(currentStep + 1);
+        const newErrors={};
+        if(currentStep === 1){
+             if (!formData.type) {
+                newErrors.type = 'El tipo de mascota es requerido';
+            }
+        }
+
+        if(currentStep === 2){
+            if(!formData.name){
+                newErrors.name= 'El nombre del animal es obligatorio';
+            }
+            if(!formData.sex){
+                newErrors.sex = 'Porfavor selecciona el género de la mascota'
+            }
+            if (!formData.size) {
+                newErrors.size = 'El tamaño de la mascota es requerido';
+            }
+            if (!formData.color1) {
+                newErrors.color1 = 'El color de la mascota es requerido';
+            }
+        }
+
+        if(currentStep === 3){
+              if (!formData.img) {
+              newErrors.img= 'Agrega una foto para poder identificar mejor a tu mascota';
+            }
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length === 0) {
+            setCurrentStep(currentStep + 1);
+        }
+
     };
+
     const [formData, setFormData] = useState({
         type: '',
         name: '',
@@ -39,7 +73,6 @@ export const PetForm = () => {
         owner: getCurrentUserId(),
     });
 
-    const [errors, setErrors] = useState({});
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -96,35 +129,6 @@ export const PetForm = () => {
     const route = new URLSearchParams(location.search).get("route");
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newErrors = {};
-        console.log(formData)
-
-        if (!formData.type.trim()) {
-          newErrors.type = 'El tipo es requerido';
-        }
-    
-        if (!formData.name.trim()) {
-          newErrors.name = 'El nombre es requerido';
-        }
-        if(!selectedColor){
-            newErrors.color1 = "Debes elegir un color"
-         }
-         if (!formData.sex.trim()) {
-            newErrors.sex = 'El género es requerido';
-          }
-          if (!formData.size.trim()) {
-            newErrors.size = 'El tamaño es requerido';
-          }
-
-          if (!formData.breed.trim()) {
-            newErrors.breed = 'La raza es requerida';
-          }
-
-          if (!formData.img.trim()){
-            newErrors.img = 'La imagen es requerida';
-          }
-        if (Object.keys(newErrors).length === 0) {
-
         try {
             createLoader();
             const response = await fetch('https://sniffnear-api.onrender.com/api/pets/', {
@@ -149,10 +153,8 @@ export const PetForm = () => {
                 removeLoader();
               console.error('Error:', error);
             }
-        } else {
-            setErrors(newErrors);
-          }
-      };
+    };
+
   return (
     <main>
 
@@ -176,11 +178,12 @@ export const PetForm = () => {
                 </svg>
             ))}
          </div>
-        <form className="addNewPetForm">   
+        <form className="addNewPetForm">  
+
         {currentStep === 1 &&(
         <div className="step1">
             <h2>¿Qué tipo de mascota es?</h2>
-              <ul className="petsIconList">
+            <ul className="petsIconList">
                    <li datavalue="perro" onClick={() => handleSelectType('perro')} className={selectedType === 'perro' ? 'selected' : ''}>
                           <div>
                                     <svg width="55" height="47" viewBox="0 0 55 47" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -216,11 +219,11 @@ export const PetForm = () => {
                                     </svg>     
                             </div>    
                     </li>
-                    <p datavalue="otraMascota" onClick={() => handleSelectType('otraMascota')} className={selectedType === 'otraMascota' ? 'selected' : ''}>Otra mascota</p>
-                 </ul>                         
-                {errors.type && <p style={{ color: 'red' }}>{errors.type}</p>}
+            </ul>                         
+            {errors.type && <p style={{ color: 'red' }}>{errors.type}</p>}
         </div>          
         )} 
+
         {currentStep === 2 &&(
         <div className="step2">
             <div>
@@ -231,10 +234,11 @@ export const PetForm = () => {
                     placeholder="Ingresa el nombre de tu mascota"
                     value={formData.name}
                     onChange={handleChange}
+                    required
                 />
-            
-            </div>
             {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
+            </div>
+            
             <div>
                 <div>
                     <label htmlFor="birthdate">Fecha de nacimiento</label>
@@ -248,9 +252,10 @@ export const PetForm = () => {
                 onChange={handleChange}
                 max={getCurrentDate()}
                 />
+                {errors.birthdate && <p style={{ color: 'red' }}>{errors.birthdate}</p>}
             </div>
 
-                <div>
+            <div>
                     <label htmlFor="breed">Raza</label>
                     <select 
                         name="breed"
@@ -261,9 +266,7 @@ export const PetForm = () => {
                         <option value="raza">Mi mascota es de raza</option>
                         <option value="callejero">Mi mascota es callejera</option>
                     </select>
-                </div>
-
-            {errors.breed && <p style={{ color: 'red' }}>{errors.breed}</p>}
+            </div>
             <div>
                 <label htmlFor="sex">Género</label>
                 <input 
@@ -341,14 +344,13 @@ export const PetForm = () => {
                     <li onClick={() => handleSeleccionColor('gris')}datavalue="gris" className={selectedColor === 'gris' ? 'selected' : ''}>Gris</li>
                     <li onClick={() => handleSeleccionColor('cafe')}datavalue="cafe" className={selectedColor === 'cafe' ? 'selected' : ''}>Café</li>
                     <li onClick={() => handleSeleccionColor('naranja')}datavalue="naranja" className={selectedColor === 'naranja' ? 'selected' : ''}>Naranja</li>
-                     <li onClick={() => handleSeleccionColor('marron')}datavalue="marron" className={selectedColor === 'marron' ? 'selected' : ''}>Marron</li>
-                    <li onClick={() => handleSeleccionColor('otro')}datavalue="otro" className={selectedColor === 'otro' ? 'selected' : ''}>Otro</li>
-                </ul>     
-            </div>
-                 {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}
-
+                    <li onClick={() => handleSeleccionColor('marron')}datavalue="marron" className={selectedColor === 'marron' ? 'selected' : ''}>Marron</li>
+                </ul>
+            {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}         
+            </div>            
         </div>
         )}
+
         {currentStep === 3 &&(
             <div>
             <h2>Foto de perfil de tu mascota</h2>
