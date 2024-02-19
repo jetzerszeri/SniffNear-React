@@ -229,7 +229,26 @@ a{
     transform: scale(1.2);
     color: var(--color-oragne);
 }
+.topNavBarAlerts{
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--color-neutral-10);
+}
 
+.topNavBarAlerts i , h1{
+    font-size: 1.5em;
+    color: var(--color-neutral-50);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.topNavBarAlerts i:hover, h1:hover{
+    color: var(--color-green);
+    cursor: pointer;
+
+}
 /* top nav bar */
 .topNavBar{
     display: flex;

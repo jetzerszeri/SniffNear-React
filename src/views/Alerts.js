@@ -3,7 +3,7 @@ import { Navbar } from "../components/Navbar"
 import { AlertList } from "../components/alerts/AlertList"
 import { BottomNav } from "../components/BottomNav";
 import {getCurrentUserId, createLoader, removeLoader} from '../js/functions';
-
+import { Link } from "react-router-dom";
 export const Alerts = () => {
 
     const [alerts, setAlerts] = useState([]);
@@ -33,7 +33,12 @@ export const Alerts = () => {
     return (
         <>
             <Navbar />
-
+            <div className='topNavBarAlerts'>
+                 <h1 style={{color:'black', fontWeight:'700'}}>Listado de alertas</h1>
+                <Link to={"/mapa-list"}>
+                <i className="bi bi-map-fill"></i>
+                </Link>
+             </div> 
             <main className="mapMain">
                 <AlertList
                  alerts={alerts}

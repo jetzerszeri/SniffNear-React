@@ -3,7 +3,7 @@ import {Navbar} from "../../Navbar";
 import {BottomNav} from "../../BottomNav";
 import { createLoader, removeLoader } from "../../../js/functions";
 import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
-
+import { Link } from "react-router-dom";
 
 const MapaList = () => {
   const apiKey = process.env.REACT_APP_API_KEY;
@@ -62,7 +62,12 @@ console.log(coordV)
   return (
     <>
     <Navbar/>
-      
+    <div className='topNavBarAlerts'>
+      <Link to={'/alerts'}>
+        <h1>Listado de alertas</h1>
+      </Link>     
+      <i className="bi bi-map-fill" style={{color:'black', fontWeight:'300'}}></i>        
+    </div>   
     <div className="mapacontainer">
       <div id="mi_mapaL">
         <APIProvider apiKey={apiKey}>

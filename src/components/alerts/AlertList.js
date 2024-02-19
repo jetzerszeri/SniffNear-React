@@ -28,16 +28,6 @@ export const AlertList = ({alerts, onAlertDelete, userId}) => {
     };
     return (
         <div className="listAlertas">
- 
-                <div className='topNavBar'>
-                    
-                        <h1>Listado de alertas</h1>
-                    <Link to={"/mapa-list"}>
-                        <i className="bi bi-map-fill"></i>
-                    </Link>
-                 </div> 
-     
-           
             <ul>
                 {alerts.map((alert) => {
                 const isOwner = alert.creator._id === userId;
