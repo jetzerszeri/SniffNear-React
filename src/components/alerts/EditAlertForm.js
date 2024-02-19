@@ -309,8 +309,8 @@ export const EditAlertForm = () =>{
                 </div>
             </div>
             <div>
-            <h2>Imagen de referencia a tu mascota</h2>
-            {/* <ImgInput src={formData.img} setSelectedImg={handleImgLink} /> */}
+            {/* <h2>Imagen de referencia a tu mascota</h2>
+            <ImgInput src={formData.img} setSelectedImg={handleImgLink} /> */}
 
         </div>
 
