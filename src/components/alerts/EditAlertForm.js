@@ -122,24 +122,6 @@ export const EditAlertForm = () =>{
     const handleSubmit = async (e) => {
         e.preventDefault();
             try {
-                // // Crear un objeto que solo contenga los campos que han cambiado
-                // const updatedData = {};
-                // if (formData.type !== alert.type) {
-                //     updatedData.type = formData.type;
-                // }
-                // if (formData.color1 !== alert.color1) {
-                //     updatedData.color1 = formData.color1;
-                // }
-                // if (formData.sex !== alert.sex) {
-                //     updatedData.sex = formData.sex;
-                // }
-                // if (formData.size !== alert.size) {
-                //     updatedData.size = formData.size;
-                // }
-                // if (formData.img !== alert.img) {
-                //     updatedData.img = formData.img;
-                // }
-    
                 const response = await fetch(`https://sniffnear-api.onrender.com/api/alerts/${alertId}`, {
                     method: 'PUT',
                     headers: {
@@ -162,11 +144,10 @@ export const EditAlertForm = () =>{
 
     return(
         <>
-        <h1>Alerta {alertId}</h1>
         <main>
-        <form className="addNewPetForm createAlert">
-            <h1>Editar Alerta</h1>
-                <div className="step1">
+        <h1 className="alertEdit">Editar Alerta</h1>
+        <form className="addNewPetForm editAlert">
+                <div>
                     <p>¿Qué tipo de mascota encontraste?</p>
                     <ul className="petsIconList">
                         <li datavalue="perro" 
@@ -209,7 +190,6 @@ export const EditAlertForm = () =>{
                             </div>
                         </li>
                     </ul>
-
                 </div>
                 <div>
                         <label htmlFor="sex">Género</label>
@@ -230,7 +210,6 @@ export const EditAlertForm = () =>{
                                     <span>Macho</span>
                                 </div>
 
-
                                 <div datavalue="female" 
                                 onClick={() => handleSelectGender('female')} 
                                 className={formData.sex === 'female' ? 'selected' : ''}>
@@ -242,12 +221,12 @@ export const EditAlertForm = () =>{
                                 </div>
 
                         </div>
-                  </div>
+                </div>
                 <div>
                     <label htmlFor="size">Tamaño</label>
-                        <p id="petSizeText">Pequeño, mediano o grande</p>
-                        <input type="hidden" name="size" id="size" />
-                        <ul className="sizeSelector">
+                    <p id="petSizeText">Pequeño, mediano o grande</p>
+                    <input type="hidden" name="size" id="size" />
+                    <ul className="sizeSelector">
                         <li datavalue="pequeño" 
                         onClick={() => handleSelectSize('pequeño')} 
                         className={formData.size === 'pequeño' ? 'selected' : ''}>
@@ -281,7 +260,7 @@ export const EditAlertForm = () =>{
                                     <path d="M48.3806 32.1804C48.1306 30.6403 48.2685 29.4299 48.4065 28.2638C48.4927 27.532 48.6522 26.5548 48.9582 25.4169C49.1867 24.6529 49.4152 23.8888 49.6436 23.1289L50.5618 20.877C50.9541 19.9763 51.3421 19.2485 51.6481 18.7177C52.3853 17.435 52.8207 16.7072 53.7173 16.0638C54.6312 15.4083 55.3597 15.3199 55.5537 15.2998C56.0494 15.2515 56.4676 15.3239 56.7348 15.3882C57.8858 15.7662 58.6014 16.3332 58.985 16.6871C59.567 17.2299 59.9032 17.7808 60.2222 18.3035C60.6059 18.9308 60.8559 19.4898 61.0154 19.908C61.2094 20.3664 61.4034 20.8811 61.5715 21.4521C61.7698 22.1276 61.9034 22.7509 61.9853 23.3138C62.0586 23.6516 62.1276 23.9934 62.1922 24.3432C62.5112 26.0803 62.6578 27.729 62.6837 29.257C62.7052 30.1095 62.6707 31.1027 62.5112 32.2045C62.3733 33.1494 62.175 33.9939 61.9595 34.7257C61.7353 35.5581 61.412 36.2095 61.149 36.6558C60.8516 37.1625 60.261 38.1396 59.0756 38.972C58.4979 39.3781 57.9505 39.6274 57.5539 39.7842C57.1185 39.8888 56.446 40.0014 55.6313 39.9451C53.3423 39.7883 51.8335 38.4332 51.3291 37.9788C50.3247 37.074 49.7816 36.0929 49.5272 35.6224C49.4755 35.5259 49.2298 35.0675 48.9841 34.4281C48.8591 34.1024 48.5573 33.2821 48.3806 32.1884V32.1804Z" stroke="#363A59" strokeMiterlimit="10"/>
                                 </svg>
                         </li>
-                        </ul>
+                    </ul>
                 </div>
                 <div>
                 <label>Color predominante</label>
@@ -295,25 +274,22 @@ export const EditAlertForm = () =>{
                                 <li onClick={() => handleSelectedColor('otro')}datavalue="otro" className={formData.color1 === 'otro' ? 'selected' : ''}>Otro color</li>
                         </ul>
                 </div>
-
-            <div>
-            <div className="addNewPetForm">
-                            <label htmlFor="description">Describe la mascota</label>
-                            <textarea
-                            className='step2'
-                            name="description"
-                            placeholder="Podés compartir todos los datos que consideres necesarios" 
-                            value={formData.description}
-                            onChange={handleChange}
-                            rows="4"/>
+                <div>
+                <div className="editDescription">
+                                <label htmlFor="description">Describe la mascota</label>
+                                <textarea
+                                className='step2'
+                                name="description"
+                                placeholder="Podés compartir todos los datos que consideres necesarios" 
+                                value={formData.description}
+                                onChange={handleChange}
+                                rows="4"/>
                 </div>
-            </div>
-            <div>
-            {/* <h2>Imagen de referencia a tu mascota</h2>
-            <ImgInput src={formData.img} setSelectedImg={handleImgLink} /> */}
-
-        </div>
-
+                </div>
+                <div>
+                    {/* <h2>Imagen de referencia a tu mascota</h2>
+                    <ImgInput src={formData.img} setSelectedImg={handleImgLink} />  */}
+                </div>
             <button onClick={handleSubmit}>Editar Alerta</button>
         </form>
         </main>
