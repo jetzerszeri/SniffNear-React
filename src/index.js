@@ -67,7 +67,7 @@ const router = createBrowserRouter([
     element: <EditPetProfile/>
   },
 {
-  path: '/alerts/:alertId/edit',
+  path: '/alerts-edit',
   element: <EditAlert/>
 },
 {

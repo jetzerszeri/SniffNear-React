@@ -2,11 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) => {
   const navigate = useNavigate();
-
-
   return (
     <li>
-      
         <div>
         <Link to={`/pet-profile?petId=${alert._id}`}>
             <img src="./img/foundIcon.svg" alt="icono"/>
@@ -23,9 +20,12 @@ export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) 
             <button onClick={() => onDeleteClick(alert._id)}>
               <i className="bi bi-trash"/>
             </button>
-            <button className="btn" onClick={() => navigate(`${alert._id}/edit`)}>
+            <Link to={`/alerts-edit?alertId=${alert._id}`}>
+            <button className="btn">
               <i className="bi bi-pencil"/>
             </button>
+            </Link>
+           
           </>
         )}
     </li>

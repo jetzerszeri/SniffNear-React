@@ -17,6 +17,7 @@ export const FoundPetForm = () =>{
     const [selectedType, setSelectedType] = useState("");
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
+    const [selectedGender, setSelectedGender] = useState("");
     const [user, setUser] = useState(null);
     const [img, setImg] = useState('');  
     const [errors, setErrors] = useState({});
@@ -29,6 +30,7 @@ export const FoundPetForm = () =>{
         color1:'', 
         color2:'',
         breed:'',
+        sex:'',
         description:'' ,
         latitude: '',
         longitude: '',
@@ -77,7 +79,7 @@ export const FoundPetForm = () =>{
               newErrors.description= 'Porfavor, ingrese una breve descripción de la mascota';
             }
         }
-         if(currentStep === 6){
+         if(currentStep === 7){
             if (!formData.img) {
               newErrors.img= 'Una imagen de la mascota puede ayudar a su rapida localización';
             }
@@ -156,6 +158,13 @@ export const FoundPetForm = () =>{
             img: link,
         });
     }
+    const handleSelectGender = (value) => {
+        setSelectedGender(value)
+        setFormData({
+            ...formData,
+            sex: value,
+        });
+    };
     useEffect(() => {
         const fetchUser = async () => {
           try {
@@ -242,7 +251,7 @@ export const FoundPetForm = () =>{
         <Navbar/>
         <main>
         <div className="stepsForm">
-            {[...Array(8).keys()].map((step, index) => (
+            {[...Array(9).keys()].map((step, index) => (
                 <svg
                     key={index}
                     width="22"
@@ -449,8 +458,38 @@ export const FoundPetForm = () =>{
                 </div>
             </div>
         )}
-       
-         {currentStep === 6 &&(
+        {currentStep === 6 &&(
+            <div>
+            <label htmlFor="sex">Género</label>
+            <input 
+            type="hidden" 
+            name="sex" 
+            id="sex"
+            value={formData.sex}
+            />
+            <div className="sexSelector">
+        
+                <div datavalue="male" onClick={() => handleSelectGender('male')} className={selectedGender === 'male' ? 'selected' : ''}>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="20" fill="#D1E6FF" fillOpacity="0.5"/>
+                        <path d="M25.8336 14.1666L21.3336 18.6666M25.8336 14.1666H21.667M25.8336 14.1666L25.8337 18.3333M22.5003 21.6666C22.5003 23.9678 20.6348 25.8333 18.3337 25.8333C16.0325 25.8333 14.167 23.9678 14.167 21.6666C14.167 19.3654 16.0325 17.5 18.3337 17.5C20.6348 17.5 22.5003 19.3654 22.5003 21.6666Z" stroke="#1B85F3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span>Macho</span>
+                </div>
+    
+        
+                <div datavalue="female" onClick={() => handleSelectGender('female')} className={selectedGender === 'female' ? 'selected' : ''}>
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="40" height="40" rx="20" fill="#FFE1F2" fillOpacity="0.5"/>
+                        <path d="M19.9997 21.6667C22.3009 21.6667 24.1663 19.8012 24.1663 17.5C24.1663 15.1989 22.3009 13.3334 19.9997 13.3334C17.6985 13.3334 15.833 15.1989 15.833 17.5C15.833 19.8012 17.6985 21.6667 19.9997 21.6667ZM19.9997 21.6667V27.5M17.4997 25H22.4997" stroke="#FF9AD5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span>Hembra</span>
+                </div>
+            
+            </div>
+        </div>
+        )}
+         {currentStep === 7 &&(
             <div className="step6">
                 <h2>Foto de la mascota</h2>
                 <ImgInput setImgLink={handleImgLink}/>
@@ -515,7 +554,7 @@ export const FoundPetForm = () =>{
                     Regresar
                 </button>
             )}
-            {currentStep <= 7 ? (
+            {currentStep <= 8 ? (
                 <button id="next" onClick={handleNext}>
                     Continuar
                 </button>
