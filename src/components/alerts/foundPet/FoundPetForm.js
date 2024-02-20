@@ -5,6 +5,11 @@ import { getCurrentUserId } from "../../../js/functions";
 import { useNavigate } from "react-router";
 import Mapa from "../map/MapLost";
 import { useLocation } from "react-router";
+import { 
+    setDefaults,
+    geocode,
+    RequestType,
+  } from "react-geocode";
 const getCurrentDate = () => {
     const date = new Date();
     const year = date.getFullYear();
@@ -24,6 +29,38 @@ export const FoundPetForm = () =>{
     const navigate = useNavigate();
     const location = useLocation();
     const current_route = location.pathname;
+    //geolocalizacion
+    const [lat,setLat] = useState(null);
+    const [lng, setLng] = useState(null);
+    const [status, setStatus] = useState(null);
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const apiKey = process.env.REACT_APP_API_KEY_GEOCODING;
+    //obtengo coordenadas
+    useEffect(() => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              setLat(position.coords.latitude);
+              setLng(position.coords.longitude);
+              setStatus(null);
+            },
+            () => {
+              setStatus('No se pudo obtener tu ubicación');
+            }
+          );
+        } else {
+          setStatus('La geolocalización no es compatible con tu navegador');
+        }
+      }, []);
+    
+      setDefaults({
+        key: apiKey,
+        language:"es",
+        region: "es"
+      })
+
     const [formData,setFormData] = useState({
         type:'',
         size:'',
@@ -42,7 +79,44 @@ export const FoundPetForm = () =>{
         email: '',
         password:'',
         creator:'',
+        state:'',
+        city:'',
+        country:'',
     })
+          useEffect(()=>{
+          //obtengo la direccion desde las lat y lng
+      geocode(RequestType.LATLNG,`${lat}, ${lng}`,{
+        location_type: "ROOFTOP", // Override location type filter for this request.
+      enable_address_descriptor: true, // Include address descriptor in response.
+    })
+      .then(({ results }) => {
+        const address = results[0].formatted_address;
+        const { city, state, country } = results[0].address_components.reduce(
+          (acc, component) => {
+            if (component.types.includes("locality"))
+              acc.city = component.long_name;
+            else if (component.types.includes("administrative_area_level_1"))
+              acc.state = component.long_name;
+            else if (component.types.includes("country"))
+              acc.country = component.long_name;
+            return acc;
+          },
+          {}
+        );
+        setCity(city);
+        setCountry(country);
+        setState(state);
+        // console.log(city, state, country);
+        // console.log(address);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            state: state,
+            city: city,
+            country: country,
+          }));
+      })
+      .catch(console.error);
+      },[lat,lng])
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const handlePrev = (e) => {
         e.preventDefault();
@@ -251,7 +325,7 @@ export const FoundPetForm = () =>{
         <Navbar/>
         <main>
         <div className="stepsForm">
-            {[...Array(9).keys()].map((step, index) => (
+            {[...Array(8).keys()].map((step, index) => (
                 <svg
                     key={index}
                     width="22"
@@ -554,7 +628,7 @@ export const FoundPetForm = () =>{
                     Regresar
                 </button>
             )}
-            {currentStep <= 8 ? (
+            {currentStep <= 7 ? (
                 <button id="next" onClick={handleNext}>
                     Continuar
                 </button>
