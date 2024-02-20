@@ -249,6 +249,15 @@ a{
     cursor: pointer;
 
 }
+.filters{
+    display: flex ;
+    flex-direction: column;
+    gap: 8px;
+    width: max-content;
+    justify-content: space-between;
+    margin: 5px;
+    flex-wrap: wrap;
+}
 /* top nav bar */
 .topNavBar{
     display: flex;

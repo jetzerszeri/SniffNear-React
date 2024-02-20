@@ -83,11 +83,11 @@ export const FoundPetForm = () =>{
         city:'',
         country:'',
     })
-          useEffect(()=>{
-          //obtengo la direccion desde las lat y lng
+    useEffect(()=>{
+
       geocode(RequestType.LATLNG,`${lat}, ${lng}`,{
-        location_type: "ROOFTOP", // Override location type filter for this request.
-      enable_address_descriptor: true, // Include address descriptor in response.
+        location_type: "ROOFTOP", 
+      enable_address_descriptor: true,
     })
       .then(({ results }) => {
         const address = results[0].formatted_address;
@@ -106,8 +106,6 @@ export const FoundPetForm = () =>{
         setCity(city);
         setCountry(country);
         setState(state);
-        // console.log(city, state, country);
-        // console.log(address);
         setFormData((prevFormData) => ({
             ...prevFormData,
             state: state,
@@ -435,7 +433,6 @@ export const FoundPetForm = () =>{
                                 </svg>     
                             </div>
                         </li>
-                        <p datavalue="otraMascota" onClick={() => handleSelectType('otraMascota')} className={selectedType === 'otraMascota' ? 'selected' : ''}>Otra mascota</p>
                     </ul>
                 {errors.type && <p style={{ color: 'red' }}>{errors.type}</p>}
                 </div>
@@ -533,8 +530,10 @@ export const FoundPetForm = () =>{
             </div>
         )}
         {currentStep === 6 &&(
-            <div>
-            <label htmlFor="sex">Género</label>
+            <div className="step6">
+            <h2>Cual es su género?</h2>
+            <div className="containerFormStepsSelectors">
+               <label htmlFor="sex">Selecciona el género</label>
             <input 
             type="hidden" 
             name="sex" 
@@ -560,7 +559,9 @@ export const FoundPetForm = () =>{
                     <span>Hembra</span>
                 </div>
             
+            </div>  
             </div>
+           
         </div>
         )}
          {currentStep === 7 &&(
