@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import {BottomNav} from "../BottomNav";
+import { 
+    setDefaults,
+    geocode,
+    RequestType,
+  } from "react-geocode";
 export const AlertDetail = () =>{
     const navigate = useNavigate();
     const handleBack = () =>{
@@ -27,9 +32,61 @@ export const AlertDetail = () =>{
           }
           
         };
-        
         getAlertDetail(); 
       }); 
+      //obtener la ubicacion desde la latitud y longitud de la DB
+      const [lat,setLat] = useState(null);
+      const [lng, setLng] = useState(null);
+      const [status, setStatus] = useState(null);
+      const [city, setCity] = useState('');
+      const [state, setState] = useState('');
+      const [country, setCountry] = useState('');
+      const [adress,setAdress]= useState('');
+      const apiKey = process.env.REACT_APP_API_KEY_GEOCODING;
+      useEffect(()=>{
+        if(alert != null){
+               if(alert.latitude != null && alert.longitude !=null){
+                const latitude = alert.latitude;
+                const longitude = alert.longitude;
+                setLat(latitude);
+                setLng(longitude)
+        }
+        }
+      },[alert])
+      setDefaults({
+        key: apiKey,
+        language:"es",
+        region: "es"
+    })
+   
+    useEffect(()=>{
+        geocode(RequestType.LATLNG,`${lat} , ${lng}`,{
+        location_type: "ROOFTOP", 
+        enable_address_descriptor: true, 
+        })
+        .then(({ results }) => {
+        const address = results[0].formatted_address;
+        const { city, state, country } = results[0].address_components.reduce(
+            (acc, component) => {
+            if (component.types.includes("locality"))
+                acc.city = component.long_name;
+            else if (component.types.includes("administrative_area_level_1"))
+                acc.state = component.long_name;
+            else if (component.types.includes("country"))
+                acc.country = component.long_name;
+            return acc;
+            },
+            {}
+        );
+        setAdress(address)
+        setCity(city);
+        setCountry(country);
+        setState(state);
+        })
+        .catch(console.error);
+    })
+    const fecha = new Date(alert.date);
+    const formatDate = fecha.toLocaleDateString('es-AR');
     return(
         <>
         <div className="topNavBar">
@@ -55,7 +112,8 @@ export const AlertDetail = () =>{
                 </Link> 
                 </div>
         </div>
-        <div className="detail">
+        <main>
+           <div className="detail">
            <h1>Detalle alerta</h1> 
         </div>
         <div className="detailAlert">
@@ -74,7 +132,7 @@ export const AlertDetail = () =>{
                 )
               
                 }
-                 {alert.alertType ==="encontado" && (
+                 {alert.alertType ==="encontrado" && (
                     <svg width="33" height="33" viewBox="0 0 18 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.13566 0.489738C4.28094 0.618204 3.37873 0.995569 2.68002 1.52147C2.12716 1.93497 1.44542 2.69773 1.07232 3.324C0.122626 4.90572 -0.213159 6.82066 0.132801 8.71953C0.566948 11.1202 2.16786 14.4964 4.52854 17.9851C5.13906 18.8883 5.30525 19.1051 5.46127 19.1934C5.71566 19.338 6.06162 19.2858 6.25834 19.065C6.33296 18.9847 6.73997 18.4106 7.05541 17.9489L7.1809 17.7643L6.96383 17.5555C6.72301 17.3187 6.43132 16.9212 6.29565 16.6442L6.20407 16.4596L6.01074 16.7566C5.9056 16.9172 5.80384 17.0537 5.79028 17.0617C5.75636 17.0778 5.40361 16.5599 4.86432 15.7008C3.2668 13.1556 2.09324 10.6586 1.66927 8.92026C1.48273 8.15348 1.43863 7.75203 1.45898 7.07759C1.49968 5.74476 1.91687 4.62872 2.71733 3.68129C3.32107 2.96671 3.95872 2.54518 4.80666 2.29628C5.22385 2.17183 6.00396 2.14373 6.47202 2.23205C7.34031 2.40467 8.10686 2.8543 8.75129 3.57691C9.54497 4.47216 9.9825 5.52798 10.1012 6.84073C10.1487 7.38269 10.1012 7.93268 9.95876 8.59508C9.9011 8.85201 9.84683 9.10091 9.83666 9.14909L9.8197 9.23741L10.0843 9.13704C10.3726 9.02865 10.766 8.99653 11.1391 9.05274L11.3494 9.08485L11.3833 8.9323C11.5088 8.38633 11.5359 8.07721 11.5393 7.29437C11.5393 6.35096 11.4918 5.97359 11.268 5.16667C10.8169 3.53275 9.9011 2.21197 8.60205 1.32476C8.08311 0.971481 7.39797 0.682436 6.75693 0.545942C6.3974 0.47368 5.46467 0.441565 5.13566 0.489738Z" fill="#FF8367"/>
                     <path d="M5.43408 3.90203C4.56239 4.04655 3.81959 4.58852 3.3651 5.41953C3.0327 6.03375 2.89364 6.58775 2.89703 7.31439C2.89703 8.21364 3.15142 8.97239 3.67036 9.63479C4.0231 10.0884 4.56918 10.4698 5.07794 10.6224C5.61045 10.7829 6.27524 10.7388 6.80435 10.5019C7.5268 10.1808 8.19159 9.40194 8.46632 8.55889C8.75801 7.67168 8.73427 6.72826 8.39849 5.87718C7.9406 4.70092 7.02482 3.96225 5.93945 3.88999C5.77325 3.87794 5.54601 3.88196 5.43408 3.90203Z" fill="#FF8367"/>
@@ -102,7 +160,7 @@ export const AlertDetail = () =>{
                 </div>
                 <div className="details">
                     <p>Dia</p>
-                    <p>{alert.date}</p>
+                    <p>{formatDate}</p>
                 </div>
                 <div className="details">
                     <p>Hora</p>
@@ -118,7 +176,10 @@ export const AlertDetail = () =>{
                 </div>
                 <div className="details">
                     <p>Ubicación</p>
-                    {/* Tengo que toomar las coordenadas que esten guardadas y pasar la ubicacion con el geocode */}
+                    <ul>
+                        <li>{adress}</li>
+                     
+                    </ul>
                 </div>
                  <div className="details">
                     <p>Descripción</p>
@@ -148,7 +209,9 @@ export const AlertDetail = () =>{
         <div>
          
         </div>
-        </div>
+        </div> 
+        </main>
+        
         <BottomNav/>
         
         </>

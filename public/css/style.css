@@ -1286,6 +1286,7 @@ input.error, select.error{
 .imgDetails{
     display: flex;
     justify-content: center;
+    width: auto;
 }
 .imgDetails img{
     border-radius: 8px;
