@@ -24,7 +24,7 @@ import MapaList from './components/alerts/map/MapList';
 import { AdoptionForm } from './views/AdoptionForm';
 import { AdoptionList } from './views/AdoptionList';
 import { AdoptionCard } from './views/AdoptionCard';
-
+import { AlertDetail } from './components/alerts/AlertDetail';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -114,6 +114,10 @@ const router = createBrowserRouter([
 {
   path: '/adoption-card',
   element:<AdoptionCard/>
+},
+{
+  path:'/alert-detail',
+  element:<AlertDetail/>
 }
 ])
 

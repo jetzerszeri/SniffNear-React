@@ -115,7 +115,7 @@ export const Alerts = () => {
                 <i className="bi bi-map-fill"></i>
                 </Link>
              </div>
-             <div className="topNavBarAlerts">
+             <div className="topNavBarFilters">
              <i class="bi bi-filter" onClick={()=>setShowFilters(!showFilters)}/>
              </div>
              {showFilters && (
