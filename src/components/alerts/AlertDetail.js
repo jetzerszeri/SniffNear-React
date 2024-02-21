@@ -34,7 +34,6 @@ export const AlertDetail = () =>{
         };
         getAlertDetail(); 
       }); 
-      //obtener la ubicacion desde la latitud y longitud de la DB
       const [lat,setLat] = useState(null);
       const [lng, setLng] = useState(null);
       const [status, setStatus] = useState(null);

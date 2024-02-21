@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+
+
 export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) => {
   const navigate = useNavigate();
   const [lost , setLost] = useState(false);
   const [found, setFound] = useState(false);
+  const [showModal, setShowModal] = useState(false)
   useEffect(()=>{
-    //pongo el alert type si es igual a found en el set found
     if(alert.alertType === 'encontrado'){
       setFound(true);
       setLost(false);
@@ -15,9 +17,34 @@ export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) 
       setLost(true);
     }
   },[alert.alertType])
+  const handleDeleteConfirm =()=>{
+    onDeleteClick(alert._id);
+    setShowModal(false)
+  }
+  const handleCancel = () => {
+    setShowModal(false);
+    navigate('/alerts');
+  };
+
   return (
-    <Link to={`/alert-detail?alertId=${alert._id}`}>
-      <li>
+    <> 
+    {showModal && (
+      <div className="myModal">
+          <div className="headerModal">
+            <h1>¿Estás seguro que deseas eliminar esta alerta?</h1>
+            <i class="bi bi-x" onClick={handleCancel}></i>
+          </div>
+          <div className="bodyModal">
+          <button onClick={handleCancel}>
+          Cancelar
+          </button>
+          <button onClick={handleDeleteConfirm} className="buttonDelete">
+          Sí, ELIMINAR
+          </button>
+          </div>
+      </div>
+    )}
+       <li>
         <div>
           {found && 
             <svg width="33" height="33" viewBox="0 0 18 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,21 +74,26 @@ export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) 
         <img src={alert.img} alt={alert.type}/>
         <p>Color: {alert.color1}, tamaño: {alert.size}</p>
         <p><i className="bi bi-geo-alt"></i>{alert.state}, {alert.country}</p>
+        <Link to={`/alert-detail?alertId=${alert._id}`}>
+          <button className="viewAlert">Ver alerta</button>
+        </Link>
+        
         {showButtons && (
          <div className="buttonsAlert">
-         <button className="buttonDelete" onClick={() => onDeleteClick(alert._id)}>
+         <button className="buttonDelete" onClick={() => setShowModal(true)}>
            <i className="bi bi-trash"/>
          </button>
+       
          <Link to={`/alerts-edit?alertId=${alert._id}`}>
          <button className="btn">
            <i className="bi bi-pencil"/>
          </button>
          </Link>
-        
        </div>
         )}
     </li>
-    </Link>
+    </>
+
     
   )
 }

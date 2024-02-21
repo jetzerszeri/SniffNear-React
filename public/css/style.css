@@ -1217,8 +1217,45 @@ input.error, select.error{
 .btnStepForm button{
     flex: 1;
 }
-
-
+.myModal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.headerModal{
+    display: flex;
+    justify-content: space-between;
+}
+.headerModal i{
+    color: #959292;
+    font-size: 30px;
+}
+.headerModal h1{
+    text-align: center;
+}
+.headerModal i:hover{
+    cursor: pointer;
+    color: #000000;
+    font-size: 30px;
+}
+.viewAlert{
+    width: 100%;
+}
+.viewAlert:hover{
+    color: #000000;
+}
+.bodyModal{
+    display: flex;
+    gap: 5px;
+}
+.bodyModal button:hover{
+    color: #000000;
+}
 /* .stepSubHeading.selected{
     text-transform: capitalize;
     color: var(--color-darkblue);
