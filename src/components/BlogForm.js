@@ -44,84 +44,76 @@ export const BlogForm = () => {
     });
   };
 
-  const getBlogInfo = useCallback(async () => {
-    if (blogId) {
-      createLoader();
-      const response = await fetch(`https://sniffnear-api.onrender.com/api/blogs/${blogId}`);
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+  // const getBlogInfo = useCallback(async () => {
+  //   if (blogId) {
+  //     createLoader();
+  //     const response = await fetch(`https://sniffnear-api.onrender.com/api/blogs/${blogId}`);
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log(data);
 
-        setFormData({
-          ...formData,
-          title: data.title,
-          category: data.category,
-          content: data.content,
-        });
-        setSelectedCategory(data.category);
-      }
-    }
-  }, [blogId, formData]);
+  //       setFormData({
+  //         ...formData,
+  //         title: data.title,
+  //         category: data.category,
+  //         content: data.content,
+  //       });
+  //       setSelectedCategory(data.category);
+  //     }
+  //   }
+  // }, [blogId, formData]);
 
-  useEffect(() => {
-    getBlogInfo();
-  }, [getBlogInfo]);
+  // useEffect(() => {
+  //   getBlogInfo();
+  // }, [getBlogInfo]);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const route = new URLSearchParams(location.search).get("route");
+  // const route = new URLSearchParams(location.search).get("route");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newErrors = {};
-    console.log(formData);
-  
-    if (!formData.type.trim()) {
-      newErrors.type = 'El tipo es requerido';
-    }
-  
-    if (!formData.title.trim()) {
-      newErrors.title = 'El título es requerido';
-    }
-    if (!selectedCategory) {
-      newErrors.category = "Debes elegir una categoría";
-    }
-    if (!formData.content.trim()) {
-      newErrors.content = 'El contenido es requerido';
-    }
-    if (!formData.img.trim()) {
-      newErrors.img = 'La imagen es requerida';
-    }
-  
-    if (Object.keys(newErrors).length === 0) {
+
       try {
         createLoader();
-        const apiUrl = blogId ? `https://sniffnear-api.onrender.com/api/blogs/${blogId}` : 'https://sniffnear-api.onrender.com/api/blogs/';
+        // const apiUrl = blogId ? `https://sniffnear-api.onrender.com/api/blogs/${blogId}` : 'https://sniffnear-api.onrender.com/api/blogs/';
   
-        const method = blogId ? 'PUT' : 'POST';
-  
-        const response = await fetch(apiUrl, {
-          method,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-  
-        const json = await response.json();
-        console.log(json);
-        console.log(formData);
-  
+        // const method = blogId ? 'PUT' : 'POST';
+        const response = await fetch('https://sniffnear-api.onrender.com/api/blog/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            });
+            const json = await response.json();
+
         if (response.ok) {
-          setFormData({
-            type: '',
-            img: '',
-            title: '',
-            category: '',
-            content: '',
-            owner: getCurrentUserId(),
-          });
+
+          console.log('articulo publicado')
+          navigate('/')
+        // const response = await fetch(apiUrl, {
+        //   method,
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(formData),
+        // });
   
-          navigate(route);
+        // const json = await response.json();
+        // console.log(json);
+        // console.log(formData);
+  
+        // if (response.ok) {
+        //   setFormData({
+        //     type: '',
+        //     img: '',
+        //     title: '',
+        //     category: '',
+        //     content: '',
+        //     owner: getCurrentUserId(),
+        //   });
+  
+        //   navigate('/');
         } else {
           removeLoader();
           console.error('Error en el registro:', json.message);
@@ -130,15 +122,13 @@ export const BlogForm = () => {
         removeLoader();
         console.error('Error en la solicitud:', error);
       }
-    } else {
-      setErrors(newErrors);
-    }
+   
   };
   
 
   return (
     <main>
-     <form action="" onSubmit={handleSubmit} className="addNewPetForm">
+     <form action="" className="addNewPetForm">
        <div className="step2"> 
        <h1>Agregar un artículo</h1>
           <div>
@@ -189,7 +179,7 @@ export const BlogForm = () => {
           {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
         </div>
 
-        <button>Guardar</button>
+        <button onClick={handleSubmit}>Guardar</button>
       </form>
     </main>
   );
