@@ -249,7 +249,6 @@ a{
     cursor: pointer;
 
 }
-<<<<<<< HEAD
 .filters{
     margin-left: 20px !important;
     display: flex ;
@@ -258,31 +257,6 @@ a{
     width: max-content;
     justify-content: space-between;
     margin: 5px;
-=======
-/* filters */
-.topNavBarFilters{
-    display: flex;
-    justify-content: end;
-    height: 60px;
-    align-items: center;
-    padding: 10px;
-    background-color: var(--color-neutral-10);
-}
-.topNavBarFilters i{
-    font-size: 1.5em;
-    color: var(--color-neutral-50);
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-.topNavBarFilters i:hover, h1:hover{
-    color: var(--color-green);
-    cursor: pointer;
-
-}
-.filters {
-    display: flex;
-    width: 80%;
->>>>>>> 44b394f7f3a1768856ac41359f67240e9fdb1e36
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
