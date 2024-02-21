@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import  Blog  from './Blog';
 
-export const ArticleInfo = ({articles = [], onArticlesDelete}) => {
+export const BlogInfo = ({blogs = [], onBlogsDelete}) => {
 
     const handleDeleteClick = async (id) => {
         try {
@@ -14,25 +14,25 @@ export const ArticleInfo = ({articles = [], onArticlesDelete}) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
     
-        onArticlesDelete(id);
+        onBlogsDelete(id);
         console.log(`El artículo con el id ${id} se ha eliminado correctamente.`);
         } catch (error) {
         console.error('Error al eliminar el artículo:', error);
         }
     };
   
-  const handleEditClick = (articleToEdit) => {
-    console.log('Editar artículo:', articleToEdit);
+  const handleEditClick = (blogToEdit) => {
+    console.log('Editar artículo:', blogToEdit);
   };
     return (
         <div className="listAlertas">
-        <h1>Artículos de blog</h1>
+        <h1>Artículos del blog</h1>
 
         <ul>
-            {articles && articles.map((article) => (
+            {blogs && blogs.map((blog) => (
                 <Blog
-                    article={article}
-                    key={article._id}
+                    blog={blog}
+                    key={blog._id}
                     onDeleteClick={handleDeleteClick}
                     onEditClick={handleEditClick}
                 />
@@ -42,4 +42,4 @@ export const ArticleInfo = ({articles = [], onArticlesDelete}) => {
     )
 }
 
-export default ArticleInfo;
+export default BlogInfo;

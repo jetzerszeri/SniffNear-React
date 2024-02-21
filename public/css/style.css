@@ -250,8 +250,9 @@ a{
 
 }
 .filters{
+    margin-left: 20px !important;
     display: flex ;
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 8px;
     width: max-content;
     justify-content: space-between;
@@ -722,10 +723,10 @@ main section{
 
 /* .singUpView form input, .addNewPetForm input{ */
 input, select, textarea{
-    height: 40px;
+    height: 35px;
     border-radius: 8px;
     border: 1px solid var(--color-neutral-40);
-    padding: 0 10px;
+    padding: 3 9px;
     font-size: 1em;
     transition: all 0.2s ease;
 }
@@ -1091,7 +1092,7 @@ input.error, select.error{
 /* estilos en alertas */
 /* -- estilos para alerta de mascota encontrada luego de refactorizar */
 .containerFormStepsSelectors{
-    min-height: 50vh;
+    min-height: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1231,6 +1232,7 @@ input.error, select.error{
 }
 .editDescription textarea{
     margin-top: 15px;
+    padding: 10px;
 }
 .containerFormStepsSelectors .logInOptions p span:hover{
     text-decoration: underline;
@@ -1425,13 +1427,16 @@ font-size: 15px;
     border-radius: 6px;
     border-color: #F7F2FA;
 }
+input{
+    padding: 10px;
+}
 .alert_find form textarea{ 
     background: #F7F2FA;
     border-radius: 6px;
     border-color: #F7F2FA;
     font-size: 1em;
     transition: all 0.2s ease;
-    padding: 5px;
+    padding: 10px;
    
 }
 
@@ -1469,7 +1474,7 @@ font-size: 15px;
  .alert_find form input[type="color"] {
     width: 30px;
     height: 30px; 
-    padding: 0; 
+    padding: 10; 
     border: none; 
     cursor: pointer; 
     border-radius: 6px;
@@ -1739,7 +1744,23 @@ padding-bottom: 60px;
     font-size: 1em;
     justify-content: center;
 }
+.buttonBlog{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-flow: column;
+    border-radius: 8px;
+    margin-bottom: 22px;
+    margin-top: 5%;
+    flex-shrink: 0;
+    cursor: pointer;
+}
 
+.filters label{
+    margin-right: 15px;
+}
 .listAlertas li div h2, .tituloAlerta h2{
     font-size: 1em;
     font-weight: 500;
@@ -1749,6 +1770,8 @@ padding-bottom: 60px;
 .listAlertas li div img, .tituloAlerta img{
     width: 20px;
     height: 20px;
+    display: block;
+    margin: auto;
 }
 .menu {
     display: none;
@@ -1810,4 +1833,14 @@ padding-bottom: 60px;
 .imageAlert{
     width: 124px;
     height: 120px;
+}
+.buttonDelete{
+    background-color: red;
+    border: red;
+}
+.buttonsAlert{
+    display: inline-block;
+}
+.buttonDelete:hover {
+    background-color: rgb(226, 67, 67);
 }

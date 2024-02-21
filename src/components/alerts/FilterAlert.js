@@ -28,7 +28,7 @@ return(
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
-          <option value="">Todos</option>
+          <option value="" hidden></option>
           <option value="perdido">Perdido</option>
           <option value="encontrado">Encontrado</option>
         </select>
@@ -40,7 +40,7 @@ return(
           value={gender}
           onChange={(e) => setGender(e.target.value)}
         >
-          <option value="">Todos</option>
+          <option value="" hidden></option>
           <option value="macho">Macho</option>
           <option value="hembra">Hembra</option>
         </select>
@@ -52,7 +52,7 @@ return(
           value={color}
           onChange={(e) => setColor(e.target.value)}
         >
-          <option value="">Todos</option>
+          <option value="" hidden></option>
           <option value="blanco">Blanco</option>
           <option value="negro">Negro</option>
           <option value="marrón">Marrón</option>
@@ -67,7 +67,7 @@ return(
           value={size}
           onChange={(e) => setSize(e.target.value)}
         >
-          <option value="">Todos</option>
+           <option value="" hidden></option>
           <option value="pequeño">Pequeño</option>
           <option value="mediano">Mediano</option>
           <option value="grande">Grande</option>

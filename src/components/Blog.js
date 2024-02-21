@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import BlogForm from "./BlogForm";
-import ArticleInfo from "./BlogArticle";
+import BlogInfo from "./BlogArticle";
 
 const Blog = () => {
   const [mostrarBlogForm, setMostrarBlogForm] = useState(false);
@@ -14,9 +14,9 @@ const Blog = () => {
       <div className="container">
         <h1 style={{ marginTop: "50px", textAlign: "center" }}>Blog de Mascotas</h1>
         <p style={{ marginTop: "50px", textAlign: "center" }}> En este blog podrás crear y leer anécdotas, consejos y experiencias que pueden ayudar a personas como vos. ¡Animate y sumate!</p>
-        <button style={{ marginTop: "50px", marginLeft: "875px" }} onClick={handleMostrarBlogForm}>Crear Artículo</button>
+        <button className="buttonBlog" onClick={handleMostrarBlogForm}>Crear Artículo</button>
         {mostrarBlogForm && <BlogForm />}
-        <ArticleInfo/>
+        <BlogInfo/>
       </div>
     </div>
   );

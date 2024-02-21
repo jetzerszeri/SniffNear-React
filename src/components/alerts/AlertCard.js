@@ -17,8 +17,8 @@ export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) 
         <p>Color: {alert.color1}, tamaño: {alert.size}</p>
         <p><i className="bi bi-geo-alt"></i>{alert.state}, {alert.country}</p>
         {showButtons && (
-          <>
-            <button onClick={() => onDeleteClick(alert._id)}>
+          <div className="buttonsAlert">
+            <button className="buttonDelete" onClick={() => onDeleteClick(alert._id)}>
               <i className="bi bi-trash"/>
             </button>
             <Link to={`/alerts-edit?alertId=${alert._id}`}>
@@ -27,7 +27,7 @@ export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) 
             </button>
             </Link>
            
-          </>
+          </div>
         )}
     </li>
   )

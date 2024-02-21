@@ -47,7 +47,7 @@ export const BlogForm = () => {
   const getBlogInfo = useCallback(async () => {
     if (blogId) {
       createLoader();
-      const response = await fetch(`https://sniffnear-api.onrender.com/api/blog/${blogId}`);
+      const response = await fetch(`https://sniffnear-api.onrender.com/api/blogs/${blogId}`);
       if (response.ok) {
         const data = await response.json();
         console.log(data);
@@ -95,7 +95,7 @@ export const BlogForm = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         createLoader();
-        const apiUrl = blogId ? `https://sniffnear-api.onrender.com/api/blog/${blogId}` : 'https://sniffnear-api.onrender.com/api/blog/';
+        const apiUrl = blogId ? `https://sniffnear-api.onrender.com/api/blogs/${blogId}` : 'https://sniffnear-api.onrender.com/api/blogs/';
   
         const method = blogId ? 'PUT' : 'POST';
   
