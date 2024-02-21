@@ -16,7 +16,17 @@ export const FilterAlert = ({alerts, setFilteredAlerts}) =>{
         });
         setFilteredAlerts(filteredAlerts);
       };
-    
+      const clearFilters = () => {
+        // Reiniciar los estados de los filtros
+        setType('');
+        setGender('');
+        setColor('');
+        setSize('');
+      
+        // Actualizar las alertas filtradas con todas las alertas
+        setFilteredAlerts(alerts);
+      };
+      
 
 return(
     <>
@@ -73,6 +83,7 @@ return(
           <option value="grande">Grande</option>
         </select>
       </div>
+      <button className="cleanFilters" onClick={clearFilters}>Limpiar filtros</button>
       <button onClick={filterAlerts}>Aplicar filtros</button>
     </div>
     </>

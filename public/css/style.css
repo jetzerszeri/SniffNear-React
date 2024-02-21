@@ -249,6 +249,7 @@ a{
     cursor: pointer;
 
 }
+<<<<<<< HEAD
 .filters{
     margin-left: 20px !important;
     display: flex ;
@@ -257,7 +258,63 @@ a{
     width: max-content;
     justify-content: space-between;
     margin: 5px;
+=======
+/* filters */
+.topNavBarFilters{
+    display: flex;
+    justify-content: end;
+    height: 60px;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--color-neutral-10);
+}
+.topNavBarFilters i{
+    font-size: 1.5em;
+    color: var(--color-neutral-50);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.topNavBarFilters i:hover, h1:hover{
+    color: var(--color-green);
+    cursor: pointer;
+
+}
+.filters {
+    display: flex;
+    width: 80%;
+>>>>>>> 44b394f7f3a1768856ac41359f67240e9fdb1e36
     flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto; 
+    gap: 10px; 
+    background-color: #fcfcfc;
+    border-radius: 5px;
+}
+
+.filter-option {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    align-items: center; 
+}
+
+.filter-option select {
+    width: 100%;
+    margin-left: 10px; 
+}
+.cleanFilters{
+    align-self: end;
+    width: 15px;
+    color: grey;
+    background-color: #fcfcfc;
+    border-color: #fcfcfc;
+    font-size: smaller;
+}
+.cleanFilters:hover{
+    color: black;
+    cursor: pointer;
+    background-color: #fcfcfc;
 }
 /* top nav bar */
 .topNavBar{
@@ -823,8 +880,22 @@ form label + p {
     color: var(--color-neutral-50);
     font-weight: 300;
 }
-
-
+.btnEdit{
+    width: 100%;
+}
+.btnDelete{
+    background-color: rgb(249, 158, 158);
+    border-color:  rgb(249, 158, 158);
+    width: 18px;
+    display: flex;
+  
+}
+.btnDelete:hover{
+    background-color: red;
+}
+.btnDelete i:hover{
+    color: black;
+}
 
 /* estilos de la vista de agregar mascota */
 .addNewPetForm{
@@ -1140,6 +1211,14 @@ input.error, select.error{
     margin-top: 5px;
     height: 300px;
 }
+.iconMap{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.iconMap p{
+    font-weight: 500;
+}
 #mi_mapaL{
     margin-top: 5px;
     width: 100%;
@@ -1215,6 +1294,66 @@ input.error, select.error{
   
 .infoAnimal ul{
     margin: 5px;
+}
+.detail{
+    color: #8b8a8a;
+    font-size: 15px;
+    text-align: center;
+}
+.detailAlert .titleDetail{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    text-transform: uppercase;
+    font-size: 18px;
+    color: #333;
+    gap: 8px;
+}
+.imgDetails{
+    display: flex;
+    justify-content: center;
+}
+.imgDetails img{
+    border-radius: 8px;
+    width: auto;
+    height: 124px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border-radius: 16px;
+    background:  #F7F2FA;
+    margin: 5px;
+    /* M3/Elevation Light/1 */
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+}
+.containerDetails{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+.details {
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+    background-color: #BCBDC7;
+    border-radius: 17px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+}
+.details p:first-of-type {
+    font-weight: bold;
+    color: #000000;
+}
+.comunicate{
+    display: flex;
+    justify-content: end;
+    flex-direction: row;
+    margin-top: 10px;
+}
+.comunicate p{
+    font-weight: bold;
+    cursor: pointer;
 }
 .alertEdit{
     display: flex;
