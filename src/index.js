@@ -16,9 +16,11 @@ import { EditAlert } from './views/EditAlert';
 import { FoundPetForm } from './components/alerts/foundPet/FoundPetForm';
 import { LostPetForm } from './components/alerts/lostPet/LostPetForm';
 import { FormLostA } from './components/alerts/lostPet/FormLostPetAlert';
-import Blog from './components/Blog';
-import { BlogForm } from './components/BlogForm';
-import BlogInfo from './components/BlogArticle';
+import { Blog } from './components/blog/Blog';
+import { BlogForm } from './components/blog/BlogForm';
+import { Blogs } from './components/blog/BlogCard';
+import { BlogList } from './components/blog/BlogList';
+import { FilterBlog } from './components/blog/FilterBlog';
 import { AlertSuccess} from './components/alerts/AlertSuccess';
 import MapaList from './components/alerts/map/MapList';
 import { AdoptionForm } from './views/AdoptionForm';
@@ -91,8 +93,16 @@ const router = createBrowserRouter([
   element:<BlogForm/>
 },
 {
+  path:'/filter-blog',
+  element:<FilterBlog/>
+},
+{
   path:'/article',
-  element:<BlogInfo/>
+  element:<Blogs/>
+},
+{
+  path:'/blog-list',
+  element:<BlogList/>
 },
 {
   path:'/success',

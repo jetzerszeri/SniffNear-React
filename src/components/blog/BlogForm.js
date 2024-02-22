@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ImgInput } from '../components/addPet/ImgInput';
-import { getCurrentUserId, createLoader, removeLoader } from '../js/functions';
+import { ImgInput } from '../addPet/ImgInput';
+import { getCurrentUserId, createLoader, removeLoader } from '../../js/functions';
 
 export const BlogForm = () => {
   let { blogId } = useParams();
