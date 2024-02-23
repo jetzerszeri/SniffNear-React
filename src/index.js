@@ -23,9 +23,9 @@ import { BlogList } from './components/blog/BlogList';
 import { FilterBlog } from './components/blog/FilterBlog';
 import { AlertSuccess} from './components/alerts/AlertSuccess';
 import MapaList from './components/alerts/map/MapList';
-import { AdoptionForm } from './views/AdoptionForm';
-import { AdoptionList } from './views/AdoptionList';
-import { AdoptionCard } from './views/AdoptionCard';
+import { AdoptionForm } from './components/adoptions/AdoptionForm';
+import { AdoptionList } from './components/adoptions/AdoptionList';
+import { AdoptionCard } from './components/adoptions/AdoptionCard';
 import { AlertDetail } from './components/alerts/AlertDetail';
 const router = createBrowserRouter([
   {

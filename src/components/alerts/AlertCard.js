@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-
-
 export const AlertCard = ({alert,   onDeleteClick , onEditClick , showButtons}) => {
   const navigate = useNavigate();
   const [lost , setLost] = useState(false);

@@ -1,60 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { BlogList } from "./BlogList";
-import { BottomNav } from "../BottomNav";
-import { getCurrentUserId, createLoader, removeLoader } from "../../js/functions";
-import { Link } from "react-router-dom";
-import { FilterBlog } from "./FilterBlog";
+import React, {useEffect, useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-export const Blogs = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [filteredBlogs, setFilteredBlogs] = useState(blogs);
-  const [showFilters, setShowFilters] = useState(false);
+export const Blogs = ({blog,   onDeleteClick , onEditClick , showButtons}) => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false)
 
-  useEffect(() => {
-    const getBlogs = async () => {
-      try {
-        createLoader('Cargando artículos');
-        const response = await fetch(`https://sniffnear-api.onrender.com/api/blog/`);
-        if (response.ok) {
-          const data = await response.json();
-          setBlogs(data);
-          removeLoader();
-        }
-      } catch (error) {
-        console.error('Error fetching data', error);
-      }
-    };
-
-    getBlogs();
-  }, []);
-
-  useEffect(() => {
-    setFilteredBlogs(blogs);
-  }, [blogs]);
-
-  const handleBlogDelete = (id) => {
-    const updatedBlogs = blogs.filter((blog) => blog._id !== id);
-    setBlogs(updatedBlogs);
+  const handleDeleteConfirm =()=>{
+    onDeleteClick(blog._id);
+    setShowModal(false)
+  }
+  const handleCancel = () => {
+    setShowModal(false);
+    navigate('/blog');
   };
 
   return (
-    <>
-  
-      <div className='topNavBarAlerts'>
-        <h1 style={{ color: 'black', fontWeight: '700' }}>Listado de artículos</h1>
+    <> 
+    {showModal && (
+      <div className="myModal">
+          <div className="headerModal">
+            <h1>¿Estás seguro que deseas eliminar este artículo?</h1>
+            <i class="bi bi-x" onClick={handleCancel}></i>
+          </div>
+          <div className="bodyModal">
+          <button onClick={handleCancel}>
+          Cancelar
+          </button>
+          <button onClick={handleDeleteConfirm} className="buttonDelete">
+          Sí, ELIMINAR
+          </button>
+          </div>
       </div>
-      <div className="topNavBarFilters">
-        <i className="bi bi-filter" onClick={() => setShowFilters(!showFilters)} />
-      </div>
-      {showFilters && <FilterBlog blogs={blogs} setFilteredBlogs={setFilteredBlogs} />}
-
-      <main className="mapMain">
-        <BlogList alerts={filteredBlogs} onBlogDelete={handleBlogDelete} userId={getCurrentUserId()} />
-      </main>
-
-      <BottomNav activeLink="article" />
+    )}
+       <li>
+        <img src={blog.img} alt={blog.type}/>
+        <p>{blog.title}</p>
+        <p>{blog.content}</p>
+        <p>{blog.category}</p>
+        
+        {/* {showButtons && (
+         <div className="buttonsAlert">
+         <button className="buttonDelete" onClick={() => setShowModal(true)}>
+           <i className="bi bi-trash"/>
+         </button>
+       
+         <Link to={`/blogs-edit?blogId=${blog._id}`}>
+         <button className="btn">
+           <i className="bi bi-pencil"/>
+         </button>
+         </Link>
+       </div>
+        )} */}
+    </li>
     </>
-  );
-};
 
-export default Blogs;
+    
+  )
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ImgInput } from '../components/addPet/ImgInput';
-import {getCurrentUserId, createLoader, removeLoader} from '../js/functions';
+import { ImgInput } from '../addPet/ImgInput';
+import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
 
 const getCurrentDate = () => {
     const date = new Date();
@@ -24,10 +24,76 @@ export const AdoptionForm = () => {
         e.preventDefault();
         setCurrentStep(currentStep - 1);
       };
+    // const handleNext = (e) => {
+    //     // e.preventDefault();
+    //     // setCurrentStep(currentStep + 1);
+    //     e.preventDefault();
+    //     const newErrors = {};
+    //     if (!formData.type.trim()) {
+    //         newErrors.type = 'El tipo es requerido';
+    //       }
+      
+    //       if (!formData.name.trim()) {
+    //         newErrors.name = 'El nombre es requerido';
+    //       }
+    //       if(!selectedColor){
+    //           newErrors.color1 = "Debes elegir un color"
+    //        }
+    //        if (!formData.sex.trim()) {
+    //           newErrors.sex = 'El género es requerido';
+    //         }
+    //         if (!formData.size.trim()) {
+    //           newErrors.size = 'El tamaño es requerido';
+    //         }
+  
+    //         if (!formData.breed.trim()) {
+    //           newErrors.breed = 'La raza es requerida';
+    //         }
+  
+    //         if (!formData.img.trim()){
+    //           newErrors.img = 'La imagen es requerida';
+    //         }
+    //         setErrors(newErrors);
+
+    // if (Object.keys(newErrors).length === 0) {
+    //     setCurrentStep(currentStep + 1);
+    // }
+    // };
     const handleNext = (e) => {
         e.preventDefault();
-        setCurrentStep(currentStep + 1);
+        const newErrors = {};
+        if (!formData.type.trim()) {
+            newErrors.type = 'El tipo es requerido';
+        }
+    
+        if (!formData.name.trim()) {
+            newErrors.name = 'El nombre es requerido';
+        }
+        if (!selectedColor) {
+            newErrors.color1 = "Debes elegir un color"
+        }
+        if (!formData.sex.trim()) {
+            newErrors.sex = 'El género es requerido';
+        }
+        if (!formData.size.trim()) {
+            newErrors.size = 'El tamaño es requerido';
+        }
+    
+        if (!formData.breed.trim()) {
+            newErrors.breed = 'La raza es requerida';
+        }
+    
+        if (!formData.img.trim()) {
+            newErrors.img = 'La imagen es requerida';
+        }
+        setErrors(newErrors);
+    
+        if (Object.keys(newErrors).length === 0) {
+            setCurrentStep((prevStep) => prevStep + 1);
+
+        }
     };
+    
     const [formData, setFormData] = useState({
         type: '',
         name: '',
@@ -81,8 +147,6 @@ export const AdoptionForm = () => {
         setSelectedColor(color);
     };
     
- 
-
     const handleImgLink = (link) => {
         setImg(link)
         setFormData({
@@ -91,69 +155,82 @@ export const AdoptionForm = () => {
         });
     }
 
-    
     const navigate = useNavigate();
-    const location = useLocation();
-    const route = new URLSearchParams(location.search).get("route");
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const newErrors = {};
-        console.log(formData)
+  const location = useLocation();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        if (!formData.type.trim()) {
-          newErrors.type = 'El tipo es requerido';
-        }
-    
-        if (!formData.name.trim()) {
-          newErrors.name = 'El nombre es requerido';
-        }
-        if(!selectedColor){
-            newErrors.color1 = "Debes elegir un color"
-         }
-         if (!formData.sex.trim()) {
-            newErrors.sex = 'El género es requerido';
-          }
-          if (!formData.size.trim()) {
-            newErrors.size = 'El tamaño es requerido';
-          }
-
-          if (!formData.breed.trim()) {
-            newErrors.breed = 'La raza es requerida';
-          }
-
-          if (!formData.img.trim()){
-            newErrors.img = 'La imagen es requerida';
-          }
-        if (Object.keys(newErrors).length === 0) {
-
-        try {
-            createLoader();
-            const response = await fetch('https://sniffnear-api.onrender.com/api/adoptions/', {
+      try {
+        createLoader();
+  
+        const response = await fetch('https://sniffnear-api.onrender.com/api/adoption/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify(formData),
             });
-      
             const json = await response.json();
-            console.log(json);
-            console.log(formData)
-      
-            if (response.ok) {
-                navigate(route)
-            } else {
-                removeLoader();
-                console.error('Error en el registro:', json.message);
-              }
-            } catch (error) {
-                removeLoader();
-              console.error('Error:', error);
-            }
+
+        if (response.ok) {
+
+          console.log('adopcion publicada')
+          navigate('/')
+     
         } else {
-            setErrors(newErrors);
+          removeLoader();
+          console.error('Error en el registro:', json.message);
+        }
+      } catch (error) {
+        removeLoader();
+        console.error('Error en la solicitud:', error);
+      }
+   
+  };
+    
+      const handleNextAndSubmit = async (e) => {
+        e.preventDefault();
+    
+        // Validación lógica
+        const newErrors = {};
+    
+        if (!formData.type.trim()) {
+            newErrors.type = 'El tipo es requerido';
           }
+      
+          if (!formData.name.trim()) {
+            newErrors.name = 'El nombre es requerido';
+          }
+          if(!selectedColor){
+              newErrors.color1 = "Debes elegir un color"
+           }
+           if (!formData.sex.trim()) {
+              newErrors.sex = 'El género es requerido';
+            }
+            if (!formData.size.trim()) {
+              newErrors.size = 'El tamaño es requerido';
+            }
+  
+            if (!formData.breed.trim()) {
+              newErrors.breed = 'La raza es requerida';
+            }
+  
+            if (!formData.img.trim()){
+              newErrors.img = 'La imagen es requerida';
+            }
+    
+        setErrors(newErrors);
+    
+        // Verificar si no hay errores de validación
+        if (Object.keys(newErrors).length === 0) {
+            // Si la validación es exitosa, proceder a enviar el formulario
+            await handleSubmit(e);
+            // Opcionalmente, puedes agregar lógica adicional después del envío
+            // Por ejemplo, navegar o realizar cualquier otra acción
+            navigate('/');
+        }
       };
+    
   return (
     <main className='adoptionForm'>
       <h1>Formulario de Adopción</h1>
@@ -369,8 +446,8 @@ export const AdoptionForm = () => {
                     Continuar
                 </button>
             ) : (
-                <button id="next" onClick={handleSubmit}>
-                   Crear perfil mascota
+                <button id="next" onClick={handleNextAndSubmit}>
+                   Crear perfil de adopción
                 </button>
             )}
         </div>

@@ -3,6 +3,7 @@ import { Blogs } from './BlogCard';
 import { Link } from 'react-router-dom';
 
 export const BlogList = ({ blogs, onBlogDelete, userId }) => {
+  console.log('Blogs:', blogs);
   const handleDeleteClick = async (id) => {
     try {
       const response = await fetch(`https://sniffnear-api.onrender.com/api/blog/${id}`, {
@@ -12,6 +13,7 @@ export const BlogList = ({ blogs, onBlogDelete, userId }) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
       onBlogDelete(id);
       console.log(`El artículo con el id ${id} se ha eliminado correctamente.`);
     } catch (error) {
@@ -26,16 +28,19 @@ export const BlogList = ({ blogs, onBlogDelete, userId }) => {
   return (
     <div className="listAlertas">
       <ul>
-        {blogs && blogs.map((blog) => {
-          const isOwner = blog.creator._id === userId;
-          return <Blogs
-            blog={blog}
-            key={blog._id}
-            onDeleteClick={handleDeleteClick}
-            onEditClick={handleEditClick}
-            showButtons={isOwner}
-          />;
-        })}
+        {Array.isArray(blogs) && blogs.length > 0 ? (
+          blogs.map((blog) => (
+            <Blogs
+              blog={blog}
+              key={blog && blog._id}
+              onDeleteClick={handleDeleteClick}
+              onEditClick={handleEditClick}
+              showButtons={userId && blog.creator && blog.creator._id === userId}
+            />
+          ))
+        ) : (
+          <p>No hay blogs disponibles.</p>
+        )}
       </ul>
     </div>
   );

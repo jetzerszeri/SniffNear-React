@@ -8,6 +8,7 @@ export const BlogForm = () => {
   let { blogId } = useParams();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [img, setImg] = useState('');
+  const [currentStep, setCurrentStep] = useState(1);
 
   const [formData, setFormData] = useState({
     type: '',
@@ -27,6 +28,31 @@ export const BlogForm = () => {
     });
   };
 
+  const handleNext = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+
+    if (!formData.title) {
+        newErrors.title = 'El título es requerido';
+    }
+
+    if (!formData.content) {
+        newErrors.content = 'El contenido es requerido';
+    }
+
+    if (!formData.category) {
+        newErrors.category = 'Debe ingresar una categoría';
+    }
+    
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+        setCurrentStep(currentStep + 1);
+    }
+};
+
+
+
   const handleChangeCategory = (e) => {
     const { value } = e.target;
     setSelectedCategory(value);
@@ -44,40 +70,14 @@ export const BlogForm = () => {
     });
   };
 
-  // const getBlogInfo = useCallback(async () => {
-  //   if (blogId) {
-  //     createLoader();
-  //     const response = await fetch(`https://sniffnear-api.onrender.com/api/blogs/${blogId}`);
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       console.log(data);
-
-  //       setFormData({
-  //         ...formData,
-  //         title: data.title,
-  //         category: data.category,
-  //         content: data.content,
-  //       });
-  //       setSelectedCategory(data.category);
-  //     }
-  //   }
-  // }, [blogId, formData]);
-
-  // useEffect(() => {
-  //   getBlogInfo();
-  // }, [getBlogInfo]);
-
   const navigate = useNavigate();
   const location = useLocation();
-  // const route = new URLSearchParams(location.search).get("route");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
       try {
         createLoader();
-        // const apiUrl = blogId ? `https://sniffnear-api.onrender.com/api/blogs/${blogId}` : 'https://sniffnear-api.onrender.com/api/blogs/';
   
-        // const method = blogId ? 'PUT' : 'POST';
         const response = await fetch('https://sniffnear-api.onrender.com/api/blog/', {
               method: 'POST',
               headers: {
@@ -91,29 +91,7 @@ export const BlogForm = () => {
 
           console.log('articulo publicado')
           navigate('/')
-        // const response = await fetch(apiUrl, {
-        //   method,
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify(formData),
-        // });
-  
-        // const json = await response.json();
-        // console.log(json);
-        // console.log(formData);
-  
-        // if (response.ok) {
-        //   setFormData({
-        //     type: '',
-        //     img: '',
-        //     title: '',
-        //     category: '',
-        //     content: '',
-        //     owner: getCurrentUserId(),
-        //   });
-  
-        //   navigate('/');
+     
         } else {
           removeLoader();
           console.error('Error en el registro:', json.message);
@@ -125,12 +103,41 @@ export const BlogForm = () => {
    
   };
   
+  const handleNextAndSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validación lógica
+    const newErrors = {};
+
+    if (!formData.title) {
+        newErrors.title = 'El título es requerido';
+    }
+
+    if (!formData.content) {
+        newErrors.content = 'El contenido es requerido';
+    }
+
+    if (!formData.category) {
+        newErrors.category = 'Debe ingresar una categoría';
+    }
+
+    setErrors(newErrors);
+
+    // Verificar si no hay errores de validación
+    if (Object.keys(newErrors).length === 0) {
+        // Si la validación es exitosa, proceder a enviar el formulario
+        await handleSubmit(e);
+        // Opcionalmente, puedes agregar lógica adicional después del envío
+        // Por ejemplo, navegar o realizar cualquier otra acción
+        navigate('/');
+    }
+  };
 
   return (
     <main>
+        <h1 style={{ textAlign: 'center' }} >Agregar un artículo</h1>
      <form action="" className="addNewPetForm">
        <div className="step2"> 
-       <h1>Agregar un artículo</h1>
           <div>
             <label htmlFor="title">Titulo</label>
             <input
@@ -179,7 +186,7 @@ export const BlogForm = () => {
           {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
         </div>
 
-        <button onClick={handleSubmit}>Guardar</button>
+        <button onClick={handleNextAndSubmit}>Guardar</button>
       </form>
     </main>
   );
