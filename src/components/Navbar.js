@@ -25,7 +25,10 @@ export const Navbar = () => {
           </Link> 
         </div>
         <div>
-        
+          <Link to='/inbox'>
+             <i className="bi bi-chat"></i>
+          </Link>
+       
         {/* <Link to={"/user-profile?id=${userIdTest}"}> */}
          <i className="bi bi-person-fill"></i>
         {/* </Link> */}

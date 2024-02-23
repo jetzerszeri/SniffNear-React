@@ -27,6 +27,8 @@ import { AdoptionForm } from './components/adoptions/AdoptionForm';
 import { AdoptionList } from './components/adoptions/AdoptionList';
 import { AdoptionCard } from './components/adoptions/AdoptionCard';
 import { AlertDetail } from './components/alerts/AlertDetail';
+import { Chat } from './components/chat/Chat';
+import { Inbox } from './components/chat/Inbox';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -128,6 +130,14 @@ const router = createBrowserRouter([
 {
   path:'/alert-detail',
   element:<AlertDetail/>
+},
+{
+  path:'/chat',
+  element:<Chat/>
+},
+{
+  path:'/inbox',
+  element:<Inbox/>
 }
 ])
 

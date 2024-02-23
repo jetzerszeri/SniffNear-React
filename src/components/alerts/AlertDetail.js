@@ -6,6 +6,7 @@ import {
     geocode,
     RequestType,
   } from "react-geocode";
+import { getCurrentUserId } from "../../js/functions";
 export const AlertDetail = () =>{
     const navigate = useNavigate();
     const handleBack = () =>{
@@ -86,6 +87,32 @@ export const AlertDetail = () =>{
     })
     const fecha = new Date(alert.date);
     const formatDate = fecha.toLocaleDateString('es-AR');
+    const handleContactClick = async () =>{
+        try {
+            const emisorId = getCurrentUserId();
+            const destinatarioId = alert.creator;
+            const createChatRoomResponse = await fetch('https://sniffnear-api.onrender.com/api/chats/create', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ participants: [emisorId, destinatarioId] })
+              });
+             
+              
+              if (createChatRoomResponse.ok) {
+                const data = await createChatRoomResponse.json();
+                console.log(data)
+                const newRoomId = data._id;
+                console.log('Sala creada con exito')
+                navigate(`/chat?roomId=${newRoomId}`);
+              } else {
+                console.error('Error al crear la sala de chat');
+              }
+        } catch (error) {
+            console.error('Error al contactar al usuario:', error);
+        }
+    }
     return(
         <>
         <div className="topNavBar">
@@ -185,8 +212,8 @@ export const AlertDetail = () =>{
                     <p>{alert.description}</p>
                 </div>
             </div>
-            <div className="comunicate">
-            <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button className="comunicate" onClick={handleContactClick}>
+                <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_454_1100)">
                 <path opacity="0.946" fill-rule="evenodd" clip-rule="evenodd" d="M28.9717 19.0596C28.9717 19.6638 28.9717 20.2679 28.9717 20.8721C28.7455 22.1839 28.2168 23.3639 27.3857 24.4121C27.7591 24.7852 28.0894 25.1911 28.377 25.6299C28.5346 26.2114 28.3363 26.6174 27.7822 26.8477C26.6116 26.8665 25.4411 26.8854 24.2705 26.9043C20.9822 28.4564 17.6216 28.6263 14.1885 27.4141C13.5387 27.1694 12.9251 26.8579 12.3477 26.4795C12.0998 26.0604 12.1848 25.73 12.6025 25.4883C12.7778 25.4514 12.9477 25.4703 13.1123 25.5449C16.7071 27.4766 20.3321 27.5332 23.9873 25.7148C24.9502 25.696 25.9131 25.6771 26.876 25.6582C26.6211 25.3655 26.3662 25.0729 26.1113 24.7803C26.0261 24.5798 26.0073 24.3722 26.0547 24.1572C26.8837 23.2736 27.4312 22.2351 27.6973 21.042C27.9936 19.3261 27.6159 17.778 26.5645 16.3975C24.6687 14.199 22.2615 13.0567 19.3428 12.9707C17.7375 15.0489 15.6418 16.3705 13.0557 16.9355C12.1186 17.114 11.1746 17.2368 10.2236 17.3037C9.4254 18.8522 9.34044 20.4381 9.96875 22.0615C10.0598 22.7636 9.76717 23.0185 9.09082 22.8262C9.02472 22.7601 8.95868 22.694 8.89258 22.6279C8.17098 20.7931 8.18044 18.9617 8.9209 17.1338C7.42162 17.0186 6.00561 16.6126 4.67285 15.916C3.50228 15.8972 2.33171 15.8782 1.16113 15.8594C0.607023 15.6291 0.40878 15.2231 0.566406 14.6416C0.85392 14.2028 1.18432 13.7969 1.55762 13.4238C0.727532 12.3774 0.198885 11.1974 -0.0283203 9.88379C-0.0283203 9.2796 -0.0283203 8.67548 -0.0283203 8.07129C0.311209 6.17507 1.21746 4.5986 2.69043 3.3418C4.89357 1.58773 7.41409 0.709798 10.252 0.708008C13.1968 0.713802 15.7928 1.64837 18.04 3.51172C20.5125 5.83999 21.1733 8.60598 20.0225 11.8096C22.9123 12.0698 25.3384 13.2593 27.3008 15.3779C28.1661 16.4666 28.7231 17.6939 28.9717 19.0596ZM9.88379 1.89746C12.6924 1.82971 15.1657 2.68876 17.3037 4.47461C19.5966 6.72522 19.9837 9.26459 18.4648 12.0928C17.1343 13.9445 15.3501 15.1433 13.1123 15.6895C10.2723 16.3814 7.55359 16.0605 4.95605 14.7266C3.99316 14.7077 3.03027 14.6888 2.06738 14.6699C2.32227 14.3773 2.57715 14.0847 2.83203 13.792C2.91721 13.5915 2.93609 13.3839 2.88867 13.1689C0.905179 10.9524 0.621976 8.53574 2.03906 5.91895C3.32813 4.10325 5.05567 2.90436 7.22168 2.32227C8.1051 2.10315 8.99249 1.96154 9.88379 1.89746Z" fill="#9A9A9A"/>
                 <path opacity="0.888" fill-rule="evenodd" clip-rule="evenodd" d="M8.58108 4.89941C9.29555 4.92439 9.51265 5.26423 9.23245 5.91895C8.80584 6.19824 8.46599 6.12274 8.21292 5.69238C8.13753 5.33346 8.26027 5.06914 8.58108 4.89941Z" fill="#9A9A9A"/>
@@ -204,7 +231,7 @@ export const AlertDetail = () =>{
                 </defs>
                 </svg>
                 <p>Contactar</p>
-            </div>
+            </button> 
         <div>
          
         </div>
