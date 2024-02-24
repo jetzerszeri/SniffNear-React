@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export const Blogs = ({blog,   onDeleteClick , onEditClick , showButtons}) => {
+export const BlogCard = ({blog,   onDeleteClick , onEditClick , showButtons}) => {
   const navigate = useNavigate();
+ 
   const [showModal, setShowModal] = useState(false)
-
+ 
   const handleDeleteConfirm =()=>{
     onDeleteClick(blog._id);
     setShowModal(false)
@@ -38,19 +39,19 @@ export const Blogs = ({blog,   onDeleteClick , onEditClick , showButtons}) => {
         <p>{blog.content}</p>
         <p>{blog.category}</p>
         
-        {/* {showButtons && (
+        {showButtons && (
          <div className="buttonsAlert">
          <button className="buttonDelete" onClick={() => setShowModal(true)}>
            <i className="bi bi-trash"/>
          </button>
-       
-         <Link to={`/blogs-edit?blogId=${blog._id}`}>
+{/*        
+         <Link to={`/blog-edit?blogId=${blog._id}`}>
          <button className="btn">
            <i className="bi bi-pencil"/>
          </button>
-         </Link>
+         </Link> */}
        </div>
-        )} */}
+        )}
     </li>
     </>
 

@@ -18,7 +18,7 @@ import { LostPetForm } from './components/alerts/lostPet/LostPetForm';
 import { FormLostA } from './components/alerts/lostPet/FormLostPetAlert';
 import { Blog } from './components/blog/Blog';
 import { BlogForm } from './components/blog/BlogForm';
-import { Blogs } from './components/blog/BlogCard';
+import { BlogCard } from './components/blog/BlogCard';
 import { BlogList } from './components/blog/BlogList';
 import { FilterBlog } from './components/blog/FilterBlog';
 import { AlertSuccess} from './components/alerts/AlertSuccess';
@@ -98,7 +98,7 @@ const router = createBrowserRouter([
 },
 {
   path:'/article',
-  element:<Blogs/>
+  element:<BlogCard/>
 },
 {
   path:'/blog-list',

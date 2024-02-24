@@ -51,8 +51,6 @@ export const BlogForm = () => {
     }
 };
 
-
-
   const handleChangeCategory = (e) => {
     const { value } = e.target;
     setSelectedCategory(value);

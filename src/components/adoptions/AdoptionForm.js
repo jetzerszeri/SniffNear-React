@@ -24,75 +24,44 @@ export const AdoptionForm = () => {
         e.preventDefault();
         setCurrentStep(currentStep - 1);
       };
-    // const handleNext = (e) => {
-    //     // e.preventDefault();
-    //     // setCurrentStep(currentStep + 1);
-    //     e.preventDefault();
-    //     const newErrors = {};
-    //     if (!formData.type.trim()) {
-    //         newErrors.type = 'El tipo es requerido';
-    //       }
-      
-    //       if (!formData.name.trim()) {
-    //         newErrors.name = 'El nombre es requerido';
-    //       }
-    //       if(!selectedColor){
-    //           newErrors.color1 = "Debes elegir un color"
-    //        }
-    //        if (!formData.sex.trim()) {
-    //           newErrors.sex = 'El género es requerido';
-    //         }
-    //         if (!formData.size.trim()) {
-    //           newErrors.size = 'El tamaño es requerido';
-    //         }
-  
-    //         if (!formData.breed.trim()) {
-    //           newErrors.breed = 'La raza es requerida';
-    //         }
-  
-    //         if (!formData.img.trim()){
-    //           newErrors.img = 'La imagen es requerida';
-    //         }
-    //         setErrors(newErrors);
 
-    // if (Object.keys(newErrors).length === 0) {
-    //     setCurrentStep(currentStep + 1);
-    // }
-    // };
     const handleNext = (e) => {
         e.preventDefault();
-        const newErrors = {};
-        if (!formData.type.trim()) {
-            newErrors.type = 'El tipo es requerido';
+        const newErrors={};
+        if(currentStep === 1){
+            if (!formData.type) {
+                newErrors.type = 'El tipo de mascota es requerido';
+            }
         }
-    
-        if (!formData.name.trim()) {
-            newErrors.name = 'El nombre es requerido';
+        if(currentStep === 2){
+            if (!formData.name) {
+                newErrors.name = 'El nombre de la mascota es requerido';
+            }
+            if (!formData.color1) {
+                newErrors.color1 = "Debes elegir un color"
+            }
+            if (!formData.sex.trim()) {
+                newErrors.sex = 'El género es requerido';
+            }
+            if (!formData.size.trim()) {
+                newErrors.size = 'El tamaño es requerido';
+            }
+        
+            if (!formData.breed.trim()) {
+                newErrors.breed = 'La raza es requerida';
+            }
         }
-        if (!selectedColor) {
-            newErrors.color1 = "Debes elegir un color"
-        }
-        if (!formData.sex.trim()) {
-            newErrors.sex = 'El género es requerido';
-        }
-        if (!formData.size.trim()) {
-            newErrors.size = 'El tamaño es requerido';
-        }
-    
-        if (!formData.breed.trim()) {
-            newErrors.breed = 'La raza es requerida';
-        }
-    
-        if (!formData.img.trim()) {
-            newErrors.img = 'La imagen es requerida';
+        if(currentStep === 3){
+            if (!formData.img) {
+                newErrors.img = 'La imagen de la mascota es requerida';
+            }
         }
         setErrors(newErrors);
-    
         if (Object.keys(newErrors).length === 0) {
-            setCurrentStep((prevStep) => prevStep + 1);
-
+            setCurrentStep(currentStep + 1);
         }
     };
+
     
     const [formData, setFormData] = useState({
         type: '',
@@ -187,49 +156,6 @@ export const AdoptionForm = () => {
       }
    
   };
-    
-      const handleNextAndSubmit = async (e) => {
-        e.preventDefault();
-    
-        // Validación lógica
-        const newErrors = {};
-    
-        if (!formData.type.trim()) {
-            newErrors.type = 'El tipo es requerido';
-          }
-      
-          if (!formData.name.trim()) {
-            newErrors.name = 'El nombre es requerido';
-          }
-          if(!selectedColor){
-              newErrors.color1 = "Debes elegir un color"
-           }
-           if (!formData.sex.trim()) {
-              newErrors.sex = 'El género es requerido';
-            }
-            if (!formData.size.trim()) {
-              newErrors.size = 'El tamaño es requerido';
-            }
-  
-            if (!formData.breed.trim()) {
-              newErrors.breed = 'La raza es requerida';
-            }
-  
-            if (!formData.img.trim()){
-              newErrors.img = 'La imagen es requerida';
-            }
-    
-        setErrors(newErrors);
-    
-        // Verificar si no hay errores de validación
-        if (Object.keys(newErrors).length === 0) {
-            // Si la validación es exitosa, proceder a enviar el formulario
-            await handleSubmit(e);
-            // Opcionalmente, puedes agregar lógica adicional después del envío
-            // Por ejemplo, navegar o realizar cualquier otra acción
-            navigate('/');
-        }
-      };
     
   return (
     <main className='adoptionForm'>
@@ -446,7 +372,7 @@ export const AdoptionForm = () => {
                     Continuar
                 </button>
             ) : (
-                <button id="next" onClick={handleNextAndSubmit}>
+                <button id="next" onClick={handleSubmit}>
                    Crear perfil de adopción
                 </button>
             )}
