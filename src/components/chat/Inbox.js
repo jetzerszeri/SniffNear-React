@@ -14,10 +14,13 @@ export const Inbox = () => {
     useEffect(() => {
         console.log('conectando a ', socket);
         // Manejo de la actualización de chats
-        socket.on('chatsUpdated', updatedChats => {
+      
+              socket.on('chatsUpdated', updatedChats => {
             console.log('Conectado en socket');
             setChats(updatedChats);
         });
+  
+      
 
         // Obtener la lista de chats del usuario
         const getUserChatsRooms = async () => {
