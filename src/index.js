@@ -16,19 +16,25 @@ import { EditAlert } from './views/EditAlert';
 import { FoundPetForm } from './components/alerts/foundPet/FoundPetForm';
 import { LostPetForm } from './components/alerts/lostPet/LostPetForm';
 import { FormLostA } from './components/alerts/lostPet/FormLostPetAlert';
-import { Blog } from './components/blog/Blog';
+import { Blog } from './components/blog/BlogMain';
 import { BlogForm } from './components/blog/BlogForm';
 import { BlogCard } from './components/blog/BlogCard';
-import { BlogList } from './components/blog/BlogList';
+// import { BlogList } from './components/blog/BlogList';
+import { EditBlog } from './components/blog/EditBlogForm';
 import { FilterBlog } from './components/blog/FilterBlog';
 import { AlertSuccess} from './components/alerts/AlertSuccess';
 import MapaList from './components/alerts/map/MapList';
 import { AdoptionForm } from './components/adoptions/AdoptionForm';
-import { AdoptionList } from './components/adoptions/AdoptionList';
+// import { AdoptionList } from './components/adoptions/AdoptionList';
 import { AdoptionCard } from './components/adoptions/AdoptionCard';
 import { AlertDetail } from './components/alerts/AlertDetail';
 import { Chat } from './components/chat/Chat';
 import { Inbox } from './components/chat/Inbox';
+import { AdoptionDetail } from './components/adoptions/AdoptionDetail';
+import { AdoptionEdit } from './components/adoptions/AdoptionEdit';
+import { Adoption } from './views/Adoptions';
+import { Blogs } from './views/Blog';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -95,6 +101,10 @@ const router = createBrowserRouter([
   element:<BlogForm/>
 },
 {
+  path:'/blog-list',
+  element:<Blogs/>
+},
+{
   path:'/filter-blog',
   element:<FilterBlog/>
 },
@@ -102,9 +112,13 @@ const router = createBrowserRouter([
   path:'/article',
   element:<BlogCard/>
 },
+// {
+//   path:'/blog-list',
+//   element:<BlogList/>
+// },
 {
-  path:'/blog-list',
-  element:<BlogList/>
+  path:'/edit-blog',
+  element:<EditBlog/>
 },
 {
   path:'/success',
@@ -118,14 +132,26 @@ const router = createBrowserRouter([
   path: '/adoption-form',
   element:<AdoptionForm/>
 },
+// {
+//   path: '/adoption',
+//   element:<AdoptionList/>
+// },
 {
-  path: '/adoption-list',
-  element:<AdoptionList/>
+  path: '/adoptions',
+  element:<Adoption/>
 }
 ,
 {
   path: '/adoption-card',
   element:<AdoptionCard/>
+},
+{
+  path:'/edit-adoption',
+  element:<AdoptionEdit/>
+},
+{
+  path: '/adoption-detail',
+  element:<AdoptionDetail/>
 },
 {
   path:'/alert-detail',

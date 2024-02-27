@@ -1,50 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { AdoptionList } from "./AdoptionList";
-import { BottomNav } from "../BottomNav";
-import { getCurrentUserId, createLoader, removeLoader } from "../../js/functions";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-export const AdoptionCard = ({adoption, selectLostPet, clickType}) => {
-
-  const [adoptions, setAdoptions] = useState([]);
-  const [filteredAdoptions, setFilteredAdoptions] = useState(adoptions);
-  const [showFilters, setShowFilters] = useState(false);
-
-  useEffect(() => {
-    const getAdoptions = async () => {
-      try {
-        createLoader('Cargando artículos');
-        const response = await fetch(`https://sniffnear-api.onrender.com/api/adoption/`);
-        if (response.ok) {
-          const data = await response.json();
-          setAdoptions(data);
-          removeLoader();
-        }
-      } catch (error) {
-        console.error('Error fetching data', error);
-      }
-    };
-
-    getAdoptions();
-  }, []);
-
-  useEffect(() => {
-    setFilteredAdoptions(adoptions);
-  }, [adoptions]);
-
-
-    const handleClick = () => {
-      if (clickType === "lost") {
-        selectLostPet(adoption);
-      }
-    }
-    return (
-      <li onClick={handleClick}>
-          <div>
-              <img src={adoption.img} alt={adoption.name}/>
-          </div>
-          <p>{adoption.name}</p>
-      </li>
-    )
+export const AdoptionCard = ({adoption,   onDeleteClick , onEditClick , showButtons}) => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false)
+ 
+  const handleDeleteConfirm =()=>{
+    onDeleteClick(adoption._id);
+    setShowModal(false)
   }
-export default AdoptionCard;
+  const handleCancel = () => {
+    setShowModal(false);
+    navigate('/adoption');
+  };
+
+  return (
+    <> 
+    {showModal && (
+      <div className="myModal">
+          <div className="headerModal">
+            <h1>¿Estás seguro que deseas eliminar esta adopción?</h1>
+            <i class="bi bi-x" onClick={handleCancel}></i>
+          </div>
+          <div className="bodyModal">
+          <button onClick={handleCancel}>
+          Cancelar
+          </button>
+          <button onClick={handleDeleteConfirm} className="buttonDelete">
+          Sí, ELIMINAR
+          </button>
+          </div>
+      </div>
+    )}
+       <li>
+        <img src={adoption.img} alt={adoption.type}/>
+        <p>Color: {adoption.color1}, tamaño: {adoption.size}</p>
+        {/* <Link to={`/alert-detail?alertId=${alert._id}`}>
+          <button className="viewAlert">Ver alerta</button>
+        </Link> */}
+        
+        {showButtons && (
+         <div className="buttonsAlert">
+         <button className="buttonDelete" onClick={() => setShowModal(true)}>
+           <i className="bi bi-trash"/>
+         </button>
+       
+         <Link to={`/adoption-edit?adoptionId=${adoption._id}`}>
+         <button className="btn">
+           <i className="bi bi-pencil"/>
+         </button>
+         </Link>
+       </div>
+        )}
+    </li>
+    </>
+
+    
+  )
+}

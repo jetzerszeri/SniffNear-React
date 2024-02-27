@@ -34,7 +34,7 @@ export const BlogCard = ({blog,   onDeleteClick , onEditClick , showButtons}) =>
       </div>
     )}
        <li>
-        <img src={blog.img} alt={blog.type}/>
+       <img src={blog.img} alt={blog.type}/>
         <p>{blog.title}</p>
         <p>{blog.content}</p>
         <p>{blog.category}</p>
@@ -44,14 +44,15 @@ export const BlogCard = ({blog,   onDeleteClick , onEditClick , showButtons}) =>
          <button className="buttonDelete" onClick={() => setShowModal(true)}>
            <i className="bi bi-trash"/>
          </button>
-{/*        
-         <Link to={`/blog-edit?blogId=${blog._id}`}>
+       
+         <Link to={`/edit-blog?blogId=${blog._id}`}>
          <button className="btn">
            <i className="bi bi-pencil"/>
          </button>
-         </Link> */}
+         </Link>
        </div>
         )}
+  
     </li>
     </>
 

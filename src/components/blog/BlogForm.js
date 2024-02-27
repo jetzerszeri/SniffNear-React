@@ -43,7 +43,7 @@ export const BlogForm = () => {
     if (!formData.category) {
         newErrors.category = 'Debe ingresar una categoría';
     }
-    
+  
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
@@ -59,7 +59,7 @@ export const BlogForm = () => {
       category: value,
     });
   };
-
+  
   const handleImgLink = (link) => {
     setImg(link);
     setFormData({
@@ -67,7 +67,7 @@ export const BlogForm = () => {
       img: link,
     });
   };
-
+  
   const navigate = useNavigate();
   const location = useLocation();
   const handleSubmit = async (e) => {
@@ -170,9 +170,9 @@ export const BlogForm = () => {
               onChange={handleChangeCategory}
             >
               <option value="" disabled defaultValue>Selecciona una categoría</option>
-              <option value="1">Salud</option>
-              <option value="2">Nutrición</option>
-              <option value="3">Diversión</option>
+              <option value="Salud">Salud</option>
+                <option value="Nutrición">Nutrición</option>
+                <option value="Diversión">Diversión</option>
             </select>
           </div>
           {errors.category && <p style={{ color: 'red' }}>{errors.category}</p>}
