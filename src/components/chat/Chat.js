@@ -12,7 +12,9 @@ const [messages, setMessages]=useState([]);
 const [newMessage, setNewMessage]= useState('');
 // const socket = io('https://sniffnear-api.onrender.com/socket.io');
 useEffect(() => {
-    const socket = io('https://sniffnear-api.onrender.com/socket.io');
+    const socket = io('https://sniffnear-api.onrender.com', {
+        transports: ['websocket'], // Especifica el uso de WebSocket
+      });
     if (roomId) {
         socket.on('connect', () => {
             console.log('Conexión exitosa al servidor Socket.IO');
