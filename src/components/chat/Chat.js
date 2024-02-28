@@ -14,6 +14,8 @@ export const Chat = () =>{
     const emisorId = getCurrentUserId()
     const navigate = useNavigate();
     const roomId = new URLSearchParams(location.search).get("roomId");
+    
+
     useEffect(()=>{
      
         socket.on("connect",()=>setIsConnected(true));
@@ -70,10 +72,16 @@ const handleSendMessage = async (e)=>{
     })
     setNewMessage('');
 };
+function formatearHora(timestamp) {
+    const fecha = new Date(timestamp);
+    const hora = fecha.getHours();
+    const minutos = fecha.getMinutes();
+    return `${hora}:${minutos < 10 ? "0" : ""}${minutos}`;
+  }
 return(
     <>
     <div className="topNavBar">
-            <div onClick={handleBack}>
+            <div onClick={handleBack} className='arrowBack'>
             <i className="bi bi-arrow-left"></i>
             </div>
                 <div className="logoContainerTopBar">
@@ -99,18 +107,13 @@ return(
      
             <div className='chat-container'>
                 <h1> Chat con:</h1>
-                <h2>{isConnected?'conectado' :'noconectado'}</h2>
-            <header className='imgAvatarChat'>
-             {/*  <img src='../../../public/img/gato.png'></img> */}
-                {/* Puedo poner la foto de img de la alerta */}
-            </header>
-         
             <div className='messages'>
             {msgHistory.length > 0 && (
               <> 
                 {msgHistory.map((mensaje, index) => (
-                         <div key={index}  className={` ${mensaje.sender === emisorId ? "msg-sent" : "msg-received"}`}>
-                            <p>{mensaje.text}</p>
+                         <div key={index}  className={` message-card ${mensaje.sender === emisorId ? "msg-sent" : "msg-received"}`}>
+                            <p className='message-text'>{mensaje.text}</p>
+                            
                         </div>
                 ))}
               </>
@@ -118,8 +121,8 @@ return(
                
             )}
             {messages.map((mensaje, index) => (
-                <div key={index}  className={` ${mensaje.sender === emisorId ? "msg-sent" : "msg-received"}`}>
-                <p>{mensaje.text}</p>
+                <div key={index}  className={`message-card ${mensaje.sender === emisorId ? "msg-sent" : "msg-received"}`}>
+                    <p className='message-text'>{mensaje.text}</p>
                 </div>
             ))}
              </div> 
