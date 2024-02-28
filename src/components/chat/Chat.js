@@ -3,11 +3,13 @@ import { Link,useLocation, useNavigate  } from 'react-router-dom';
 import { BottomNav } from '../BottomNav';
 import { getCurrentUserId } from '../../js/functions';
 import { io } from 'socket.io-client';
-const socket = io('ws://localhost:3000')
+// const socket = io('ws://localhost:3000')
+const socket = io('https://sniffnear-api.onrender.com/')
 export const Chat = () =>{
     const [isConnected, setIsConnected]=useState();
     const [messages, setMessages]=useState([]);
     const [newMessage, setNewMessage]= useState('');
+    const [msgHistory , setMsgHistory] = useState([])
     const location = useLocation();
     const emisorId = getCurrentUserId()
     const navigate = useNavigate();
@@ -34,7 +36,24 @@ export const Chat = () =>{
 
 
 //mensajes
+useEffect(()=>{
+    const getHistorial = async ()=>{
+        try{
+            const response = await fetch(
+              `  https://sniffnear-api.onrender.com/api/chats/${roomId}/messages`
+            );
+            if(response.ok){
+                const data = await response.json()
+                setMsgHistory(data)
+            }else{
 
+            }
+        }catch{
+
+        }
+    }
+    getHistorial()
+},[roomId])
 
 
 const handleBack = () =>{
@@ -85,7 +104,19 @@ return(
              {/*  <img src='../../../public/img/gato.png'></img> */}
                 {/* Puedo poner la foto de img de la alerta */}
             </header>
+         
             <div className='messages'>
+            {msgHistory.length > 0 && (
+              <> 
+                {msgHistory.map((mensaje, index) => (
+                         <div key={index}  className={` ${mensaje.sender === emisorId ? "msg-sent" : "msg-received"}`}>
+                            <p>{mensaje.text}</p>
+                        </div>
+                ))}
+              </>
+                   
+               
+            )}
             {messages.map((mensaje, index) => (
                 <div key={index}  className={` ${mensaje.sender === emisorId ? "msg-sent" : "msg-received"}`}>
                 <p>{mensaje.text}</p>
