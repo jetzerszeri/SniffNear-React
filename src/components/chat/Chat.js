@@ -3,83 +3,54 @@ import { Link,useLocation, useNavigate  } from 'react-router-dom';
 import { BottomNav } from '../BottomNav';
 import { getCurrentUserId } from '../../js/functions';
 import { io } from 'socket.io-client';
+const socket = io('ws://localhost:3000')
 export const Chat = () =>{
-const location = useLocation();
-const emisorId = getCurrentUserId()
-const navigate = useNavigate();
-const roomId = new URLSearchParams(location.search).get("roomId");
-const [messages, setMessages]=useState([]);
-const [newMessage, setNewMessage]= useState('');
-// const socket = io('https://sniffnear-api.onrender.com/socket.io');
-useEffect(() => {
-    const socket = io('https://sniffnear-api.onrender.com', {
-        transports: ['websocket'], // Especifica el uso de WebSocket
-      });
-    if (roomId) {
-        socket.on('connect', () => {
-            console.log('Conexión exitosa al servidor Socket.IO');
-        });
+    const [isConnected, setIsConnected]=useState();
+    const [messages, setMessages]=useState([]);
+    const [newMessage, setNewMessage]= useState('');
+    const location = useLocation();
+    const emisorId = getCurrentUserId()
+    const navigate = useNavigate();
+    const roomId = new URLSearchParams(location.search).get("roomId");
+    useEffect(()=>{
+     
+        socket.on("connect",()=>setIsConnected(true));
+    
+        socket.emit('joinRoom', roomId);
+        console.log('valor room id antes del sendmessage', roomId)
+       
+        socket.on('sendMessage',(data)=>{
+            
+            setMessages(messages=>[...messages, data]);
+        })
+        console.log('valor room id despues del sendmessage', roomId)
+  
+        return ()=>{
+            socket.off("connect");
+            socket.off('sendMessage');
+        }
 
-        socket.on('message', newMessage => {
-            setMessages(prevMessages => [...prevMessages, newMessage]);
-        });
+    },[roomId])
 
-        return () => {
-            socket.disconnect();
-        };
-    }
-}, [roomId]);
+
+//mensajes
+
+
 
 const handleBack = () =>{
         navigate(-1)
 }
 
-const getMessagesInRoom = async () => {
-        try {
-            const response = await fetch(
-            `https://sniffnear-api.onrender.com/api/chats/${roomId}/messages`
-          );
-          if (response.ok) {
-            const data = await response.json();
-            setMessages(data);
-          } 
 
-        } catch (error) {
-            console.log("Error al obtener los mensajes de la sala ")
-        }
-        
-};
-
-useEffect(() => {
-    if (roomId) {
-        getMessagesInRoom();
-    }
-}, [roomId]);
 const handleSendMessage = async (e)=>{
     e.preventDefault();
-    try {
-        const response = await fetch(
-            `https://sniffnear-api.onrender.com/api/chats/${roomId}/send-message`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ text: newMessage })
-            });
-    
-
-            if (response.ok) {
-                // Si el mensaje se envía con éxito, actualizar la lista de mensajes
-               getMessagesInRoom()
-                setNewMessage('');
-            } else {
-                console.error('Error al enviar el mensaje');
-            }
-        } catch (error) {
-            console.error('Error al enviar el mensaje:', error);
-        }
-    };
+    socket.emit('sendMessage',{
+        roomId: roomId , 
+        sender:emisorId, 
+        text:newMessage
+    })
+    setNewMessage('');
+};
 return(
     <>
     <div className="topNavBar">
@@ -109,32 +80,17 @@ return(
      
             <div className='chat-container'>
                 <h1> Chat con:</h1>
+                <h2>{isConnected?'conectado' :'noconectado'}</h2>
             <header className='imgAvatarChat'>
              {/*  <img src='../../../public/img/gato.png'></img> */}
                 {/* Puedo poner la foto de img de la alerta */}
             </header>
             <div className='messages'>
-            {messages.map((message, index) => (
-                            <div key={index} className={message.sender === emisorId ? 'msg-sent' : 'msg-received'}>
-                                <p>{message.text}</p>
-                            </div>
-                        ))}
-                {/* <div className='msg-received'>
-                    <p></p>
-                    
+            {messages.map((mensaje, index) => (
+                <div key={index}  className={` ${mensaje.sender === emisorId ? "msg-sent" : "msg-received"}`}>
+                <p>{mensaje.text}</p>
                 </div>
-                <div className='hora'>
-                        <p>11:00</p>
-                </div>
-     
-
-                <div className='msg-sent'>
-                    <p>Hola oliver</p>
-                </div>
-                 <div className='hora'>
-                    <p>11:00</p>
-                </div>
-     */}
+            ))}
              </div> 
             {/* Formulario para enviar el mensaje */}
             <form className='chat-form'onSubmit={handleSendMessage}>

@@ -2,28 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BottomNav } from '../BottomNav';
 import { getCurrentUserId } from '../../js/functions';
-import { io } from 'socket.io-client';
 
 export const Inbox = () => {
     const navigate = useNavigate();
     const userId = getCurrentUserId();
     const [chats, setChats] = useState([]);
     const [sender, setSender] = useState({});
-    const socket = io.connect('https://sniffnear-api.onrender.com/socket.io');
    
-    useEffect(() => {
-        console.log('conectando a ', socket);
-        // Manejo de la actualización de chats
-      
-              socket.on('chatsUpdated', updatedChats => {
-            console.log('Conectado en socket');
-            setChats(updatedChats);
-        });
-  
-      
-
-        // Obtener la lista de chats del usuario
-        const getUserChatsRooms = async () => {
+ // Obtener la lista de chats del usuario
+ useEffect(()=>{
+const getUserChatsRooms = async () => {
             try {
                 const response = await fetch(`https://sniffnear-api.onrender.com/api/chats/user/${userId}`);
                 if (response.ok) {
@@ -38,14 +26,8 @@ export const Inbox = () => {
             }
         };
         getUserChatsRooms();
+ }, [userId])
 
-        return () => {
-            socket.disconnect();
-        };
-    }, [userId]);
-    socket.on('connect', () => {
-        console.log('Conexión exitosa al servidor Socket.IO');
-    });
     const updateSenderNames = async (chats, userId) => {
         const newSenders = {};
         for (const chat of chats) {
