@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ImgInput } from '../addPet/ImgInput';
 import {getCurrentUserId, createLoader, removeLoader} from '../../js/functions';
 
@@ -43,6 +43,12 @@ export const AdoptionForm = () => {
             if (!formData.sex.trim()) {
                 newErrors.sex = 'El género es requerido';
             }
+            if (!formData.city) {
+                newErrors.city = 'La ciudad es requerida';
+            }
+            if (!formData.content) {
+                newErrors.content = 'La descripción es requerida';
+            }
             if (!formData.size.trim()) {
                 newErrors.size = 'El tamaño es requerido';
             }
@@ -69,6 +75,8 @@ export const AdoptionForm = () => {
         birthdate: getCurrentDate(),
         breed: '',
         sex: '',
+        content: '',
+        city:'',
         size: '',
         color1: '',
         img: img,
@@ -99,13 +107,28 @@ export const AdoptionForm = () => {
           size: value,
         });
     };
-     
+
     const handleSelectGender = (value) => {
         setSelectedGender(value)
         setFormData({
             ...formData,
             sex: value,
         });
+    };
+
+    const handleSelectContent = (value) => {
+        setFormData({
+            ...formData,
+            content: value,
+        });
+    };
+
+    const handleSelectCity = (value) => {
+        // setFormData({
+        //     ...formData,
+        //     city: value,
+        // });
+        console.log(value)
     };
 
     const handleSeleccionColor = (color) => {
@@ -125,14 +148,15 @@ export const AdoptionForm = () => {
     }
 
     const navigate = useNavigate();
-  const location = useLocation();
+//   const location = useLocation();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+console.log(formData);
       try {
         createLoader();
   
-        const response = await fetch('https://sniffnear-api.onrender.com/api/adoption/', {
+        const response = await fetch(`https://sniffnear-api.onrender.com/api/adoption`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -142,9 +166,9 @@ export const AdoptionForm = () => {
             const json = await response.json();
 
         if (response.ok) {
-
+removeLoader();
           console.log('adopcion publicada')
-          navigate('/')
+          navigate('/adoptions')
      
         } else {
           removeLoader();
@@ -268,6 +292,28 @@ export const AdoptionForm = () => {
                     </select>
                 </div>
 
+                <div>
+                <label htmlFor="ciudad">Ciudad</label>
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="Ingresa la ciudad."
+                    value={formData.city}
+                    onChange={handleChange}
+                />
+            </div>
+
+            <div>
+                <label htmlFor="content">Descripción de la mascota</label>
+                <input
+                    type="text"
+                    name="content"
+                    placeholder="Ingresa la descripción de tu mascota"
+                    value={formData.content}
+                    onChange={handleChange}
+                />
+            </div>
+
             {errors.breed && <p style={{ color: 'red' }}>{errors.breed}</p>}
             <div>
                 <label htmlFor="sex">Género</label>
@@ -279,7 +325,7 @@ export const AdoptionForm = () => {
                 />
                 <div className="sexSelector">
             
-                    <div datavalue="male" onClick={() => handleSelectGender('male')} className={selectedGender === 'male' ? 'selected' : ''}>
+                    <div datavalue="macho" onClick={() => handleSelectGender('macho')} className={selectedGender === 'macho' ? 'selected' : ''}>
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="40" height="40" rx="20" fill="#D1E6FF" fillOpacity="0.5"/>
                             <path d="M25.8336 14.1666L21.3336 18.6666M25.8336 14.1666H21.667M25.8336 14.1666L25.8337 18.3333M22.5003 21.6666C22.5003 23.9678 20.6348 25.8333 18.3337 25.8333C16.0325 25.8333 14.167 23.9678 14.167 21.6666C14.167 19.3654 16.0325 17.5 18.3337 17.5C20.6348 17.5 22.5003 19.3654 22.5003 21.6666Z" stroke="#1B85F3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -288,7 +334,7 @@ export const AdoptionForm = () => {
                     </div>
         
             
-                    <div datavalue="female" onClick={() => handleSelectGender('female')} className={selectedGender === 'female' ? 'selected' : ''}>
+                    <div datavalue="hembra" onClick={() => handleSelectGender('hembra')} className={selectedGender === 'hembra' ? 'selected' : ''}>
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="40" height="40" rx="20" fill="#FFE1F2" fillOpacity="0.5"/>
                             <path d="M19.9997 21.6667C22.3009 21.6667 24.1663 19.8012 24.1663 17.5C24.1663 15.1989 22.3009 13.3334 19.9997 13.3334C17.6985 13.3334 15.833 15.1989 15.833 17.5C15.833 19.8012 17.6985 21.6667 19.9997 21.6667ZM19.9997 21.6667V27.5M17.4997 25H22.4997" stroke="#FF9AD5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

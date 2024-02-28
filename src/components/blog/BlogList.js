@@ -50,6 +50,9 @@ export const BlogList = ({ blogs, onBlogDelete, userId }) => {
 
   return (
     <div className="listAlertas">
+          <div className='topNavBar'>
+                <h1>Listado de artículos</h1>
+            </div>
       <ul>
         {blogs.map((blog) => {
           const isOwner = blog.owner === userId;

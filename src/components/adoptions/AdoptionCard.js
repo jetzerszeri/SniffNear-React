@@ -35,9 +35,9 @@ export const AdoptionCard = ({adoption,   onDeleteClick , onEditClick , showButt
        <li>
         <img src={adoption.img} alt={adoption.type}/>
         <p>Color: {adoption.color1}, tamaño: {adoption.size}</p>
-        {/* <Link to={`/alert-detail?alertId=${alert._id}`}>
-          <button className="viewAlert">Ver alerta</button>
-        </Link> */}
+        <Link to={`/adoption-detail?adoptionId=${adoption._id}`}>
+          <button className="viewAlert">Ver adopción</button>
+        </Link>
         
         {showButtons && (
          <div className="buttonsAlert">
@@ -45,7 +45,7 @@ export const AdoptionCard = ({adoption,   onDeleteClick , onEditClick , showButt
            <i className="bi bi-trash"/>
          </button>
        
-         <Link to={`/adoption-edit?adoptionId=${adoption._id}`}>
+         <Link to={`/edit-adoption?adoptionId=${adoption._id}`}>
          <button className="btn">
            <i className="bi bi-pencil"/>
          </button>

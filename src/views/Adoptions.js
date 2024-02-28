@@ -34,14 +34,6 @@ export const Adoption = () => {
 
     return (
         <>
-            <Navbar />
-            <div className='topNavBarAlerts'>
-                 <h1 style={{color:'black', fontWeight:'700'}}>Listado de alertas</h1>
-                <Link to={"/mapa-list"}>
-                <i className="bi bi-map-fill"></i>
-                </Link>
-             </div>
-
             <main className="mapMain">
                 <AdoptionList
                  adoptions={adoptions}

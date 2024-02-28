@@ -59,6 +59,14 @@ export const EditBlog = () => {
   }, [blogId]);
   const [errors, setErrors] = useState({});
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+};
+
   const handleTitle = (value) => {
     setSelectedTitle(value);
     setFormData((prevState) => ({
@@ -68,11 +76,12 @@ export const EditBlog = () => {
   };
   const handleChangeCategory = (value) => {
     setSelectedCategory(value);
-    setFormData((prevState) => ({
+    setFormData((prevState)=>({
       ...prevState,
       category: value,
     }));
-  };
+};
+ 
   const handleSelectContent = (value) => {
     setSelectedContent(value);
     setFormData((prevState) => ({
@@ -119,22 +128,23 @@ export const EditBlog = () => {
         <h1 className="alertEdit">Editar Artículo</h1>
         <form className="addNewPetForm editAlert">
           <div className="step2">
-
+          <div>
             <label htmlFor="title">Titulo</label>
             <input
               type="text"
               name="title"
               placeholder="Ingresa el titulo de tu artículo"
               value={formData.title}
-              onChange={handleTitle}
+              onChange={handleChange}
             />
+          </div>
 
             <div>
               <label htmlFor="category">Categoría</label>
               <select
                 name="category"
+                onChange={(e) => handleChangeCategory(e.target.value)}
                 value={formData.category}
-                onChange={handleChangeCategory}
               >
                 <option value="" disabled defaultValue>
                   Selecciona una categoría
@@ -148,10 +158,11 @@ export const EditBlog = () => {
             <div className="editDescription">
               <label htmlFor="content">Contenido</label>
               <textarea
+                type="text"
                 name="content"
                 placeholder="Ingresa el contenido de tu artículo"
                 value={formData.content}
-                onChange={handleSelectContent}
+                onChange={handleChange}
                 rows="4"
               />
             </div>

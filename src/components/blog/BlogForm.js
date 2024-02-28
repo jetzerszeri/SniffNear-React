@@ -127,7 +127,7 @@ export const BlogForm = () => {
         await handleSubmit(e);
         // Opcionalmente, puedes agregar lógica adicional después del envío
         // Por ejemplo, navegar o realizar cualquier otra acción
-        navigate('/');
+        navigate('/blog-list');
     }
   };
 

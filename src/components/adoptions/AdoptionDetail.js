@@ -36,56 +36,56 @@ export const AdoptionDetail = () =>{
         };
         getAdoptionDetail(); 
       }); 
-      const [lat,setLat] = useState(null);
-      const [lng, setLng] = useState(null);
-      const [status, setStatus] = useState(null);
-      const [city, setCity] = useState('');
-      const [state, setState] = useState('');
-      const [country, setCountry] = useState('');
-      const [adress,setAdress]= useState('');
-      const apiKey = process.env.REACT_APP_API_KEY_GEOCODING;
-      useEffect(()=>{
-        if(adoption != null){
-               if(adoption.latitude != null && adoption.longitude !=null){
-                const latitude = adoption.latitude;
-                const longitude = adoption.longitude;
-                setLat(latitude);
-                setLng(longitude)
-        }
-        }
-      },[adoption])
-      setDefaults({
-        key: apiKey,
-        language:"es",
-        region: "es"
-    })
+    //   const [lat,setLat] = useState(null);
+    //   const [lng, setLng] = useState(null);
+    //   const [status, setStatus] = useState(null);
+    //   const [city, setCity] = useState('');
+    //   const [state, setState] = useState('');
+    //   const [country, setCountry] = useState('');
+    //   const [adress,setAdress]= useState('');
+    //   const apiKey = process.env.REACT_APP_API_KEY_GEOCODING;
+    //   useEffect(()=>{
+    //     if(adoption != null){
+    //            if(adoption.latitude != null && adoption.longitude !=null){
+    //             const latitude = adoption.latitude;
+    //             const longitude = adoption.longitude;
+    //             setLat(latitude);
+    //             setLng(longitude)
+    //     }
+    //     }
+    //   },[adoption])
+    //   setDefaults({
+    //     key: apiKey,
+    //     language:"es",
+    //     region: "es"
+    // })
    
-    useEffect(()=>{
-        geocode(RequestType.LATLNG,`${lat} , ${lng}`,{
-        location_type: "ROOFTOP", 
-        enable_address_descriptor: true, 
-        })
-        .then(({ results }) => {
-        const address = results[0].formatted_address;
-        const { city, state, country } = results[0].address_components.reduce(
-            (acc, component) => {
-            if (component.types.includes("locality"))
-                acc.city = component.long_name;
-            else if (component.types.includes("administrative_area_level_1"))
-                acc.state = component.long_name;
-            else if (component.types.includes("country"))
-                acc.country = component.long_name;
-            return acc;
-            },
-            {}
-        );
-        setAdress(address)
-        setCity(city);
-        setCountry(country);
-        setState(state);
-        })
-        .catch(console.error);
-    })
+    // useEffect(()=>{
+    //     geocode(RequestType.LATLNG,`${lat} , ${lng}`,{
+    //     location_type: "ROOFTOP", 
+    //     enable_address_descriptor: true, 
+    //     })
+    //     .then(({ results }) => {
+    //     const address = results[0].formatted_address;
+    //     const { city, state, country } = results[0].address_components.reduce(
+    //         (acc, component) => {
+    //         if (component.types.includes("locality"))
+    //             acc.city = component.long_name;
+    //         else if (component.types.includes("administrative_area_level_1"))
+    //             acc.state = component.long_name;
+    //         else if (component.types.includes("country"))
+    //             acc.country = component.long_name;
+    //         return acc;
+    //         },
+    //         {}
+    //     );
+    //     setAdress(address)
+    //     setCity(city);
+    //     setCountry(country);
+    //     setState(state);
+    //     })
+    //     .catch(console.error);
+    // })
     const fecha = new Date(adoption.date);
     const formatDate = fecha.toLocaleDateString('es-AR');
     const handleContactClick = async () =>{
@@ -158,14 +158,6 @@ export const AdoptionDetail = () =>{
                     <p>{adoption.color1}</p>
                 </div>
                 <div className="details">
-                    <p>Dia</p>
-                    <p>{formatDate}</p>
-                </div>
-                <div className="details">
-                    <p>Hora</p>
-                    <p>{adoption.time}</p>
-                </div>
-                <div className="details">
                     <p>Tamaño</p>
                     <p>{adoption.size}</p>
                 </div>
@@ -174,15 +166,20 @@ export const AdoptionDetail = () =>{
                     <p>{adoption.breed}</p>
                 </div>
                 <div className="details">
-                    <p>Ubicación</p>
+                    <p>Fecha de nacimiento (aproximado)</p>
                     <ul>
-                        <li>{adress}</li>
-                     
+                        <li>{adoption.birthdate}</li>
+                    </ul>
+                </div>
+                <div className="details">
+                    <p>Ciudad</p>
+                    <ul>
+                        <li>{adoption.city}</li>
                     </ul>
                 </div>
                  <div className="details">
                     <p>Descripción</p>
-                    <p>{adoption.description}</p>
+                    <p>{adoption.content}</p>
                 </div>
             </div>
               <button className="comunicate" onClick={handleContactClick}>
