@@ -9,6 +9,7 @@ import {
 import { getCurrentUserId } from "../../js/functions";
 export const AlertDetail = () =>{
     const navigate = useNavigate();
+    const [chatExist,setChatExist]=useState(false)
     const handleBack = () =>{
         navigate(-1)
     }
@@ -87,32 +88,50 @@ export const AlertDetail = () =>{
     })
     const fecha = new Date(alert.date);
     const formatDate = fecha.toLocaleDateString('es-AR');
-    const handleContactClick = async () =>{
+    const handleContactClick = async () => {
         try {
             const emisorId = getCurrentUserId();
             const destinatarioId = alert.creator;
-            const createChatRoomResponse = await fetch('https://sniffnear-api.onrender.com/api/chats/create', {
+    
+            const existingChatRoomResponse = await fetch('https://sniffnear-api.onrender.com/api/chats/find', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ participants: [emisorId, destinatarioId] })
-              });
-             
-              
-              if (createChatRoomResponse.ok) {
-                const data = await createChatRoomResponse.json();
-                console.log(data)
-                const newRoomId = data._id;
-                console.log('Sala creada con exito')
-                navigate(`/chat?roomId=${newRoomId}`);
-              } else {
-                console.error('Error al crear la sala de chat');
-              }
+                body: JSON.stringify({ emisorId, destinatarioId })
+            });
+    
+            if (existingChatRoomResponse.ok) {
+                const existingData = await existingChatRoomResponse.json();
+                const existingRoomId = existingData._id;
+                setChatExist(true)
+                console.log('Sala existente encontrada');
+                navigate(`/chat?roomId=${existingRoomId}`);
+            } else {
+                
+                const createChatRoomResponse = await fetch('https://sniffnear-api.onrender.com/api/chats/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ participants: [emisorId, destinatarioId] })
+                });
+    
+                if (createChatRoomResponse.ok) {
+                    const data = await createChatRoomResponse.json();
+                    const newRoomId = data._id;
+                    setChatExist(false)
+                    console.log('Sala creada con éxito');
+                    navigate(`/chat?roomId=${newRoomId}`);
+                } else {
+                    console.error('Error al crear la sala de chat');
+                }
+            }
         } catch (error) {
             console.error('Error al contactar al usuario:', error);
         }
-    }
+    };
+    
     return(
         <>
         <div className="topNavBar">
@@ -230,7 +249,11 @@ export const AlertDetail = () =>{
                 </clipPath>
                 </defs>
                 </svg>
-                <p>Contactar</p>
+                {!chatExist ? 
+                <p>Contactar</p> 
+                :
+                <p>Ir al chat</p>
+                }
             </button> 
         <div>
          
