@@ -21,7 +21,7 @@ export const BlogCard = ({blog,   onDeleteClick , onEditClick , showButtons}) =>
       <div className="myModal">
           <div className="headerModal">
             <h1>¿Estás seguro que deseas eliminar este artículo?</h1>
-            <i class="bi bi-x" onClick={handleCancel}></i>
+            <i className="bi bi-x" onClick={handleCancel}></i>
           </div>
           <div className="bodyModal">
           <button onClick={handleCancel}>

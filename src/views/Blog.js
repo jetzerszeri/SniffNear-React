@@ -1,74 +1,65 @@
-import { useCallback, useEffect, useState } from "react";
-import { Navbar } from "../components/Navbar"
-import { BlogList } from "../components/blog/BlogList"
+import { useEffect, useState } from "react";
+import { Navbar } from "../components/Navbar";
+import { BlogList } from "../components/blog/BlogList";
 import { BottomNav } from "../components/BottomNav";
-import {getCurrentUserId, createLoader, removeLoader} from '../js/functions';
-import { Link } from "react-router-dom";
-// import { FilterAlert } from "../components/alerts/FilterAlert";
+import { getCurrentUserId, createLoader, removeLoader } from '../js/functions';
+import { FilterBlog } from "../components/blog/FilterBlog";
 
 export const Blogs = () => {
-   const [blogs, setBlogs] = useState([]);
-  
-      useEffect(() => {
-        const getBlogs = async () => {
-            try {
-                // createLoader('Cargando alertas');
-                const response = await fetch(`https://sniffnear-api.onrender.com/api/blog/`);
-                if (response.ok) {
-                    const data = await response.json();
-                    // const filteredAlerts = data.filter((alert) => alert.city === city && alert.country === country);
-                    // setAlerts(filteredAlerts);
-                    // console.log(filteredAlerts)
-                    setBlogs(data);
-                    // removeLoader();
-                }
-            } catch (error) {
-                console.error('Error fetching data', error)
-            }
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    const getBlogs = async () => {
+      try {
+        createLoader('Cargando blogs');
+        const response = await fetch(`https://sniffnear-api.onrender.com/api/blog/`);
+        if (response.ok) {
+          const data = await response.json();
+          setBlogs(data);
+          removeLoader();
         }
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+
     getBlogs();
-});
+  }, []); // <- Agregamos un arreglo vacío para ejecutar el efecto solo en el montaje del componente
 
-    // const [filteredAlerts , setFilteredAlerts] = useState(alerts);
-    // const [showFilters, setShowFilters] = useState(false);
-    
+  const [filteredBlogs, setFilteredBlogs] = useState(blogs);
+  const [showFilters, setShowFilters] = useState(false);
 
-//     useEffect(() => {
+  useEffect(() => {
+    setFilteredBlogs(blogs);
+  }, [blogs]);
 
-//         setFilteredAlerts(alerts);
-//     }, [alerts]); 
-//   useEffect(() => {
-//     setFilteredAlerts(alerts);
-//   }, [alerts]);
+  const handleBlogDelete = (id) => {
+    const updatedBlogs = blogs.filter(blog => blog._id !== id);
+    setBlogs(updatedBlogs);
+  };
 
+  return (
+    <>
+      <Navbar />
+      <div className="topNavBarFilters">
+      <div className='topNavBar'>
+                <h1>Listado de artículos</h1>
+            </div>
+        <i className="bi bi-filter" onClick={() => setShowFilters(!showFilters)} />
+      </div>
+      {showFilters && (
+        <FilterBlog blogs={blogs} setFilteredBlogs={setFilteredBlogs} />
+      )}
 
+      <main className="mapMain">
+        <BlogList
+          blogs={filteredBlogs}
+          onAlertDelete={handleBlogDelete}
+          userId={getCurrentUserId()}
+        />
+      </main>
 
-    const handleAlertDelete = (id) => {
-        const updatedBlogs = blogs.filter(blog => blog._id !== id);
-        setBlogs(updatedBlogs);
-      };
-
-    return (
-        <>
-            
-             {/* <div className="topNavBarFilters">
-             <i class="bi bi-filter" onClick={()=>setShowFilters(!showFilters)}/>
-             </div> */}
-             {/* {showFilters && (
-                 <FilterAlert alerts={alerts} setFilteredAlerts={setFilteredAlerts}/>
-             )} */}
-
-            <main className="mapMain">
-                <BlogList
-                 blogs={blogs}
-                 onAlertDelete={handleAlertDelete} 
-                 userId={getCurrentUserId()}
-                 />
-            </main>
-
-            <BottomNav activeLink="alerts"/>
-
-        </>
-
-    )
-}
+      <BottomNav activeLink="blogs" />
+    </>
+  );
+};

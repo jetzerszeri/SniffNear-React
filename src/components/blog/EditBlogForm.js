@@ -7,6 +7,7 @@ import {
 } from "../../js/functions";
 import { ImgInput } from "../addPet/ImgInput";
 import { Navigate } from "react-router";
+
 const getCurrentDate = () => {
   const date = new Date();
   const year = date.getFullYear();
@@ -19,14 +20,12 @@ export const EditBlog = () => {
   const blogId = new URLSearchParams(location.search).get("blogId");
   const [blog, setBlog] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedContent, setSelectedContent] = useState("");
-  const [selectedTitle, setSelectedTitle] = useState("");
-  const [img, setImg] = useState("");
+  const [img, setSelectedImg] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    img: img,
+    img: "",
     title: "",
     category: "",
     content: "",
@@ -66,14 +65,6 @@ export const EditBlog = () => {
       [name]: value,
     });
 };
-
-  const handleTitle = (value) => {
-    setSelectedTitle(value);
-    setFormData((prevState) => ({
-      ...prevState,
-      title: value,
-    }));
-  };
   const handleChangeCategory = (value) => {
     setSelectedCategory(value);
     setFormData((prevState)=>({
@@ -81,16 +72,9 @@ export const EditBlog = () => {
       category: value,
     }));
 };
- 
-  const handleSelectContent = (value) => {
-    setSelectedContent(value);
-    setFormData((prevState) => ({
-      ...prevState,
-      content: value,
-    }));
-  };
 
   const handleImgLink = (value) => {
+    setSelectedImg(value);
     setFormData((prevState) => ({
       ...prevState,
       img: value,
@@ -150,8 +134,8 @@ export const EditBlog = () => {
                   Selecciona una categoría
                 </option>
                 <option value="Salud">Salud</option>
-                <option value="Nutrición">Nutrición</option>
-                <option value="Diversión">Diversión</option>
+                <option value="Nutricion">Nutrición</option>
+                <option value="Diversion">Diversión</option>
               </select>
             </div>
 
@@ -166,9 +150,10 @@ export const EditBlog = () => {
                 rows="4"
               />
             </div>
+
             <div>
             <h2>Imagen de referencia a tu artículo</h2>
-                    <ImgInput src={formData.img} setSelectedImg={handleImgLink} /> 
+                    <ImgInput src={formData.img} onChange={handleImgLink} /> 
           </div>
           </div>
          

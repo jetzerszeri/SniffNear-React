@@ -7,7 +7,7 @@ import { getCurrentUserId, createLoader, removeLoader } from '../../js/functions
 export const BlogForm = () => {
   let { blogId } = useParams();
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [img, setImg] = useState('');
+  const [img, setSelectedImg] = useState('');
   const [currentStep, setCurrentStep] = useState(1);
 
   const [formData, setFormData] = useState({
@@ -60,12 +60,12 @@ export const BlogForm = () => {
     });
   };
   
-  const handleImgLink = (link) => {
-    setImg(link);
-    setFormData({
-      ...formData,
-      img: link,
-    });
+  const handleImgLink = (value) => {
+    setSelectedImg(value);
+    setFormData((prevState) => ({
+      ...prevState,
+      img: value,
+    }));
   };
   
   const navigate = useNavigate();
@@ -74,7 +74,6 @@ export const BlogForm = () => {
     e.preventDefault();
 
       try {
-        createLoader();
   
         const response = await fetch('https://sniffnear-api.onrender.com/api/blog/', {
               method: 'POST',
@@ -171,8 +170,8 @@ export const BlogForm = () => {
             >
               <option value="" disabled defaultValue>Selecciona una categoría</option>
               <option value="Salud">Salud</option>
-                <option value="Nutrición">Nutrición</option>
-                <option value="Diversión">Diversión</option>
+                <option value="Nutricion">Nutrición</option>
+                <option value="Diversion">Diversión</option>
             </select>
           </div>
           {errors.category && <p style={{ color: 'red' }}>{errors.category}</p>}
@@ -180,7 +179,7 @@ export const BlogForm = () => {
 
         <div>
           <h2>Imagen de referencia a tu artículo</h2>
-          <ImgInput setImgLink={handleImgLink} />
+          <ImgInput onChange={handleImgLink} />
           {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
         </div>
 

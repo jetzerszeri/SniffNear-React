@@ -15,12 +15,12 @@ export const AdoptionEdit = () => {
   const location = useLocation()
   const adoptionId = new URLSearchParams(location.search).get("adoptionId");
   const [adoption, setAdoption] = useState(null);
-  const [currentStep, setCurrentStep]=useState(1);
   const [selectedType, setSelectedType] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [img, setImg] = useState('')
+  const [selectedCity, setSelectedCity] = useState("");
+  const [img, setSelectedImg] = useState('')
 
   const [formData, setFormData] = useState({
     type: '',
@@ -36,86 +36,65 @@ export const AdoptionEdit = () => {
     owner: getCurrentUserId(),
 });
 
-const handlePrev = (e) => {
-  e.preventDefault();
-  setCurrentStep(currentStep - 1);
-};
+const [dataLoaded, setDataLoaded] = useState(false);
 
-const handleNext = (e) => {
-  e.preventDefault();
-  const newErrors={};
-  if(currentStep === 1){
-      if (!formData.type) {
-          newErrors.type = 'El tipo de mascota es requerido';
-      }
-  }
-  if(currentStep === 2){
-      if (!formData.name) {
-          newErrors.name = 'El nombre de la mascota es requerido';
-      }
-      if (!formData.color1) {
-          newErrors.color1 = "Debes elegir un color"
-      }
-      if (!formData.sex.trim()) {
-          newErrors.sex = 'El género es requerido';
-      }
-      if (!formData.content) {
-        newErrors.content = 'La descripción es requerida';
-    }
-    if (!formData.city) {
-        newErrors.city = 'La ubicación es requerida';
-    }
-      if (!formData.size.trim()) {
-          newErrors.size = 'El tamaño es requerido';
-      }
-  
-      if (!formData.breed.trim()) {
-          newErrors.breed = 'La raza es requerida';
-      }
-  }
-  if(currentStep === 3){
-      if (!formData.img) {
-          newErrors.img = 'La imagen de la mascota es requerida';
-      }
-  }
-  setErrors(newErrors);
-  if (Object.keys(newErrors).length === 0) {
-      setCurrentStep(currentStep + 1);
-  }
-};
+useEffect(() => {
+  const getAdoptionInfo = async () => {
+    try {
+      createLoader();
+      const response = await fetch(
+        `https://sniffnear-api.onrender.com/api/adoption/${adoptionId}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setAdoption(data);
 
-  useEffect(()=>{
-     const getAdoptionInfo = async () =>{
-      try{
-          createLoader()
-          const response = await fetch (
-              `https://sniffnear-api.onrender.com/api/adoption/${adoptionId}`
-          )
-          if(response.ok){
-              const data = await response.json();
-              setAdoption(data);
-              setFormData(formData=>({
-                  ...formData,
-                  type: '',
-                  name: '',
-                  birthdate: getCurrentDate(),
-                  breed: '',
-                  sex: '',
-                  content:'',
-                  city:'',
-                  size: '',
-                  color1: '',
-                  img: '',
-                  owner: getCurrentUserId(),
-              }))
+        if (data) {
+         
+          if (!dataLoaded) {
+            setFormData((formData) => ({
+              ...formData,
+              type: data.type || "", 
+              name: data.name || "",
+              birthdate: data.birthdate || getCurrentDate(),
+              breed: data.breed || "",
+              sex: data.sex || "",
+              content: data.content || "",
+              city: data.city || "",
+              size: data.size || "",
+              color1: data.color1 || "",
+              img: data.img || "",
+              owner: getCurrentUserId(),
+            }));
+            setDataLoaded(true);
           }
-          removeLoader()
-      }catch (error){
+        } else {
 
+          setFormData((formData) => ({
+            ...formData,
+            type: "",
+            name: "",
+            birthdate: getCurrentDate(),
+            breed: "",
+            sex: "",
+            content: "",
+            city: "",
+            size: "",
+            color1: "",
+            img: "",
+            owner: getCurrentUserId(),
+          }));
+        }
       }
-  }
+      removeLoader();
+    } catch (error) {
+
+    }
+  };
+
   getAdoptionInfo();
-  },[adoptionId]);
+}, [adoptionId, dataLoaded]);
+  
 
   const [errors, setErrors] = useState({});
     const handleChange = (e) => {
@@ -128,87 +107,75 @@ const handleNext = (e) => {
 
     const handleSelectType = (value) => {
         setSelectedType(value);
-        setFormData({
-          ...formData,
+        setFormData((prevState) => ({
+          ...prevState,
           type: value,
-        });
-    };
+        }));
+      };
 
     const handleSelectSize = (value) => {
         setSelectedSize(value)
-        setFormData({
-          ...formData,
+        setFormData((prevState)=>({
+          ...prevState,
           size: value,
-        });
+        }));
     };
 
 
     const handleSelectGender = (value) => {
-        setSelectedGender(value)
-        setFormData({
-            ...formData,
+        setSelectedGender(value);
+        setFormData((prevState) => ({
+            ...prevState,
             sex: value,
-        });
-    };
-
-    const handleSeleccionColor = (color) => {
-        setFormData({
-          ...formData,
-          color1: color,
-        });
-        setSelectedColor(color);
-    };
-
-    
-    const handleSelectContent = (content) => {
-        setFormData({
-          ...formData,
-          content: content,
-        });
-        // setSelectedColor(content);
+        }));
     };
     
-    const handleSelectCity = (city) => {
-        setFormData({
-          ...formData,
-          city: city,
-        });
-        // setSelectedColor(color);
+    const handleSelectedColor = (value) => {
+        setSelectedColor(value);
+        setFormData((prevState)=>({
+          ...prevState,
+          color1: value,
+        }));
     };
-    
-    const handleImgLink = (link) => {
-        setImg(link)
-        setFormData({
-            ...formData,
-            img: link,
-        });
-    }
+    const handleImgLink = (value) => {
+        setSelectedImg(value);
+        setFormData((prevState) => ({
+          ...prevState,
+          img: value,
+        }));
+      };
 
   
   const navigate = useNavigate();
   // const location = useLocation();
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
-          try {
-              const response = await fetch(`https://sniffnear-api.onrender.com/api/adoption/${adoptionId}`, {
-                  method: 'PUT',
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(formData),
-              });
-              console.log(formData)
-              const json = await response.json();
-              if (response.ok) {
-                  navigate('/adoptions');
-              } else {
-                  console.error('Error en el registro:', json.message);
-              }
-          } catch (error) {
-              console.error('Error:', error);
-          }
+    e.preventDefault();
+    try {
+      console.log('Datos a enviar:', formData);
+  
+      const response = await fetch(`https://sniffnear-api.onrender.com/api/adoption/${adoptionId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      console.log('Respuesta de la API:', response);
+  
+      const json = await response.json();
+      if (response.ok) {
+        navigate('/adoptions');
+      } else {
+        console.error('Error en el registro:', json.message);
+        console.log('Respuesta de error de la API:', json);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  
 
 
   return(
@@ -216,11 +183,10 @@ const handleNext = (e) => {
       <main>
       <h1 className="alertEdit">Editar Adopción</h1>
       <form className="addNewPetForm editAlert">
-               {currentStep === 1 &&(
-        <div className="step1">
-            <h2>¿Qué tipo de mascota es?</h2>
-              <ul className="petsIconList">
-              <li datavalue="perro" 
+                <div>
+                    <p>¿Qué tipo de mascota encontraste?</p>
+                    <ul className="petsIconList">
+                        <li datavalue="perro" 
                         onClick={() => handleSelectType('perro')} 
                         className={formData.type === 'perro' ? 'selected' : ''}>
                             <div>
@@ -259,12 +225,9 @@ const handleNext = (e) => {
                                 </svg>
                             </div>
                         </li>
-                    <p datavalue="otraMascota" onClick={() => handleSelectType('otraMascota')} className={selectedType === 'otraMascota' ? 'selected' : ''}>Otra mascota</p>
-                 </ul>                         
-                {errors.type && <p style={{ color: 'red' }}>{errors.type}</p>}
-        </div>          
-        )} 
-        {currentStep === 2 &&(
+                    </ul>
+                </div>        
+    
         <div className="step2">
             <div>
                 <label htmlFor="name">Nombre</label>
@@ -403,41 +366,30 @@ const handleNext = (e) => {
                 <label>Color</label>
                 <input type="hidden" name="color1" id="color1"/>
                 <ul className="colorInputs principal">
-                    <li onClick={() => handleSeleccionColor('blanco')} datavalue="blanco" className={formData.color1 === 'blanco' ? 'selected' : ''}>Blanco</li>
-                    <li onClick={() => handleSeleccionColor('negro')}datavalue="negro" className={formData.color1 === 'negro' ? 'selected' : ''}>Negro</li>
-                    <li onClick={() => handleSeleccionColor('gris')}datavalue="gris" className={formData.color1 === 'gris' ? 'selected' : ''}>Gris</li>
-                    <li onClick={() => handleSeleccionColor('cafe')}datavalue="cafe" className={formData.color1 === 'cafe' ? 'selected' : ''}>Café</li>
-                    <li onClick={() => handleSeleccionColor('naranja')}datavalue="naranja" className={formData.color1 === 'naranja' ? 'selected' : ''}>Naranja</li>
-                     <li onClick={() => handleSeleccionColor('marron')}datavalue="marron" className={formData.color1 === 'marron' ? 'selected' : ''}>Marron</li>
-                    <li onClick={() => handleSeleccionColor('otro')}datavalue="otro" className={formData.color1 === 'otro' ? 'selected' : ''}>Otro</li>
+                    <li onClick={() => handleSelectedColor('blanco')} datavalue="blanco" className={formData.color1 === 'blanco' ? 'selected' : ''}>Blanco</li>
+                    <li onClick={() => handleSelectedColor('negro')}datavalue="negro" className={formData.color1 === 'negro' ? 'selected' : ''}>Negro</li>
+                    <li onClick={() => handleSelectedColor('gris')}datavalue="gris" className={formData.color1 === 'gris' ? 'selected' : ''}>Gris</li>
+                    <li onClick={() => handleSelectedColor('cafe')}datavalue="cafe" className={formData.color1 === 'cafe' ? 'selected' : ''}>Café</li>
+                    <li onClick={() => handleSelectedColor('naranja')}datavalue="naranja" className={formData.color1 === 'naranja' ? 'selected' : ''}>Naranja</li>
+                     <li onClick={() => handleSelectedColor('marron')}datavalue="marron" className={formData.color1 === 'marron' ? 'selected' : ''}>Marron</li>
+                    <li onClick={() => handleSelectedColor('otro')}datavalue="otro" className={formData.color1 === 'otro' ? 'selected' : ''}>Otro</li>
                 </ul>     
             </div>
                  {errors.color1 && <p style={{ color: 'red' }}>{errors.color1}</p>}
 
         </div>
-        )}
-        {currentStep === 3 &&(
+
             <div>
             <h2>Foto de perfil de tu mascota</h2>
                 <ImgInput setImgLink={handleImgLink}/>
                 {errors.img && <p style={{ color: 'red' }}>{errors.img}</p>}
-            </div>
-        )}    
+            </div>  
         <div className="btnStepForm">
-            {currentStep > 1 && (
-                <button className="btn secundary " onClick={handlePrev}>
-                    Regresar
-                </button>
-            )}
-            {currentStep <= 2 ? (
-                <button id="next" onClick={handleNext}>
-                    Continuar
-                </button>
-            ) : (
+     
                 <button onClick={handleSubmit}>
                    Editar Adopción
                 </button>
-            )}
+         
         </div>
       </form>
       </main>
