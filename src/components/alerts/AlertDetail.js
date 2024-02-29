@@ -9,6 +9,7 @@ import {
 import { getCurrentUserId } from "../../js/functions";
 export const AlertDetail = () =>{
     const navigate = useNavigate();
+    const [chatExist,setChatExist]=useState(false)
     const handleBack = () =>{
         navigate(-1)
     }
@@ -103,6 +104,7 @@ export const AlertDetail = () =>{
             if (existingChatRoomResponse.ok) {
                 const existingData = await existingChatRoomResponse.json();
                 const existingRoomId = existingData._id;
+                setChatExist(true)
                 console.log('Sala existente encontrada');
                 navigate(`/chat?roomId=${existingRoomId}`);
             } else {
@@ -118,6 +120,7 @@ export const AlertDetail = () =>{
                 if (createChatRoomResponse.ok) {
                     const data = await createChatRoomResponse.json();
                     const newRoomId = data._id;
+                    setChatExist(false)
                     console.log('Sala creada con éxito');
                     navigate(`/chat?roomId=${newRoomId}`);
                 } else {
@@ -246,7 +249,11 @@ export const AlertDetail = () =>{
                 </clipPath>
                 </defs>
                 </svg>
-                <p>Contactar</p>
+                {!chatExist ? 
+                <p>Contactar</p> 
+                :
+                <p>Ir al chat</p>
+                }
             </button> 
         <div>
          

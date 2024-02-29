@@ -1359,14 +1359,24 @@ input.error, select.error{
 }
 .comunicate{
     display: flex;
-    justify-content: end;
+    align-content: end;
+    justify-content: flex-end;
     flex-direction: row;
     margin-top: 10px;
+    
 }
 .comunicate p{
+    align-self: flex-end;
+    margin: 5px;
     font-weight: bold;
     cursor: pointer;
+  
 }
+.comunicate:hover{
+    background-color: #363A59;
+    color: white
+}
+
 .alertEdit{
     display: flex;
     justify-content: center;
