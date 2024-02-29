@@ -14,8 +14,8 @@ export const Chat = () =>{
     const emisorId = getCurrentUserId()
     const navigate = useNavigate();
     const roomId = new URLSearchParams(location.search).get("roomId");
-    
-
+    const [receptor, setReceptor ] = useState('');
+    const [imgReceptor, setImgReceptor] = useState('')
     useEffect(()=>{
      
         socket.on("connect",()=>setIsConnected(true));
@@ -57,7 +57,44 @@ useEffect(()=>{
     getHistorial()
 },[roomId])
 
+useEffect(()=>{
+    //nombre del receptor
+    const getName = async () =>{
+        try {
+            //tengo que hacer un fetch a la api para buscar los participantes de la sala 
+            const response = await fetch(
+                `https://sniffnear-api.onrender.com/api/chats/room/${roomId}`
+            );
+            if(response.ok){
+                const data = await response.json();
+                if(data.participants && data.participants.length >0) {
+                    const receptorId = data.participants.find(participantId => participantId !== getCurrentUserId());
 
+                    const userResponse = await fetch(
+                        `https://sniffnear-api.onrender.com/api/users/${receptorId}`
+                    )
+                    if(userResponse.ok){
+                        const userData = await userResponse.json();
+                        const receptorName = userData.user.name;
+                        const imgRec = userData.user.img;
+                        setReceptor(receptorName);
+                        setImgReceptor(imgRec);
+                    }
+                } else {
+                    console.log('La sala de chat no tiene participantes.');
+                }
+            } else {
+                console.error('Error al obtener los detalles de la sala de chat');
+            }
+        } catch (error) {
+            console.error('Error al obtener el nombre del receptor:', error);
+        }
+    };
+
+    if (roomId) {
+        getName();
+    }
+}, [roomId]);
 const handleBack = () =>{
         navigate(-1)
 }
@@ -106,7 +143,15 @@ return(
     <main>
      
             <div className='chat-container'>
-                <h1> Chat con:</h1>
+                <div className='imgAvatarChat'>
+                {imgReceptor ? (
+                <img src={imgReceptor} alt={receptor}/> 
+                ) : (
+                    <img src="/img/userAvatarpred.png" 
+                    alt="Imagen por defecto"/> 
+                )}
+                </div>
+                <h1> Chat con: {receptor}</h1>
             <div className='messages'>
             {msgHistory.length > 0 && (
               <> 

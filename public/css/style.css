@@ -2015,14 +2015,19 @@ padding-bottom: 60px;
 .imgAvatarChat{
     align-items: center;
     padding: 8px;
-    background-color: #ffffff;
+    text-align: center;
     border-bottom: 1px solid #e0e0e0;
 }
 .imgAvatarChat img{
-    width: 40px;
+    width: auto;
     height: 40px;
     border-radius: 50%;
     margin-right: 8px;
+}
+.chat-container h1{
+    
+    margin: auto;
+    text-align: center;
 }
 /* Estilos para los mensajes */
 .messages {
@@ -2078,6 +2083,9 @@ padding-bottom: 60px;
 }
 .btnSend{
     color: rgb(255, 255, 255)
+}
+.message-card{
+    margin: 5px;
 }
 .message-list{
     list-style-type: none;
