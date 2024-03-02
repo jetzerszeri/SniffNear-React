@@ -111,7 +111,7 @@ export const EditBlog = () => {
       <main>
         <h1 className="alertEdit">Editar Artículo</h1>
         <form className="addNewPetForm editAlert">
-          <div className="step2">
+        <div className="step2">
           <div>
             <label htmlFor="title">Titulo</label>
             <input
@@ -149,6 +149,7 @@ export const EditBlog = () => {
                 onChange={handleChange}
                 rows="4"
               />
+
             </div>
 
             <div>

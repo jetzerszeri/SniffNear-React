@@ -17,6 +17,7 @@ export const AdoptionEdit = () => {
   const [adoption, setAdoption] = useState(null);
   const [selectedType, setSelectedType] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const navigate = useNavigate();
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
@@ -146,35 +147,32 @@ useEffect(() => {
       };
 
   
-  const navigate = useNavigate();
+
   // const location = useLocation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      console.log('Datos a enviar:', formData);
+        try {
+            const response = await fetch(`https://sniffnear-api.onrender.com/api/adoption/${adoptionId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            console.log(formData)
+            const json = await response.json();
+            if (response.ok) {
+                console.log(json)
+                navigate('/adoptions');
+            } else {
+                console.error('Error en el registro:', json.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+};
   
-      const response = await fetch(`https://sniffnear-api.onrender.com/api/adoption/${adoptionId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
-      console.log('Respuesta de la API:', response);
-  
-      const json = await response.json();
-      if (response.ok) {
-        navigate('/adoptions');
-      } else {
-        console.error('Error en el registro:', json.message);
-        console.log('Respuesta de error de la API:', json);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
   
 
 
@@ -186,9 +184,7 @@ useEffect(() => {
                 <div>
                     <p>¿Qué tipo de mascota encontraste?</p>
                     <ul className="petsIconList">
-                        <li datavalue="perro" 
-                        onClick={() => handleSelectType('perro')} 
-                        className={formData.type === 'perro' ? 'selected' : ''}>
+                        <li datavalue="perro" onClick={() => handleSelectType('perro')} className={formData.type === 'perro' ? 'selected' : ''}>
                             <div>
                                 <svg width="55" height="47" viewBox="0 0 55 47" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M46.2067 27.8397C52.3567 27.8397 55.4167 23.1797 52.7467 17.3197C49.9867 11.2697 45.8567 6.16965 40.3767 2.29965C39.8567 1.92965 39.2567 1.66965 38.6267 1.43965C37.2967 0.949653 35.7967 1.21965 34.7067 2.13965L34.1967 2.56965C33.9367 2.78965 33.5767 2.81965 33.2767 2.65965C29.3367 0.589653 25.3667 0.269653 21.4367 2.76965C21.1267 2.95965 20.7367 2.94965 20.4567 2.71965L19.4967 1.90965C18.6267 1.17965 17.4367 0.929653 16.3567 1.27965C14.2167 1.97965 12.5167 3.46965 10.8867 4.93965C7.18674 8.26965 4.18674 12.2697 2.22674 16.8097C-0.183263 22.3697 0.966737 25.7397 5.59674 27.5597C6.38674 27.8697 7.34674 27.7697 8.22674 27.8597" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -202,9 +198,7 @@ useEffect(() => {
                                 </svg>
                             </div>
                         </li>
-                        <li  datavalue="gato"
-                        onClick={() => handleSelectType('gato')}
-                         className={formData.type === 'gato' ? 'selected' : ''}>
+                        <li  datavalue="gato" onClick={() => handleSelectType('gato')} className={formData.type === 'gato' ? 'selected' : ''}>
                             <div>
                                 <svg width="56" height="44" viewBox="0 0 56 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M54.2768 24.1397C50.7268 22.8497 47.2168 23.0797 43.7268 24.3997" stroke="#363A59" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -294,26 +288,16 @@ useEffect(() => {
             {errors.breed && <p style={{ color: 'red' }}>{errors.breed}</p>}
             <div>
                 <label htmlFor="sex">Género</label>
-                <input 
-                type="hidden" 
-                name="sex" 
-                id="sex"
-                value={formData.sex}
-                />
+                <input type="hidden" name="sex" id="sex"/>
                   <div className="sexSelector">
-                                <div datavalue="male" 
-                                onClick={() => handleSelectGender('male')}
-                                className={formData.sex === 'male' ? 'selected' : ''}>
+                  <div datavalue="macho" onClick={() => handleSelectGender('macho')} className={formData.sex === 'macho' ? 'selected' : ''}>
                                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect width="40" height="40" rx="20" fill="#D1E6FF" fillOpacity="0.5"/>
                                         <path d="M25.8336 14.1666L21.3336 18.6666M25.8336 14.1666H21.667M25.8336 14.1666L25.8337 18.3333M22.5003 21.6666C22.5003 23.9678 20.6348 25.8333 18.3337 25.8333C16.0325 25.8333 14.167 23.9678 14.167 21.6666C14.167 19.3654 16.0325 17.5 18.3337 17.5C20.6348 17.5 22.5003 19.3654 22.5003 21.6666Z" stroke="#1B85F3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                     <span>Macho</span>
                                 </div>
-
-                                <div datavalue="female" 
-                                onClick={() => handleSelectGender('female')} 
-                                className={formData.sex === 'female' ? 'selected' : ''}>
+                                <div datavalue="hembra" onClick={() => handleSelectGender('hembra')} className={formData.sex === 'hembra' ? 'selected' : ''}>
                                     <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect width="40" height="40" rx="20" fill="#FFE1F2" fillOpacity="0.5"/>
                                         <path d="M19.9997 21.6667C22.3009 21.6667 24.1663 19.8012 24.1663 17.5C24.1663 15.1989 22.3009 13.3334 19.9997 13.3334C17.6985 13.3334 15.833 15.1989 15.833 17.5C15.833 19.8012 17.6985 21.6667 19.9997 21.6667ZM19.9997 21.6667V27.5M17.4997 25H22.4997" stroke="#FF9AD5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
